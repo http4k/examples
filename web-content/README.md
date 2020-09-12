@@ -1,4 +1,5 @@
 # http4k Web Content example
+This example shows how to serve static resources and HTML templated content using the `http4k-template-handlebars` module.
 
 ## Build/test locally
 

@@ -29,6 +29,7 @@ dependencies {
     implementation "org.http4k:http4k-core"
 
     testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation "org.http4k:http4k-testing-hamkrest"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }

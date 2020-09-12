@@ -1,9 +1,11 @@
 package com.example
 
+import com.natpryce.hamkrest.and
 import org.http4k.core.Method.GET
 import org.http4k.core.Request
-import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
+import org.http4k.hamkrest.hasBody
+import org.http4k.hamkrest.hasStatus
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -11,6 +13,6 @@ class HelloWorldTest {
     @Test
     fun `App says hello!`() {
         val app = HelloWorld()
-        assertEquals(app(Request(GET, "/")), Response(OK).body("hello world!"))
+        assertEquals(app(Request(GET, "/")), hasStatus(OK) and hasBody("hello world!"))
     }
 }
