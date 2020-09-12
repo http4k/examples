@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 
 class HelloWorldTest {
     @Test
-    fun `Hello World test`() {
+    fun `App says hello!`() {
         val app = HelloWorld()
         assertEquals(app(Request(GET, "/")), Response(OK).body("hello world!"))
     }

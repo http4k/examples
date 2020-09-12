@@ -1,4 +1,4 @@
-# http4k Hello World example
+# http4k Web Content example
 
 ## Build/test locally
 
