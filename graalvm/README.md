@@ -15,7 +15,7 @@ then:
 curl -v http://localhost:8080/
 ```
 
-## Build in to a native binary and run in Docker
+## Build into a native binary and run in Docker
 
 ```shell script
 ./build_and_run.sh
