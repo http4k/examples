@@ -5,7 +5,7 @@ This example has a single endpoint, served at the root, that returns some text. 
 
 ```shell script
 ./gradlew test shadowJar
-Example/bin/Example
+java -jar build/libs/Example-all.jar
 ```
 
 then:
