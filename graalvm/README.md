@@ -1,5 +1,7 @@
 # http4k GraalVM Hello World example
-This example has a single endpoint, served at the root, that returns some text. It only uses the `http4k-core` module, which is small and has zero dependencies apart from the Kotlin StdLib. 
+This example has a single endpoint, served at the root, that returns some text. It only uses the `http4k-core` module, which is small and has zero dependencies apart from the Kotlin StdLib.
+
+GraalVM is a natural fit for http4k applications because of the lack of reflection/magic used throughout the library. This allows http4k to support native compilation with none of the detailed tweaking or complications that afflict other platforms.
 
 ## Build/test locally
 
@@ -13,7 +15,7 @@ then:
 curl -v http://localhost:8080/
 ```
 
-## Build/run in Docker
+## Build in to a native binary and run in Docker
 
 ```shell script
 ./build_and_run.sh
