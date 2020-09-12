@@ -12,6 +12,8 @@ jobs:
           java-version: 11
       - name: hello-world
         run: pushd hello-world && ./gradlew test && popd
+      - name: json-api
+        run: pushd json-api && ./gradlew test && popd
       - name: openapi
         run: pushd openapi && ./gradlew test && popd
       - name: web-content

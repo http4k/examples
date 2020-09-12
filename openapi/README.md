@@ -1,5 +1,5 @@
 # http4k OpenAPI example
-This example shows how to create an API which exposes an OpenAPI3 specification document, driven by the code. It uses the `http4k-format-jackson` library and http4k lenses from the core module to provide automatic marshalling of JSON from Kotlin Data classes. 
+This example shows how to create an API which exposes an OpenAPI3 specification document, driven by the code. It uses the `http4k-contract` and`http4k-format-jackson` libraries in concert with http4k lenses from the core module to provide automatic marshalling of JSON from Kotlin Data classes. 
 
 Documentation for each endpoint is compile-safe, meaning that the OpenAPI3 spec served is always up to date, including JSON schema models generated from the code.
 
@@ -13,7 +13,7 @@ unzip build/distributions/Example.zip
 Example/bin/Example
 ```
 
-then:
+then see the OpenAPI3 spec at:
 ```shell script
 curl -v http://localhost:8080/
 ```
@@ -24,7 +24,7 @@ curl -v http://localhost:8080/
 ./build_and_run.sh
 ```
 
-then:
+then see the OpenAPI3 spec at:
 ```shell script
 curl -v http://localhost:8080/
 ```
