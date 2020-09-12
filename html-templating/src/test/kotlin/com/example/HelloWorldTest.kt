@@ -8,9 +8,10 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class HelloWorldTest {
+
     @Test
     fun `Hello World test`() {
         val app = HelloWorld()
-        assertEquals(app(Request(GET, "/")), Response(OK).body("hello world!"))
+        assertEquals(app(Request(GET, "/hello")), Response(OK).body("world"))
     }
 }

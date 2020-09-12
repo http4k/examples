@@ -10,9 +10,10 @@ import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 
 fun HelloWorld(): HttpHandler {
-    return routes("/" bind GET to { Response(OK).body("hello world!") })
+    return routes("/hello" bind GET to { Response(OK).body("world") })
 }
 
 fun main() {
     HelloWorld().asServer(SunHttp(8080)).start()
 }
+

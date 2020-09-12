@@ -25,9 +25,10 @@ test {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
-
     implementation platform("org.http4k:http4k-bom:${http4k_version}")
     implementation "org.http4k:http4k-core"
-    testImplementation "org.junit.jupiter:junit-jupiter-api:${junit_version}"
-    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junit_version}"
+
+    testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }
