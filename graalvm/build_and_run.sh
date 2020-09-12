@@ -2,6 +2,9 @@
 
 ./gradlew clean test shadowJar
 
-docker build . -t http4k-example
+echo "Building http4k for GraalVM..."
 
-docker run -p 8080:8080 http4k-example
+docker build . -t http4k-graal-example
+
+echo "Running http4k on GraalVM"
+docker run -p 8080:8080 http4k-graal-example

@@ -13,6 +13,6 @@ class HelloWorldTest {
     @Test
     fun `App says hello!`() {
         val app = HelloWorld()
-        assertThat(app(Request(GET, "/")), hasStatus(OK) and hasBody("hello world!"))
+        assertThat(app(Request(GET, "/")), hasStatus(OK) and hasBody("hello (native) world!"))
     }
 }
