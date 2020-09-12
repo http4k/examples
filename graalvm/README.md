@@ -1,5 +1,5 @@
 # http4k GraalVM Hello World example
-This example has a single endpoint, served at the root, that returns some text. It only uses the `http4k-core` module, which is small and has zero dependencies apart from the Kotlin StdLib. The 
+This example has a single endpoint, served at the root, that returns some text. It only uses the `http4k-core` module, which is small and has zero dependencies apart from the Kotlin StdLib. 
 
 ## Build/test locally
 
