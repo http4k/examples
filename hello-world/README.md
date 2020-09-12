@@ -4,8 +4,8 @@
 
 ```shell script
 ./gradlew test distZip
-unzip build/distributions/HelloWorld.zip
-HelloWorld/bin/HelloWorld
+unzip build/distributions/Example.zip
+Example/bin/Example
 ```
 
 then:
