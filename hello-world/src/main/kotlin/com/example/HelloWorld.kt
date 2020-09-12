@@ -14,6 +14,6 @@ fun HelloWorld(): HttpHandler {
 }
 
 fun main() {
-    HelloWorld().asServer(SunHttp(9000)).start()
+    HelloWorld().asServer(SunHttp(8080)).start()
 }
 
