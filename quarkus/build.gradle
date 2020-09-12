@@ -1,0 +1,49 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+    }
+}
+
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.2.0"
+    id 'io.quarkus' version "${quarkus_version}"
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+apply plugin: 'kotlin'
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
+    implementation enforcedPlatform("io.quarkus:quarkus-universe-bom:${quarkus_version}")
+    implementation platform("org.http4k:http4k-bom:${http4k_version}")
+    implementation "org.http4k:http4k-core"
+
+    implementation 'io.quarkus:quarkus-kotlin'
+    testImplementation 'io.quarkus:quarkus-junit5'
+
+    implementation "io.quarkus:quarkus-undertow:${quarkus_version}"
+    testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation "org.http4k:http4k-testing-hamkrest"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+}
+
+quarkusBuild {
+    nativeArgs {
+        containerBuild = true
+        buildImage = "quay.io/quarkus/ubi-quarkus-native-image:20.1.0-java11"
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

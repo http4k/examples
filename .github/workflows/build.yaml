@@ -20,5 +20,7 @@ jobs:
         run: pushd oauth && ./gradlew test && popd
       - name: openapi
         run: pushd openapi && ./gradlew test && popd
+      # - name: quarkus
+      #   run: pushd quarkus && ./gradlew test && popd
       - name: web-content
         run: pushd web-content && ./gradlew test && popd
