@@ -3,6 +3,11 @@ This example has a single endpoint, served at the root, that returns some text. 
 
 GraalVM is a natural fit for http4k applications because of the lack of reflection/magic used throughout the library. This allows http4k to support native compilation with none of the detailed tweaking or complications that afflict other platforms.
 
+There is a dependency, however, on the underlying server platform to also not use reflection and this is obviously something out of our control. Out-of-the-box compatibility is known to work for the following http4k server backends:
+
+- ApacheServer (`http4k-server-apache`)
+- SunHttp (bundled with `http4k-core`)
+
 ## Build/test locally
 
 ```shell script
