@@ -13,7 +13,7 @@ This example demonstrates how to configure http4k apps using the typesafe config
 ```shell script
 ./gradlew test distZip
 unzip build/distributions/Example.zip
-Example/bin/Example
+TIMEOUT=PT2S Example/bin/Example
 ```
 
 then:
