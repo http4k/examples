@@ -12,8 +12,19 @@ then:
 curl -v http://localhost:8080/
 ```
 
-## Build native image
+## Build native binary locally
 
 ```shell script
-./gradlew clean test buildNative
+./gradlew clean buildNative
+```
+
+## Build/run native binary then run in Docker
+
+```shell script
+./build_and_run.sh
+```
+
+then:
+```shell script
+curl -v http://localhost:8080/
 ```
