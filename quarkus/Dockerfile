@@ -1,4 +1,4 @@
 FROM registry.access.redhat.com/ubi8/ubi-minimal
-COPY build/Example-unspecified-runner bin/http4k-example
+COPY build/Example-unspecified-runner application
 EXPOSE 8080
-RUN bin/http4k-example
+CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
