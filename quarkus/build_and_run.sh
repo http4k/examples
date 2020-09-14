@@ -2,7 +2,7 @@
 set -e
 
 echo "Building http4k for Quarkus..."
-./gradlew clean buildNative
+./gradlew clean build -Dquarkus.package.type=native -Dquarkus.native.container-build=true
 
 echo "Adding app to Docker image..."
 docker build . -t http4k-quarkus-example
