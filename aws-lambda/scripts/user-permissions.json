@@ -18,8 +18,10 @@
         "iam:GetRolePolicy",
         "iam:ListAttachedRolePolicies",
         "iam:ListRolePolicies",
+        "iam:AttachRolePolicy",
         "iam:ListRoles",
-        "iam:PassRole"
+        "iam:PassRole",
+        "apigateway:*"
       ],
       "Resource": "*"
     }
