@@ -12,4 +12,5 @@ These sample projects are designed to demonstrate how easy it is to use the vari
 - **quarkus** :  "Hello world" application with a single endpoint, compiled to a native binary using Quarkus.
 - **typesafe-configuration** : Application configured using the typesafe configuration facility in the `http4k-cloudnative` module..
 - **web-content** : Using the http4k templating system and serving static content.
+- **aws-lambda**: Building and deploying `HttpHandler` as a serverless function.
 
