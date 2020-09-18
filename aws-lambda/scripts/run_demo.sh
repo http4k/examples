@@ -9,8 +9,8 @@ $DIR/ensure_role_exists.sh
 $DIR/ensure_function_does_not_exist.sh
 $DIR/lambda_upload.sh
 
-echo "Step 3 - Invoke the new lambda"
+echo "Step 3 - Invoke the new lambda directly"
 $DIR/lambda_invoke.sh
 
-echo "Step 4 - Cleanup"
-$DIR/destroy_all.sh
+echo "Step 4 - Create API Gateway endpoint"
+$DIR/api_create.sh

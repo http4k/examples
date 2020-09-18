@@ -14,3 +14,9 @@ aws lambda create-function --function-name http4k-function \
 --handler org.http4k.example.MyHttp4kFunction::handle \
 --runtime java11 \
 --role $ROLE 1>/dev/null
+
+aws lambda add-permission \
+--function-name http4k-function \
+--action lambda:InvokeFunction \
+--statement-id apigateway \
+--principal apigateway.amazonaws.com 1>/dev/null
