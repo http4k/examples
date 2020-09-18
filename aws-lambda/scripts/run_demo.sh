@@ -12,5 +12,5 @@ $DIR/lambda_upload.sh
 echo "Step 3 - Invoke the new lambda directly"
 $DIR/lambda_invoke.sh
 
-echo "Step 4 - Create API Gateway endpoint"
+echo "Step 4 - Create API"
 $DIR/api_create.sh

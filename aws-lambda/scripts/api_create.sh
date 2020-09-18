@@ -26,11 +26,11 @@ if [ -z "${API}" ] ; then
 
     aws apigatewayv2 create-route \
         --api-id "${API_ID}" \
-        --route-key 'ANY /' \
+        --route-key '$default' \
         --target "integrations/${INTEGRATION_ID}" 1>/dev/null
 
-
     ENDPOINT="$( aws apigatewayv2 get-apis |  jq -r ' .Items | .[] | select(.Name == "http4k-demo") | .ApiEndpoint')"
+
     echo "Access the API in: $ENDPOINT"
 else
     echo "API already exists"
