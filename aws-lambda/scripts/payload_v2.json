@@ -1,0 +1,35 @@
+{
+    "version": null,
+    "routeKey": null,
+    "rawPath": "/path",
+    "rawQueryString": null,
+    "cookies": null,
+    "headers": {
+        "c": "d"
+    },
+    "queryStringParameters": {
+        "query": "value"
+    },
+    "pathParameters": null,
+    "stageVariables": null,
+    "isBase64Encoded": false,
+    "requestContext": {
+        "routeKey": null,
+        "accountId": null,
+        "stage": null,
+        "apiId": null,
+        "domainName": null,
+        "domainPrefix": null,
+        "time": null,
+        "timeEpoch": 0,
+        "http": {
+            "method": "GET",
+            "path": null,
+            "protocol": null,
+            "sourceIp": null,
+            "userAgent": null
+        },
+        "authorizer": null
+    },
+    "body": "input body"
+}
