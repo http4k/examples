@@ -1,5 +1,5 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
+    id 'org.jetbrains.kotlin.jvm' version "${kotlin_version}"
 }
 
 group 'org.example'
@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation platform("org.http4k:http4k-bom:3.260.0")
+    implementation platform("org.http4k:http4k-bom:${http4k_version}")
     implementation "org.http4k:http4k-core"
     implementation "org.http4k:http4k-serverless-lambda"
 }
