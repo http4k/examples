@@ -22,7 +22,7 @@ if [ -z "${API}" ] ; then
         --integration-type AWS_PROXY \
         --integration-uri ${FUNCTION} \
         --timeout-in-millis 30000 \
-        --payload-format-version 1.0 | jq -r .IntegrationId)" 1>/dev/null
+        --payload-format-version 2.0 | jq -r .IntegrationId)" 1>/dev/null
 
     aws apigatewayv2 create-route \
         --api-id "${API_ID}" \

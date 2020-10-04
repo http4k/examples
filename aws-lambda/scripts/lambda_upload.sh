@@ -11,7 +11,7 @@ fi
 
 aws lambda create-function --function-name http4k-function \
 --zip-file fileb://$FILE \
---handler org.http4k.example.MyHttp4kFunction::handle \
+--handler org.http4k.example.MyHttp4kFunction \
 --runtime java11 \
 --role $ROLE 1>/dev/null
 

@@ -1,7 +1,7 @@
 {
     "version": null,
     "routeKey": null,
-    "rawPath": "/path",
+    "rawPath": "/",
     "rawQueryString": null,
     "cookies": null,
     "headers": {
