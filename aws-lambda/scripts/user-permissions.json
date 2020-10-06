@@ -6,6 +6,8 @@
       "Effect": "Allow",
       "Action": [
         "apigateway:*",
+        "ec2:*",
+        "elasticloadbalancing:*",
         "iam:AttachRolePolicy",
         "iam:CreateRole",
         "iam:DeleteRole",
@@ -19,6 +21,7 @@
         "iam:ListRoles",
         "iam:PassRole",
         "lambda:AddPermission",
+        "lambda:RemovePermission",
         "lambda:CreateFunction",
         "lambda:DeleteFunction",
         "lambda:InvokeAsync",
