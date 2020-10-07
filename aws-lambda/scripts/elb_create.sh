@@ -133,4 +133,3 @@ aws elbv2 create-listener \
 --load-balancer-arn $AWS_LB_ARN \
 --protocol HTTP --port 80  \
 --default-actions Type=forward,TargetGroupArn=$AWS_TARGET_GROUP_ARN
-
