@@ -3,6 +3,7 @@ package com.example
 import org.http4k.core.Body
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
+import org.http4k.core.Method.POST
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
@@ -22,7 +23,14 @@ data class JsonMessage(val now: Instant,
 fun JsonApi(clock: Clock, random: Random): HttpHandler {
     val bodyLens = Body.auto<JsonMessage>().toLens()
 
-    return routes("/" bind GET to { Response(OK).with(bodyLens of JsonMessage(Instant.now(clock), random.nextInt(), true)) })
+    return routes(
+        "/echo" bind POST to {
+            val received = bodyLens(it)
+            Response(OK).with(bodyLens of received)
+        },
+        "/" bind GET to {
+            Response(OK).with(bodyLens of JsonMessage(Instant.now(clock), random.nextInt(), true)) }
+    )
 }
 
 fun main() {
