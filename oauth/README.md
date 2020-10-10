@@ -3,4 +3,4 @@ This app shows how to handle protecting resources using OAuth. There is also a t
 
 ## Build/test locally
 
-Run the `RunnableEnvironment` from your IDE. This will start both the app and the OAuth server. Then in a browser try and visit the protected resource at: [http://localhost:8080/]. The request will be redirected to the OAuth Server for 
+Run the `RunnableEnvironment` from your IDE. This will start both the app and the OAuth server. Then in a browser try and visit the protected resource at: [http://localhost:8080/]. The request will be redirected to the OAuth Server for login. 
