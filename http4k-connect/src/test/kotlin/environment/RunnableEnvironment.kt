@@ -18,7 +18,8 @@ import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 
 fun main() {
-    val server = FakeS3().start()
+    val fakeS3 = FakeS3()
+    val server = fakeS3.start()
 
     val s3Http = createClientPointedAtLocalFakeS3(server)
 
@@ -33,9 +34,9 @@ private fun createClientPointedAtLocalFakeS3(server: Http4kServer) =
 
 private fun createS3BucketAndFiles(s3Http: HttpHandler) {
     val s3Bucket = S3.Bucket.Http(BucketName("mybucket"),
-        s3Http,
-        AwsCredentialScope("us-east-1", "s3"), { AwsCredentials("accesskey", "secret") }
-    )
+        AwsCredentialScope("us-east-1", "s3"), { AwsCredentials("accesskey", "secret") },
+        s3Http
+        )
 
     // create the bucket and the files to go in it...
     s3Bucket.apply {

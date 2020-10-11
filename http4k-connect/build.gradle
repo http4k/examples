@@ -21,13 +21,13 @@ test {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
-    implementation platform("org.http4k:http4k-bom:${http4k_version}")
-    implementation platform("org.http4k:http4k-connect-bom:${http4k_connect_version}")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation platform("org.http4k:http4k-bom:$http4k_version")
+    implementation platform("org.http4k:http4k-connect-bom:$http4k_connect_version")
     implementation "org.http4k:http4k-core"
     implementation "org.http4k:http4k-connect-amazon-s3"
 
-    testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation platform("org.junit:junit-bom:$junit_version")
     testImplementation "org.http4k:http4k-testing-hamkrest"
     testImplementation "org.http4k:http4k-connect-amazon-s3-fake"
     testImplementation "org.junit.jupiter:junit-jupiter-api"

@@ -18,8 +18,9 @@ import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 
 fun S3BucketContents(s3Http: HttpHandler): HttpHandler {
-    val s3 = S3.Bucket.Http(BucketName("mybucket"), s3Http,
-        AwsCredentialScope("us-east-1", "s3"), { AwsCredentials("accesskey", "secret") }
+    val s3 = S3.Bucket.Http(BucketName("mybucket"),
+        AwsCredentialScope("us-east-1", "s3"), { AwsCredentials("accesskey", "secret") },
+        s3Http
     )
     return routes("/" bind GET to {
         when (val result = s3.list()) {
