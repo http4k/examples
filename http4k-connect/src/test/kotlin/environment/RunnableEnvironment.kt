@@ -36,7 +36,7 @@ private fun createS3BucketAndFiles(s3Http: HttpHandler) {
     val s3Bucket = S3.Bucket.Http(BucketName("mybucket"),
         AwsCredentialScope("us-east-1", "s3"), { AwsCredentials("accesskey", "secret") },
         s3Http
-        )
+    )
 
     // create the bucket and the files to go in it...
     s3Bucket.apply {
