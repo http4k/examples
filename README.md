@@ -5,6 +5,8 @@
 These sample projects are designed to demonstrate how easy it is to use the various features of http4k in isolation. They are all entirely self-contained and can be run locally or using the included script to run them in a Docker container.
 
 - **hello-world** : "Hello world" application with a single endpoint.
+
+- **aws-lambda**: Building and deploying `HttpHandler` as a Serverless function.
 - **graalvm** :  "Hello world" application with a single endpoint, compiled to a native binary using GraalVM.
 - **json-api** : A app which uses Jackson to automatically marshall Kotlin data classes into JSON objects.
 - **http4k-connect** : A app which utilises the `http4k-connect`  libraries, which provide both a framework for http4k client connectors to external systems and Fake versions of those systems.
@@ -13,5 +15,4 @@ These sample projects are designed to demonstrate how easy it is to use the vari
 - **quarkus** :  "Hello world" application with a single endpoint, compiled to a native binary using Quarkus.
 - **typesafe-configuration** : Application configured using the typesafe configuration facility in the `http4k-cloudnative` module..
 - **web-content** : Using the http4k templating system and serving static content.
-- **aws-lambda**: Building and deploying `HttpHandler` as a serverless function.
 
