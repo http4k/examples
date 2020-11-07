@@ -22,7 +22,7 @@ fun main() {
             val client = JavaHttpClient()
             println(
                 client(
-                    Request(GET, "http://localhost:$mainPort/opentelemetry")).header("x-b3-traceid")
+                    Request(GET, "http://localhost:$mainPort/trace")).header("x-b3-traceid")
             )
         }
     }
