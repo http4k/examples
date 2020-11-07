@@ -6,16 +6,14 @@ import org.http4k.core.Request
 
 fun main() {
     val mainPort = 8080
-    val proxyPort = 9090
-    val thirdPartyPort = 10010
+    val thirdPartyPort = 9090
 
     val server = OpenTelemetryServer(
         mainPort,
-        proxyPort,
+        thirdPartyPort,
         System.getenv("LIGHTSTEP_TOKEN"),
         System.getenv("APP_NAME")
     )
-    val proxy = ProxyServer(proxyPort, thirdPartyPort).start()
     val thirdParty = ThirdPartyServer(thirdPartyPort).start()
 
     server.start().use {
@@ -29,7 +27,6 @@ fun main() {
         }
     }
 
-    proxy.stop()
     thirdParty.stop()
 }
 
