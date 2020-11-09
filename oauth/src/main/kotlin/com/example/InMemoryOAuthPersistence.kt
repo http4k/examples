@@ -3,6 +3,7 @@ package com.example
 import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.FORBIDDEN
+import org.http4k.core.Uri
 import org.http4k.core.cookie.Cookie
 import org.http4k.core.cookie.cookie
 import org.http4k.core.cookie.invalidateCookie
@@ -21,11 +22,15 @@ import java.util.UUID
 class InMemoryOAuthPersistence(private val clock: Clock) : OAuthPersistence {
     private val csrfName = "exampleServerCsrf"
     private val clientAuthCookie = "exampleServerAuth"
+    private val originalUriName = "exampleServerUri"
     private val cookieSwappableTokens = mutableMapOf<String, AccessToken>()
 
     override fun retrieveCsrf(request: Request) = request.cookie(csrfName)?.value?.let(::CrossSiteRequestForgeryToken)
 
     override fun retrieveNonce(request: Request): Nonce? = null
+
+    override fun retrieveOriginalUri(request: Request): Uri? =
+        request.cookie(originalUriName)?.value?.let(Uri::of)
 
     override fun retrieveToken(request: Request) = (tryBearerToken(request)
         ?: tryCookieToken(request))
@@ -34,6 +39,8 @@ class InMemoryOAuthPersistence(private val clock: Clock) : OAuthPersistence {
     override fun assignCsrf(redirect: Response, csrf: CrossSiteRequestForgeryToken) = redirect.cookie(expiring(csrfName, csrf.value))
 
     override fun assignNonce(redirect: Response, nonce: Nonce): Response = redirect
+    override fun assignOriginalUri(redirect: Response, originalUri: Uri): Response =
+        redirect.cookie(expiring(originalUriName, originalUri.toString()))
 
     override fun assignToken(request: Request, redirect: Response, accessToken: AccessToken) =
         UUID.randomUUID().let {
