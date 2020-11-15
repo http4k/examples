@@ -11,9 +11,10 @@ jobs:
         with:
           java-version: 11
       - run: pushd aws-lambda && ./gradlew test && popd
-      - run: pushd graalvm && ./gradlew test && popd
       - run: pushd hello-world && ./gradlew test && popd
       - run: pushd http4k-connect && ./gradlew test && popd
+      - run: pushd graalvm && ./gradlew test && popd
+      - run: pushd graphql && ./gradlew test && popd
       - run: pushd json-api && ./gradlew test && popd
       - run: pushd oauth && ./gradlew test && popd
       - run: pushd openapi && ./gradlew test && popd
