@@ -1,6 +1,6 @@
 package environment.oauthserver
 
-import com.natpryce.Success
+import dev.forkhandles.result4k.Success
 import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.security.oauth.server.AuthRequest

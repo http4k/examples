@@ -1,8 +1,8 @@
 package environment.oauthserver
 
-import com.natpryce.Failure
-import com.natpryce.Result
-import com.natpryce.Success
+import dev.forkhandles.result4k.Failure
+import dev.forkhandles.result4k.Result
+import dev.forkhandles.result4k.Success
 import org.http4k.security.AccessToken
 import org.http4k.security.oauth.server.AccessTokens
 import org.http4k.security.oauth.server.AuthorizationCode

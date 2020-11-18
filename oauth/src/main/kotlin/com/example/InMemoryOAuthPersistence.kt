@@ -10,6 +10,7 @@ import org.http4k.core.cookie.invalidateCookie
 import org.http4k.security.AccessToken
 import org.http4k.security.CrossSiteRequestForgeryToken
 import org.http4k.security.OAuthPersistence
+import org.http4k.security.openid.IdToken
 import org.http4k.security.openid.Nonce
 import java.time.Clock
 import java.time.Duration
@@ -42,7 +43,7 @@ class InMemoryOAuthPersistence(private val clock: Clock) : OAuthPersistence {
     override fun assignOriginalUri(redirect: Response, originalUri: Uri): Response =
         redirect.cookie(expiring(originalUriName, originalUri.toString()))
 
-    override fun assignToken(request: Request, redirect: Response, accessToken: AccessToken) =
+    override fun assignToken(request: Request, redirect: Response, accessToken: AccessToken, idToken: IdToken?) =
         UUID.randomUUID().let {
             cookieSwappableTokens[it.toString()] = accessToken
             redirect.cookie(expiring(clientAuthCookie, it.toString())).invalidateCookie(csrfName)
