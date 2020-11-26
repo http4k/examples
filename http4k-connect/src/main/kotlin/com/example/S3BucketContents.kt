@@ -5,7 +5,7 @@ import dev.forkhandles.result4k.Success
 import org.http4k.aws.AwsCredentialScope
 import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
-import org.http4k.connect.amazon.s3.BucketName
+import org.http4k.connect.amazon.model.BucketName
 import org.http4k.connect.amazon.s3.Http
 import org.http4k.connect.amazon.s3.S3
 import org.http4k.core.HttpHandler

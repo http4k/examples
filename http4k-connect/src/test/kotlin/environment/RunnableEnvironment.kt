@@ -4,8 +4,8 @@ import com.example.S3BucketContents
 import org.http4k.aws.AwsCredentialScope
 import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
-import org.http4k.connect.amazon.s3.BucketKey
-import org.http4k.connect.amazon.s3.BucketName
+import org.http4k.connect.amazon.model.BucketKey
+import org.http4k.connect.amazon.model.BucketName
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.s3.Http
 import org.http4k.connect.amazon.s3.S3
