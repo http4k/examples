@@ -33,7 +33,7 @@ private fun createClientPointedAtLocalFakeS3(server: Http4kServer) =
         .then(JavaHttpClient())
 
 private fun createS3BucketAndFiles(s3Http: HttpHandler) {
-    val s3Bucket = S3.Bucket.Http(BucketName("mybucket"),
+    val s3Bucket = S3.Bucket.Http(BucketName.of("mybucket"),
         AwsCredentialScope("us-east-1", "s3"), { AwsCredentials("accesskey", "secret") },
         s3Http
     )
@@ -41,7 +41,7 @@ private fun createS3BucketAndFiles(s3Http: HttpHandler) {
     // create the bucket and the files to go in it...
     s3Bucket.apply {
         s3Bucket.create()
-        set(BucketKey("file1"), "hello".byteInputStream())
-        set(BucketKey("file2"), "there".byteInputStream())
+        set(BucketKey.of("file1"), "hello".byteInputStream())
+        set(BucketKey.of("file2"), "there".byteInputStream())
     }
 }
