@@ -7,8 +7,8 @@ import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
 import org.http4k.connect.amazon.model.BucketName
 import org.http4k.connect.amazon.s3.Http
-import org.http4k.connect.amazon.s3.ListKeys
 import org.http4k.connect.amazon.s3.S3
+import org.http4k.connect.amazon.s3.action.ListKeys
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Response

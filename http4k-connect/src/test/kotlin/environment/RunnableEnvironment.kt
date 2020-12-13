@@ -6,10 +6,10 @@ import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
 import org.http4k.connect.amazon.model.BucketKey
 import org.http4k.connect.amazon.model.BucketName
-import org.http4k.connect.amazon.s3.Create
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.s3.Http
 import org.http4k.connect.amazon.s3.S3
+import org.http4k.connect.amazon.s3.action.Create
 import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
 import org.http4k.core.then
