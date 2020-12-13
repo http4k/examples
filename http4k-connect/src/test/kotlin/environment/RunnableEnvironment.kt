@@ -6,6 +6,7 @@ import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
 import org.http4k.connect.amazon.model.BucketKey
 import org.http4k.connect.amazon.model.BucketName
+import org.http4k.connect.amazon.s3.Create
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.s3.Http
 import org.http4k.connect.amazon.s3.S3
@@ -39,9 +40,7 @@ private fun createS3BucketAndFiles(s3Http: HttpHandler) {
     )
 
     // create the bucket and the files to go in it...
-    s3Bucket.apply {
-        s3Bucket.create()
-        set(BucketKey.of("file1"), "hello".byteInputStream())
-        set(BucketKey.of("file2"), "there".byteInputStream())
-    }
+    s3Bucket(Create())
+    s3Bucket[BucketKey.of("file1")] = "hello".byteInputStream()
+    s3Bucket[BucketKey.of("file2")] = "there".byteInputStream()
 }

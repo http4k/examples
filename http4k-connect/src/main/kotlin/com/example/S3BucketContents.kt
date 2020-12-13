@@ -7,6 +7,7 @@ import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
 import org.http4k.connect.amazon.model.BucketName
 import org.http4k.connect.amazon.s3.Http
+import org.http4k.connect.amazon.s3.ListKeys
 import org.http4k.connect.amazon.s3.S3
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
@@ -23,7 +24,7 @@ fun S3BucketContents(s3Http: HttpHandler): HttpHandler {
         s3Http
     )
     return routes("/" bind GET to {
-        when (val result = s3.list()) {
+        when (val result = s3(ListKeys())) {
             is Success -> Response(OK).body(result.value.joinToString("\n") { it.value })
             is Failure -> Response(result.reason.status)
         }
