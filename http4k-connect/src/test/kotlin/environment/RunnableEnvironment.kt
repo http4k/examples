@@ -6,10 +6,12 @@ import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
 import org.http4k.connect.amazon.model.BucketKey
 import org.http4k.connect.amazon.model.BucketName
+import org.http4k.connect.amazon.model.Region
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.s3.Http
 import org.http4k.connect.amazon.s3.S3
-import org.http4k.connect.amazon.s3.action.Create
+import org.http4k.connect.amazon.s3.S3Bucket
+import org.http4k.connect.amazon.s3.createBucket
 import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
 import org.http4k.core.then
@@ -34,13 +36,22 @@ private fun createClientPointedAtLocalFakeS3(server: Http4kServer) =
         .then(JavaHttpClient())
 
 private fun createS3BucketAndFiles(s3Http: HttpHandler) {
-    val s3Bucket = S3.Bucket.Http(BucketName.of("mybucket"),
+    val region = Region.of("us-east-1")
+
+    val s3 = S3.Http(
+        AwsCredentialScope(region.value, "s3"), { AwsCredentials("accesskey", "secret") },
+        s3Http
+    )
+
+    // create the bucket
+    val bucketName = BucketName.of("mybucket")
+    s3.createBucket(bucketName, region)
+
+    val s3Bucket = S3Bucket.Http(bucketName,
         AwsCredentialScope("us-east-1", "s3"), { AwsCredentials("accesskey", "secret") },
         s3Http
     )
 
-    // create the bucket and the files to go in it...
-    s3Bucket(Create())
     s3Bucket[BucketKey.of("file1")] = "hello".byteInputStream()
     s3Bucket[BucketKey.of("file2")] = "there".byteInputStream()
 }
