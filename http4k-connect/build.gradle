@@ -35,3 +35,21 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }
+
+tasks.create("weighDependencies") {
+    doLast {
+        allprojects
+            .forEach {
+                println it.name.toUpperCase()
+                it.configurations
+                    .runtimeClasspath
+                    .resolvedConfiguration
+                    .firstLevelModuleDependencies.forEach {
+
+                    def sorted = it.allModuleArtifacts.toSorted()
+                    println "  " + it.name + " = " + sorted.sum { it.file.length() }
+                    sorted.forEach {println("    " + it.file.name + " = " + it.file.length()) }
+                }
+            }
+    }
+}
