@@ -3,7 +3,6 @@ package environment
 import com.example.KMSEncrypt
 import com.example.S3BucketContents
 import dev.forkhandles.result4k.valueOrNull
-import org.http4k.aws.AwsCredentialScope
 import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
 import org.http4k.connect.amazon.kms.FakeKMS
@@ -35,13 +34,13 @@ fun main() {
     val s3Server = fakeS3.start()
     val s3Http = createClientPointedAtLocalFake(s3Server)
     createS3BucketAndFiles(s3Http, region)
-    S3BucketContents(s3Http).asServer(SunHttp(8080)).start()
+    S3BucketContents(s3Http, Region.of("us-east-1")).asServer(SunHttp(8080)).start()
 
     val fakeKms = FakeKMS()
     val kmsServer = fakeKms.start()
     val kmsHttp = createClientPointedAtLocalFake(kmsServer)
     val keyId = createKMSKey(kmsHttp, region)
-    KMSEncrypt(keyId, kmsHttp).asServer(SunHttp(9090)).start()
+    KMSEncrypt(keyId, kmsHttp, region).asServer(SunHttp(9090)).start()
 }
 
 private fun createClientPointedAtLocalFake(server: Http4kServer) =
@@ -50,7 +49,7 @@ private fun createClientPointedAtLocalFake(server: Http4kServer) =
 
 private fun createS3BucketAndFiles(s3Http: HttpHandler, region: Region) {
     val s3 = S3.Http(
-        AwsCredentialScope(region.value, "s3"), { AwsCredentials("accesskey", "secret") },
+        region, { AwsCredentials("accesskey", "secret") },
         s3Http
     )
 
@@ -59,7 +58,7 @@ private fun createS3BucketAndFiles(s3Http: HttpHandler, region: Region) {
     s3.createBucket(bucketName, region)
 
     val s3Bucket = S3Bucket.Http(bucketName,
-        AwsCredentialScope("us-east-1", "s3"), { AwsCredentials("accesskey", "secret") },
+        region, { AwsCredentials("accesskey", "secret") },
         s3Http
     )
 
@@ -69,7 +68,7 @@ private fun createS3BucketAndFiles(s3Http: HttpHandler, region: Region) {
 
 private fun createKMSKey(kmsHttp: HttpHandler, region: Region): KMSKeyId {
     val kms = KMS.Http(
-        AwsCredentialScope(region.value, "kms"), { AwsCredentials("accesskey", "secret") },
+        region, { AwsCredentials("accesskey", "secret") },
         kmsHttp
     )
 
