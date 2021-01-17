@@ -26,3 +26,5 @@ yarn start
 ```shell
 ./gradlew clean distZip
 ```
+
+The output ZIP lives in: `backend/build/distributions`
