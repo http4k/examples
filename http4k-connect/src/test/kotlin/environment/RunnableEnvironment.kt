@@ -23,6 +23,7 @@ import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.filter.ClientFilters
+import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import org.http4k.server.Http4kServer
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
@@ -44,7 +45,7 @@ fun main() {
 }
 
 private fun createClientPointedAtLocalFake(server: Http4kServer) =
-    ClientFilters.SetBaseUriFrom(Uri.of("http://localhost:${server.port()}"))
+    SetBaseUriFrom(Uri.of("http://localhost:${server.port()}"))
         .then(JavaHttpClient())
 
 private fun createS3BucketAndFiles(s3Http: HttpHandler, region: Region) {
