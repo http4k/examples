@@ -1,6 +1,6 @@
 # http4k react project
 
-This project brings together 2 modules:
+This project brings together 2 Gradle modules:
 
 1. `/backend` - Kotlin http4k app
 2. `/frontend` - React app
