@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+
+    apply plugin: 'kotlin'
+
+    compileKotlin.kotlinOptions.jvmTarget = "1.8"
+    compileTestKotlin.kotlinOptions.jvmTarget = "1.8"
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    version = "0.0.0"
+
+    test {
+        useJUnitPlatform()
+    }
+
+    compileKotlin {
+        kotlinOptions.allWarningsAsErrors = false
+    }
+
+    configurations {
+        tests
+    }
+
+    jar {
+        manifest {
+            attributes(
+                'release_version': archiveVersion,
+            )
+        }
+    }
+
+    task testJar(type: Jar, dependsOn: testClasses) {
+        archivesBaseName = "test-${project.archivesBaseName}"
+        from sourceSets.test.output
+    }
+
+    artifacts {
+        tests testJar
+    }
+}
+
+compileTestKotlin.kotlinOptions {
+    jvmTarget = "11"
+}
+
+dependencies {
+    implementation(project("backend"))
+    implementation(project("frontend"))
+}

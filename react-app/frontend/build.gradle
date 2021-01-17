@@ -1,0 +1,78 @@
+plugins {
+    id "com.github.node-gradle.node" version "2.2.4"
+}
+
+node {
+    download = true
+    version = "14.3.0"
+}
+
+apply plugin: 'java'
+
+group = 'app'
+version = "1.0"
+
+buildDir = 'dist'
+def reactOutputDir = 'build'
+
+sourceSets {
+    main {
+        resources {
+            srcDir 'distribution'
+        }
+    }
+}
+
+clean {
+    delete 'dist'
+    delete reactOutputDir
+    doLast {
+        mkdir reactOutputDir
+    }
+}
+
+task createBuildDir {
+    doFirst {
+        mkdir reactOutputDir
+    }
+    outputs.dir(reactOutputDir)
+}
+
+processResources.dependsOn(createBuildDir)
+processResources.dependsOn('yarnBuild')
+
+task yarnTest(type: YarnTask) {
+    inputs.dir(reactOutputDir)
+
+    dependsOn "yarnInstall"
+    args = ['testci']
+}
+
+jar.dependsOn('yarnBuild')
+jar.from(fileTree('generatedSrc/main/resources'))
+
+task yarnInstall(type: YarnTask) {
+    dependsOn npmSetup
+    inputs.file('package.json')
+
+    outputs.dir('node_modules')
+    outputs.file('yarn.lock')
+
+    args = ['install']
+}
+
+task yarnBuild(type: YarnTask) {
+    dependsOn yarnInstall
+    outputs.upToDateWhen { false }
+
+    inputs.files(fileTree('node_modules'))
+    def srcTree = fileTree('src')
+    inputs.files(srcTree)
+    inputs.files('public')
+    inputs.file('package.json')
+
+    outputs.dir(reactOutputDir)
+
+    args = ['build']
+}
+

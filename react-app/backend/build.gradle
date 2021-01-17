@@ -1,0 +1,14 @@
+apply plugin: 'application'
+
+dependencies {
+    api platform("org.http4k:http4k-bom:$http4k_version")
+    api "org.http4k:http4k-core"
+
+    testImplementation platform("org.junit:junit-bom:$junit_version")
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+}
+
+mainClassName = 'org.http4k.examples.Http4kReactMainKt'
+
+task stage(dependsOn: ['installDist'])
