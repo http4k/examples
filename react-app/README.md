@@ -12,8 +12,10 @@ Run:
 ./gradlew check
 ```
 
-... then either launch `RunnableEnvironment` from your IDE or enter development mode with:
+... then either:
 
+1. launch `RunnableEnvironment` from your IDE - the UI lives at http://localhost:8000
+1. enter development mode - the UI lives at http://localhost:3000
 ```shell
 cd frontend
 yarn start
