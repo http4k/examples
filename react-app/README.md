@@ -5,6 +5,8 @@ This project brings together 2 modules:
 1. `/backend` - Kotlin http4k app
 2. `/frontend` - React app
 
+## Development mode!
+
 Run:
 ```shell
 ./gradlew check
@@ -17,8 +19,8 @@ cd frontend
 yarn start
 ```
 
+## Create production build
 
 ```shell
-cd frontend
-yarn start
+./gradlew clean distZip
 ```

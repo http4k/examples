@@ -10,8 +10,6 @@ node {
 apply plugin: 'java'
 
 group = 'app'
-version = "1.0"
-
 buildDir = 'dist'
 def reactOutputDir = 'build'
 

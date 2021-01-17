@@ -26,8 +26,6 @@ allprojects {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
 
-    version = "0.0.0"
-
     test {
         useJUnitPlatform()
     }
@@ -46,15 +44,6 @@ allprojects {
                 'release_version': archiveVersion,
             )
         }
-    }
-
-    task testJar(type: Jar, dependsOn: testClasses) {
-        archivesBaseName = "test-${project.archivesBaseName}"
-        from sourceSets.test.output
-    }
-
-    artifacts {
-        tests testJar
     }
 }
 
