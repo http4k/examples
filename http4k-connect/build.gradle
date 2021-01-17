@@ -33,7 +33,7 @@ dependencies {
     implementation "org.http4k:http4k-connect-amazon-s3"
     implementation "org.http4k:http4k-connect-amazon-kms"
 
-    kapt("org.http4k:http4k-connect-kapt-generator:2.10.0.0")
+    kapt("org.http4k:http4k-connect-kapt-generator:$http4k_connect_version")
 
     testImplementation platform("org.junit:junit-bom:$junit_version")
     testImplementation "org.http4k:http4k-connect-core-fake"
