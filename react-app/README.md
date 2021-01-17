@@ -16,3 +16,9 @@ Run:
 cd frontend
 yarn start
 ```
+
+
+```shell
+cd frontend
+yarn start
+```
