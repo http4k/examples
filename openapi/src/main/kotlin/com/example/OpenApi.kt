@@ -29,7 +29,7 @@ import java.time.Instant
 import kotlin.random.Random
 
 fun OpenApi(clock: Clock, random: Random): HttpHandler =
-    ServerFilters.Cors(CorsPolicy.UnsafeGlobalPermissive)
+    veryUnsafeCorsFilter()
         .then(
             contract {
                 renderer = OpenApi3(
@@ -42,6 +42,8 @@ fun OpenApi(clock: Clock, random: Random): HttpHandler =
                 routes += jsonRoute(clock, random)
             }
         )
+
+fun veryUnsafeCorsFilter() = ServerFilters.Cors(CorsPolicy.UnsafeGlobalPermissive.copy(headers=listOf("*")))
 
 data class JsonMessage(val customHeader: String?,
                        val now: Instant,
