@@ -2,6 +2,7 @@ package extending_http4k_connect
 
 import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Success
+import extending_http4k_connect.actions.ExpensesAction
 import org.http4k.connect.Http4kConnectAction
 import org.http4k.connect.RemoteFailure
 import org.http4k.core.Body
@@ -18,14 +19,11 @@ data class GetMyExpenses(val name: String) : ExpensesAction<ExpenseReport> {
     private fun uri() = Uri.of("/expenses/${name}")
 
     override fun toResult(response: Response) = when {
-        response.status.successful ->
-            Success(responseReportLens(response))
+        response.status.successful -> Success(responseReportLens(response))
         else -> Failure(RemoteFailure(GET, uri(), response.status))
     }
 }
 
+data class ExpenseReport(val name: String, val expenses: Set<Expense>)
+
 private val responseReportLens = Body.auto<ExpenseReport>().toLens()
-
-data class ExpenseReport(val name: String, val expenses: List<Expense>)
-
-data class Expense(val name: String, val cost: Int)

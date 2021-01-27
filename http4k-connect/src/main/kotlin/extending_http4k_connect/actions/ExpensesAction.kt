@@ -1,4 +1,4 @@
-package extending_http4k_connect
+package extending_http4k_connect.actions
 
 import org.http4k.connect.Action
 
