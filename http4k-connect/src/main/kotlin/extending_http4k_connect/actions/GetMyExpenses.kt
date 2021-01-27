@@ -1,8 +1,8 @@
-package extending_http4k_connect
+package extending_http4k_connect.actions
 
 import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Success
-import extending_http4k_connect.actions.ExpensesAction
+import extending_http4k_connect.model.Expense
 import org.http4k.connect.Http4kConnectAction
 import org.http4k.connect.RemoteFailure
 import org.http4k.core.Body

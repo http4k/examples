@@ -1,14 +1,12 @@
 package extending_http4k_connect
 
 import org.http4k.connect.ChaosFake
-import org.http4k.connect.storage.InMemory
-import org.http4k.connect.storage.Storage
 import org.http4k.routing.routes
 
-class FakeExpensesSystem(storage: Storage<Expense> = Storage.InMemory()) : ChaosFake() {
+class FakeExpensesSystem(system: ExpensesSystem = StubExpensesSystem()) : ChaosFake() {
     override val app = routes(
-        addExpense(storage),
-        expenseReport(storage)
+        addExpense(system),
+        expenseReport(system)
     )
 }
 

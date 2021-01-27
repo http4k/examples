@@ -4,6 +4,9 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.get
+import extending_http4k_connect.actions.ExpenseReport
+import extending_http4k_connect.actions.GetMyExpenses
+import extending_http4k_connect.model.Expense
 import io.mockk.every
 import io.mockk.mockk
 import org.http4k.chaos.ChaosBehaviours.ReturnStatus
