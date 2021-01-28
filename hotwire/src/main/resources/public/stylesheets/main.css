@@ -1,0 +1,8 @@
+body {
+    margin: 1rem;
+}
+
+.turbo-progress-bar {
+    height: 15px;
+    background-color: fuchsia;
+}
