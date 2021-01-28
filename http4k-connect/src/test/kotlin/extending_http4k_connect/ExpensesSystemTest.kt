@@ -15,10 +15,11 @@ import org.junit.jupiter.api.Test
 
 class ExpensesSystemTest {
 
+    private val fakeExpensesSystem = FakeExpensesSystem()
+    private val expensesSystem = ExpensesSystem.Http(fakeExpensesSystem)
+
     @Test
     fun `can add and retrieve expenses`() {
-        val fakeExpensesSystem = FakeExpensesSystem()
-        val expensesSystem = ExpensesSystem.Http(fakeExpensesSystem)
         val added1 = expensesSystem.addExpense("Bob", 123).get() as Expense
         expensesSystem.addExpense("Alice", 456).get() as Expense
         val added3 = expensesSystem.addExpense("Bob", 789).get() as Expense
@@ -31,7 +32,6 @@ class ExpensesSystemTest {
 
     @Test
     fun `can add and retrieve expenses - stub`() {
-        val expensesSystem = StubExpensesSystem()
         val added1 = expensesSystem.addExpense("Bob", 123).get() as Expense
         expensesSystem.addExpense("Alice", 456).get() as Expense
         val added3 = expensesSystem.addExpense("Bob", 789).get() as Expense
@@ -44,8 +44,6 @@ class ExpensesSystemTest {
 
     @Test
     fun `can count expenses with client and fake`() {
-        val fakeExpensesSystem = FakeExpensesSystem()
-        val expensesSystem = ExpensesSystem.Http(fakeExpensesSystem)
         expensesSystem.addExpense("Bob", 123).get() as Expense
         expensesSystem.addExpense("Alice", 456).get() as Expense
         expensesSystem.addExpense("Bob", 789).get() as Expense
@@ -54,8 +52,6 @@ class ExpensesSystemTest {
 
     @Test
     fun `can find out what happens when get expenses call fails`() {
-        val fakeExpensesSystem = FakeExpensesSystem()
-        val expensesSystem = ExpensesSystem.Http(fakeExpensesSystem)
         fakeExpensesSystem.misbehave(ReturnStatus(I_M_A_TEAPOT))
         assertThat(ExpensesClient(expensesSystem).countExpenses("Bob"), equalTo(-1))
     }
