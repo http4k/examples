@@ -32,7 +32,7 @@ fun Hotwire(hotReload: Boolean): PolyHandler {
                 static(loaders),
                 "/greeting" bind GET to {
                     if (Query.boolean().defaulted("sleep", false)(it)) Thread.sleep(1000)
-                    Response(OK).with(loaders.rendererFor(it) of Greeting(Query.defaulted("person", "world")(it)))
+                    Response(OK).with(loaders.html of Greeting(Query.defaulted("person", "world")(it)))
                 },
                 "/pinger" bind POST to {
                     Response(OK).with(loaders.rendererFor(it) of Ping(Random.nextInt()))
