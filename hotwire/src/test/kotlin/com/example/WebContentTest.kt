@@ -15,6 +15,6 @@ class WebContentTest {
     fun `can load index`() {
         val app = Hotwire(false)
         assertThat(app(Request(GET, "/")),
-            hasStatus(OK) and hasBody(containsSubstring("Welcome to the http4k Web Content example")))
+            hasStatus(OK) and hasBody(containsSubstring("Pings section")))
     }
 }
