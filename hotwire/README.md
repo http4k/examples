@@ -1,6 +1,9 @@
 # http4k Hotwire Example
 
 ## Build/test locally
+In your IDE run `RunnableEnvironment` main then browse to [http://localhost:8080]
+
+or...
 
 ```shell script
 ./gradlew test distZip
