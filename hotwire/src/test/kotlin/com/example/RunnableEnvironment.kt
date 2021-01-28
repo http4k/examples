@@ -1,8 +1,8 @@
 package com.example
 
-import org.http4k.server.SunHttp
+import org.http4k.server.Netty
 import org.http4k.server.asServer
 
 fun main() {
-    Hotwire(false).asServer(SunHttp(9090)).start()
+    Hotwire(false).asServer(Netty(9090)).start()
 }

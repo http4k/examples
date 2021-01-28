@@ -1,6 +1,5 @@
 package com.example
 
-import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
 import org.http4k.core.Response
@@ -15,14 +14,19 @@ import org.http4k.routing.ResourceLoader.Companion.Directory
 import org.http4k.routing.bind
 import org.http4k.routing.routes
 import org.http4k.routing.static
-import org.http4k.server.SunHttp
+import org.http4k.routing.websockets
+import org.http4k.server.Netty
 import org.http4k.server.asServer
+import org.http4k.websocket.PolyHandler
+import org.http4k.websocket.Websocket
+import org.http4k.websocket.WsHandler
+import org.http4k.websocket.WsMessage
 import kotlin.random.Random
 
-fun Hotwire(hotReload: Boolean): HttpHandler {
+fun Hotwire(hotReload: Boolean): PolyHandler {
     val loaders = buildResourceLoaders(hotReload)
 
-    return CatchAll()
+    val app = CatchAll()
         .then(
             routes(
                 static(loaders),
@@ -36,6 +40,22 @@ fun Hotwire(hotReload: Boolean): HttpHandler {
                 "/" bind GET to { Response(OK).with(loaders.rendererFor(it) of Index) }
             )
         )
+
+
+    val ws: WsHandler = websockets(
+        "/load" bind { ws: Websocket ->
+            repeat(Int.MAX_VALUE) {
+                ws.send(
+                    WsMessage(
+                        Response(OK).with(loaders.turbo of Load(Random.nextInt(), Random.nextInt())).bodyString()
+                    )
+                )
+                Thread.sleep(2000)
+            }
+        }
+    )
+
+    return PolyHandler(app, ws)
 }
 
 private fun buildResourceLoaders(hotReload: Boolean): TurboAwareResourceLoader =
@@ -50,5 +70,5 @@ fun main() {
     // if setting this to true, remember to run the app with the working directory set to the root of the example
     val hotReload = false
 
-    Hotwire(hotReload).asServer(SunHttp(8080)).start()
+    Hotwire(hotReload).asServer(Netty(8080)).start()
 }

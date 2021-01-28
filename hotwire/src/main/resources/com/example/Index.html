@@ -24,7 +24,7 @@
     <title>Home</title>
     <script type="text/javascript">
         if (window["EventSource"] && window["Turbo"]) {
-            Turbo.connectStreamSource(new EventSource("/load"));
+            Turbo.connectStreamSource(new WebSocket("ws://" + document.location.host + "/load"));
         } else {
             console.warn("Turbo Streams over SSE not available");
         }
@@ -36,15 +36,15 @@
 
     <h2>Turbo Drive</h2>
     <div>
-        <a href="/greeting/?person=Josh">Click here to greet Josh (fast)</a>
+        <a href="/greeting/?person=http4k">Click here to greet http4k (fast)</a>
     </div>
     <div>
-        <a href="/greeting/?person=Josh&sleep=true">Click here to greet Josh (slow)</a>
+        <a href="/greeting/?person=http4k&sleep=true">Click here to greet http4k (slow)</a>
     </div>
 
     <h2>Turbo Frame</h2>
     <turbo-frame id="greeting_frame">
-        <a href="/greeting/?person=Josh">Click here to greet Josh</a>
+        <a href="/greeting/?person=http4k">Click here to greet http4k</a>
     </turbo-frame>
 
     <div data-turbo="false">
@@ -55,11 +55,11 @@
                 This <turbo-frame> obviously isn't needed, but in combination with the data-turbo="false" property on the
                 containing element shows the progressive enhancement aspect of Turbo Frames.
                 -->
-                <a href="/greeting/?person=Josh">Click here to greet Josh (fast)</a>
+                <a href="/greeting/?person=http4k">Click here to greet http4k (fast)</a>
             </turbo-frame>
         </div>
         <div>
-            <a href="/greeting/?person=Josh&sleep=true">Click here to greet Josh (slow)</a>
+            <a href="/greeting/?person=http4k&sleep=true">Click here to greet http4k (slow)</a>
         </div>
     </div>
 </section>

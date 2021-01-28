@@ -12,7 +12,6 @@ class TurboAwareResourceLoader(
     resources: ResourceLoader,
     rendererFn: HandlebarsTemplates.() -> TemplateRenderer
 ) : ResourceLoader by resources {
-    private val turboContentType = ContentType("text/vnd.turbo-stream.html")
 
     fun rendererFor(request: Request) =
         when {
@@ -20,11 +19,15 @@ class TurboAwareResourceLoader(
             else -> html
         }
 
-    private val html = Body.viewModel(
+    val html = Body.viewModel(
         rendererFn(HandlebarsTemplates { it.apply { loader.suffix = ".html" } }), ContentType.TEXT_HTML
     ).toLens()
 
-    private val turbo = Body.viewModel(
+    val turbo = Body.viewModel(
         rendererFn(HandlebarsTemplates { it.apply { loader.suffix = ".turbo-stream.html" } }), turboContentType
     ).toLens()
+
+    companion object {
+        val turboContentType = ContentType("text/vnd.turbo-stream.html")
+    }
 }
