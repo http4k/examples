@@ -19,8 +19,6 @@ import org.http4k.server.Netty
 import org.http4k.server.asServer
 import org.http4k.websocket.PolyHandler
 import org.http4k.websocket.Websocket
-import org.http4k.websocket.WsHandler
-import org.http4k.websocket.WsMessage
 import kotlin.random.Random
 
 fun Hotwire(hotReload: Boolean): PolyHandler {
@@ -41,15 +39,10 @@ fun Hotwire(hotReload: Boolean): PolyHandler {
             )
         )
 
-
-    val ws: WsHandler = websockets(
+    val ws = websockets(
         "/load" bind { ws: Websocket ->
             repeat(Int.MAX_VALUE) {
-                ws.send(
-                    WsMessage(
-                        Response(OK).with(loaders.turbo of Load(Random.nextInt(), Random.nextInt())).bodyString()
-                    )
-                )
+                ws.send(loaders.turboLens.create(Load(Random.nextInt(), Random.nextInt())))
                 Thread.sleep(2000)
             }
         }
