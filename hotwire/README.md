@@ -11,4 +11,4 @@ unzip build/distributions/Example.zip
 Example/bin/Example
 ```
 
-...  then browse to [http://localhost:8080]
+...  then browse to [http://localhost:8080](http://localhost:8080)
