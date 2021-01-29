@@ -1,6 +1,6 @@
 # http4k Hotwire Example
 
-To demonstrate how simple it is to server HotWire webapps from an [http4k](https://http4k.org) application. Shamelessly stolen from [Josh Graham's post](https://delitescere.medium.com/hotwire-html-over-the-wire-2c733487268c).
+To demonstrate how simple it is to server [Hotwire](https://hotwire.dev/) webapps from an [http4k](https://http4k.org) application. Shamelessly stolen from [Josh Graham's post](https://delitescere.medium.com/hotwire-html-over-the-wire-2c733487268c).
 
 ## Build/test locally
 In your IDE run the `HotwireKt` main or...
