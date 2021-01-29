@@ -1,7 +1,7 @@
 # http4k Hotwire Example
 
 ## Build/test locally
-In your IDE run `RunnableEnvironment` main then browse to [http://localhost:8080]
+In your IDE run `HotWireKt` main then browse to [http://localhost:8080]
 
 or...
 
