@@ -1,9 +1,9 @@
 # http4k Hotwire Example
 
-## Build/test locally
-In your IDE run `HotWireKt` main then browse to [http://localhost:8080]
+To demonstrate how simple it is to server HotWire webapps from an [http4k](https://http4k.org) application. Shamelessly stolen from [Josh Graham's post](https://delitescere.medium.com/hotwire-html-over-the-wire-2c733487268c).
 
-or...
+## Build/test locally
+In your IDE run the `HotwireKt` main or...
 
 ```shell script
 ./gradlew test distZip
@@ -11,18 +11,4 @@ unzip build/distributions/Example.zip
 Example/bin/Example
 ```
 
-then:
-```shell script
-curl -v http://localhost:8080/
-```
-
-## Build/run in Docker
-
-```shell script
-./build_and_run.sh
-```
-
-then:
-```shell script
-curl -v http://localhost:8080/
-```
+...  then browse to [http://localhost:8080]

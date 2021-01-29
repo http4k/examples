@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html
+    xmlns="http://www.w3.org/1999/xhtml"
+>
+<head>
+    {{> head}}
+    <title>Hello World!</title>
+</head>
+<body>
+<turbo-frame id="hello_frame">
+    <p>
+        <span id="hello">Hello</span>,
+        <span id="person">{{person}}</span>!
+    </p>
+</turbo-frame>
+<a href="javascript:history.back()">🔙 Back</a>
+</body>
+</html>

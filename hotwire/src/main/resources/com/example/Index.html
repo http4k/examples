@@ -1,87 +1,66 @@
 <!DOCTYPE html>
-<html lang="${lang}" xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1" name="viewport"/>
-
-    <script crossorigin="anonymous"
-            integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
-            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet"/>
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
-          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" rel="stylesheet"/>
-    <script crossorigin="anonymous"
-            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-            src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
-    <script crossorigin="anonymous" src="https://unpkg.com/@hotwired/turbo@7.0.0-beta.3/dist/turbo.es5-umd.js"></script>
-
-    <link href="/stylesheets/main.css" rel="stylesheet"/>
-</head>
-<head>
-    <title>Home</title>
+    {{> head}}
+    <title>http4k Hotwire demo</title>
     <script type="text/javascript">
         if (window["EventSource"] && window["Turbo"]) {
-            Turbo.connectStreamSource(new WebSocket("ws://" + document.location.host + "/load"));
+            Turbo.connectStreamSource(new WebSocket("ws://" + document.location.host + "/time"));
         } else {
-            console.warn("Turbo Streams over SSE not available");
+            console.warn("Turbo Streams not available");
         }
     </script>
 </head>
 <body>
+
+<h1>http4k Hotwire demo</h1>
+
 <section>
-    <h1>Greeting section</h1>
+    <h2>Time - via Turbo Stream WebSocket</h2>
+    <div><span id="time">waiting...</span></div>
+</section>
 
-    <h2>Turbo Drive</h2>
-    <div>
-        <a href="/greeting/?person=http4k">Click here to greet http4k (fast)</a>
-    </div>
-    <div>
-        <a href="/greeting/?person=http4k&sleep=true">Click here to greet http4k (slow)</a>
-    </div>
+<hr/>
+<section>
+    <h2>Hello World!</h2>
 
-    <h2>Turbo Frame</h2>
-    <turbo-frame id="greeting_frame">
-        <a href="/greeting/?person=http4k">Click here to greet http4k</a>
+    <h3>Turbo Drive</h3>
+    <div><a href="/hello?person=Hotwire!">Link without progress bar (fast)</a></div>
+    <div><a href="/hello?person=Hotwire!&sleep=true">Link with progress bar (slow)</a></div>
+
+    <h3>Replace content with a wrapped Turbo Frame</h3>
+    <turbo-frame id="hello_frame">
+        <a href="/hello?person=Hotwire!">Replace this content with link content</a>
     </turbo-frame>
 
+    <h3>Disabling Turbo Frames with <b>data-turbo="false"</b></h3>
     <div data-turbo="false">
-        <h2>Regular</h2>
+        <h4>Regular links</h4>
         <div>
-            <turbo-frame id="greeting_frame">
-                <a href="/greeting/?person=http4k">Click here to greet http4k (fast)</a>
+            <turbo-frame id="hello_frame">
+                <a href="/hello?person=Hotwire!">Disabled Turbo Flame link without progress bar (fast)</a>
             </turbo-frame>
         </div>
         <div>
-            <a href="/greeting/?person=http4k&sleep=true">Click here to greet http4k (slow)</a>
+            <a href="/hello?person=Hotwire!&sleep=true">Disabled Turbo Flame link without progress bar (slow)</a>
         </div>
     </div>
 </section>
 
-<section>
-    <h1>Pings section</h1>
-    <h2>Regular Form</h2>
-    <form action="/pinger" data-turbo="false" method="post">
-        <button type="submit">Ping</button>
-    </form>
-    <h2>Turbo Stream (Form)</h2>
-    <form action="/pinger" method="post">
-        <button type="submit">Ping</button>
-    </form>
-    <div>
-        <p>Ping times</p>
-        <ol id="pings"></ol>
-    </div>
-</section>
+<hr/>
 
 <section>
-    <h1>Load section</h1>
-    <h2>Turbo Stream (SSE)</h2>
+    <h2>Click times</h2>
+    <h3>Link via Regular Form</h3>
+    <form action="/clicks" data-turbo="false" method="post">
+        <button type="submit">Click!</button>
+    </form>
+    <h4>Append content via Turbo Stream Form</h4>
+    <form action="/clicks" method="post">
+        <button type="submit">Click!</button>
+    </form>
     <div>
-        <p>System Load Average</p>
-        <span id="load">waiting...</span>
+        <ol id="clicks"></ol>
     </div>
 </section>
 
