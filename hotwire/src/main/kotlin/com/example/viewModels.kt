@@ -8,11 +8,13 @@ import java.time.format.FormatStyle.MEDIUM
 data class HelloWorld(val person: String) : ViewModel
 
 class Clicks(raw: LocalDateTime) : ViewModel {
-    val time = raw.format(DateTimeFormatter.ofLocalizedDateTime(MEDIUM))
+    val time = raw.format(timeFormat)
 }
 
 class Time(raw: LocalDateTime) : ViewModel {
-    val time = raw.format(DateTimeFormatter.ofLocalizedDateTime(MEDIUM))
+    val time = raw.format(timeFormat)
 }
 
 object Index : ViewModel
+
+private val timeFormat = DateTimeFormatter.ofLocalizedDateTime(MEDIUM)

@@ -7,20 +7,21 @@ import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
 import org.http4k.lens.Query
 import org.http4k.lens.boolean
-import org.http4k.routing.ResourceLoader
+import org.http4k.routing.ResourceLoader.Companion.Classpath
+import org.http4k.routing.ResourceLoader.Companion.Directory
 import org.http4k.routing.bind
 import org.http4k.routing.static
 import org.http4k.websocket.Websocket
-import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 
 fun index(lenses: SelectingViewModelLenses) =
     "/" bind GET to { Response(OK).with(lenses(it) of Index) }
 
 fun staticContent(hotReload: Boolean) =
-    static(if (hotReload) ResourceLoader.Directory("./src/main/resources") else ResourceLoader.Classpath("public"))
+    static(if (hotReload) Directory("./src/main/resources") else Classpath("public"))
 
 fun clicks(lenses: SelectingViewModelLenses) = "/clicks" bind POST to {
-    Response(OK).with(lenses(it) of Clicks(LocalDateTime.now()))
+    Response(OK).with(lenses(it) of Clicks(now()))
 }
 
 fun hello(lenses: SelectingViewModelLenses) = "/hello" bind GET to {
@@ -30,7 +31,7 @@ fun hello(lenses: SelectingViewModelLenses) = "/hello" bind GET to {
 
 fun time(lenses: SelectingViewModelLenses) = "/time" bind { ws: Websocket ->
     while (true) {
-        ws.send(lenses.websocketViews.create(Time(LocalDateTime.now())))
+        ws.send(lenses.websocketViews.create(Time(now())))
         Thread.sleep(1000)
     }
 }
