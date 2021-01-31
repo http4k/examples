@@ -12,8 +12,11 @@ import org.http4k.routing.ResourceLoader.Companion.Directory
 import org.http4k.routing.RoutingSseHandler
 import org.http4k.routing.bind
 import org.http4k.routing.static
-import org.http4k.websocket.Websocket
+import org.http4k.sse.Sse
+import org.http4k.sse.SseMessage
 import java.time.LocalDateTime.now
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 fun index(lenses: SelectingViewModelLenses) =
     "/" bind GET to { Response(OK).with(lenses(it) of Index) }
@@ -30,9 +33,12 @@ fun hello(lenses: SelectingViewModelLenses) = "/hello" bind GET to {
     Response(OK).with(lenses.htmlViews of HelloWorld(Query.defaulted("person", "world")(it)))
 }
 
-fun time(lenses: SelectingViewModelLenses) = "/time" bind { ws: Websocket ->
-    while (true) {
-        ws.send(lenses.websocketViews.create(Time(now())))
-        Thread.sleep(1000)
+fun time(lenses: SelectingViewModelLenses): RoutingSseHandler {
+    val executor = Executors.newSingleThreadScheduledExecutor()
+
+    return "/time" bind { sse: Sse ->
+        executor.scheduleWithFixedDelay({
+            sse.send(SseMessage.Data(lenses.turboRenderer(Time(now()))))
+        }, 0, 1000, TimeUnit.MILLISECONDS)
     }
 }

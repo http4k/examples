@@ -5,7 +5,7 @@
     <title>http4k Hotwire demo</title>
     <script type="text/javascript">
         if (window["EventSource"] && window["Turbo"]) {
-            Turbo.connectStreamSource(new WebSocket("ws://" + document.location.host + "/time"));
+            Turbo.connectStreamSource(new EventSource("/time"));
         } else {
             console.warn("Turbo Streams not available");
         }
