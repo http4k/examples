@@ -9,14 +9,14 @@ import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
 fun Hotwire(hotReload: Boolean): PolyHandler {
-    val lenses = when {
-        hotReload -> SelectingViewModelLenses { HotReload("./src/main/resources") }
-        else -> SelectingViewModelLenses { CachingClasspath() }
+    val renderers = when {
+        hotReload -> SelectingViewModelRenderers { HotReload("./src/main/resources") }
+        else -> SelectingViewModelRenderers { CachingClasspath() }
     }
 
     return PolyHandler(
-        CatchAll().then(routes(staticContent(hotReload), hello(lenses), clicks(lenses), index(lenses))),
-        sse = sse(time(lenses))
+        CatchAll().then(routes(staticContent(hotReload), hello(renderers), clicks(renderers), index(renderers))),
+        sse = sse(time(renderers.turboRenderer))
     )
 }
 

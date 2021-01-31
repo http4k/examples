@@ -8,9 +8,8 @@ import org.http4k.lens.Header.ACCEPT
 import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.TemplateRenderer
 import org.http4k.template.viewModel
-import org.http4k.websocket.WsMessage
 
-class SelectingViewModelLenses(
+class SelectingViewModelRenderers(
     rendererFn: HandlebarsTemplates.() -> TemplateRenderer
 ) {
     private val htmlRenderer = rendererFn(HandlebarsTemplates {
@@ -18,9 +17,8 @@ class SelectingViewModelLenses(
     })
     val turboRenderer = rendererFn(HandlebarsTemplates { it.apply { loader.suffix = ".turbo-stream.html" } })
 
-    val websocketViews = WsMessage.viewModel(turboRenderer).toLens()
     val htmlViews = Body.viewModel(htmlRenderer, TEXT_HTML).toLens()
-    val turboViews = Body.viewModel(turboRenderer, ContentType.TURBO_STREAM).toLens()
+    private val turboViews = Body.viewModel(turboRenderer, ContentType.TURBO_STREAM).toLens()
 
     /**
      * Select the correct renderer for the request

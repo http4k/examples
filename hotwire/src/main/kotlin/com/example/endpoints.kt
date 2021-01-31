@@ -14,31 +14,33 @@ import org.http4k.routing.bind
 import org.http4k.routing.static
 import org.http4k.sse.Sse
 import org.http4k.sse.SseMessage
+import org.http4k.template.TemplateRenderer
+import java.lang.Thread.sleep
 import java.time.LocalDateTime.now
 import java.util.concurrent.Executors.newSingleThreadScheduledExecutor
 import java.util.concurrent.TimeUnit.MILLISECONDS
 
-fun index(lenses: SelectingViewModelLenses) =
-    "/" bind GET to { Response(OK).with(lenses(it) of Index) }
+fun index(renderers: SelectingViewModelRenderers) =
+    "/" bind GET to { Response(OK).with(renderers(it) of Index) }
 
 fun staticContent(hotReload: Boolean) =
     static(if (hotReload) Directory("./src/main/resources") else Classpath("public"))
 
-fun clicks(lenses: SelectingViewModelLenses) = "/clicks" bind POST to {
-    Response(OK).with(lenses(it) of Clicks(now()))
+fun clicks(renderers: SelectingViewModelRenderers) = "/clicks" bind POST to {
+    Response(OK).with(renderers(it) of Clicks(now()))
 }
 
-fun hello(lenses: SelectingViewModelLenses) = "/hello" bind GET to {
-    if (Query.boolean().defaulted("sleep", false)(it)) Thread.sleep(1000)
-    Response(OK).with(lenses.htmlViews of HelloWorld(Query.defaulted("person", "world")(it)))
+fun hello(renderers: SelectingViewModelRenderers) = "/hello" bind GET to {
+    if (Query.boolean().defaulted("sleep", false)(it)) sleep(1000)
+    Response(OK).with(renderers.htmlViews of HelloWorld(Query.defaulted("person", "world")(it)))
 }
 
-fun time(lenses: SelectingViewModelLenses): RoutingSseHandler {
+fun time(renderer: TemplateRenderer): RoutingSseHandler {
     val executor = newSingleThreadScheduledExecutor()
 
     return "/time" bind { sse: Sse ->
         executor.scheduleWithFixedDelay({
-            sse.send(SseMessage.Data(lenses.turboRenderer(Time(now()))))
+            sse.send(SseMessage.Data(renderer(Time(now()))))
         }, 0, 1000, MILLISECONDS)
     }
 }
