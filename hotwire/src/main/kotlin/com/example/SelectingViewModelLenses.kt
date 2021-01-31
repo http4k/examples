@@ -16,7 +16,7 @@ class SelectingViewModelLenses(
     private val htmlRenderer = rendererFn(HandlebarsTemplates {
         it.apply { loader.suffix = ".html" }
     })
-    private val turboRenderer = rendererFn(HandlebarsTemplates { it.apply { loader.suffix = ".turbo-stream.html" } })
+    val turboRenderer = rendererFn(HandlebarsTemplates { it.apply { loader.suffix = ".turbo-stream.html" } })
 
     val websocketViews = WsMessage.viewModel(turboRenderer).toLens()
     val htmlViews = Body.viewModel(htmlRenderer, TEXT_HTML).toLens()
