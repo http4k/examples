@@ -9,6 +9,7 @@ import org.http4k.lens.Query
 import org.http4k.lens.boolean
 import org.http4k.routing.ResourceLoader.Companion.Classpath
 import org.http4k.routing.ResourceLoader.Companion.Directory
+import org.http4k.routing.RoutingSseHandler
 import org.http4k.routing.bind
 import org.http4k.routing.static
 import org.http4k.websocket.Websocket

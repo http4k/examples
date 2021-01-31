@@ -3,7 +3,7 @@ package com.example
 import org.http4k.core.then
 import org.http4k.filter.ServerFilters.CatchAll
 import org.http4k.routing.routes
-import org.http4k.routing.websockets
+import org.http4k.routing.sse
 import org.http4k.server.PolyHandler
 import org.http4k.server.Undertow
 import org.http4k.server.asServer
@@ -16,7 +16,7 @@ fun Hotwire(hotReload: Boolean): PolyHandler {
 
     return PolyHandler(
         CatchAll().then(routes(staticContent(hotReload), hello(lenses), clicks(lenses), index(lenses))),
-        ws = websockets(time(lenses))
+        sse = sse(time(lenses))
     )
 }
 
