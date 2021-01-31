@@ -15,8 +15,8 @@ import org.http4k.routing.static
 import org.http4k.sse.Sse
 import org.http4k.sse.SseMessage
 import java.time.LocalDateTime.now
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
+import java.util.concurrent.Executors.newSingleThreadScheduledExecutor
+import java.util.concurrent.TimeUnit.MILLISECONDS
 
 fun index(lenses: SelectingViewModelLenses) =
     "/" bind GET to { Response(OK).with(lenses(it) of Index) }
@@ -34,11 +34,11 @@ fun hello(lenses: SelectingViewModelLenses) = "/hello" bind GET to {
 }
 
 fun time(lenses: SelectingViewModelLenses): RoutingSseHandler {
-    val executor = Executors.newSingleThreadScheduledExecutor()
+    val executor = newSingleThreadScheduledExecutor()
 
     return "/time" bind { sse: Sse ->
         executor.scheduleWithFixedDelay({
             sse.send(SseMessage.Data(lenses.turboRenderer(Time(now()))))
-        }, 0, 1000, TimeUnit.MILLISECONDS)
+        }, 0, 1000, MILLISECONDS)
     }
 }
