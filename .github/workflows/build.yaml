@@ -20,6 +20,6 @@ jobs:
       - run: pushd oauth && ./gradlew test && popd
       - run: pushd openapi && ./gradlew test && popd
       - run: pushd quarkus && ./gradlew test && popd
-      - run: pushd react && ./gradlew test && popd
+      - run: pushd react-app && ./gradlew test && popd
       - run: pushd typesafe-configuration && ./gradlew test && popd
       - run: pushd web-content && ./gradlew test && popd
