@@ -11,13 +11,15 @@ jobs:
         with:
           java-version: 11
       - run: pushd aws-lambda && ./gradlew test && popd
-      - run: pushd hello-world && ./gradlew test && popd
-      - run: pushd http4k-connect && ./gradlew test && popd
       - run: pushd graalvm && ./gradlew test && popd
       - run: pushd graphql && ./gradlew test && popd
+      - run: pushd hello-world && ./gradlew test && popd
+      - run: pushd hotwire && ./gradlew test && popd
+      - run: pushd http4k-connect && ./gradlew test && popd
       - run: pushd json-api && ./gradlew test && popd
       - run: pushd oauth && ./gradlew test && popd
       - run: pushd openapi && ./gradlew test && popd
       - run: pushd quarkus && ./gradlew test && popd
+      - run: pushd react && ./gradlew test && popd
       - run: pushd typesafe-configuration && ./gradlew test && popd
       - run: pushd web-content && ./gradlew test && popd
