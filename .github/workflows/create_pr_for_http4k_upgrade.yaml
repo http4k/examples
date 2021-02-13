@@ -1,0 +1,19 @@
+on:
+  repository_dispatch:
+    types: [http4k-release]
+jobs:
+  create-pr-for-http4k-upgrade:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Update release
+        uses: technote-space/create-pr-action@v2
+        with:
+          EXECUTE_COMMANDS: |
+            ./upgrade_http4k.sh ${{ github.event.client_payload.version }}
+          COMMIT_MESSAGE: 'Auto-upgrade to ${{ github.event.client_payload.version }}'
+          COMMIT_NAME: 'Auto-upgrade to ${{ github.event.client_payload.version }}'
+          PR_BRANCH_PREFIX: auto/
+          PR_BRANCH_NAME: ${{ github.event.client_payload.version }}
+          PR_TITLE: 'Auto-upgrade to ${{ github.event.client_payload.version }}'
+          GITHUB_TOKEN: ${{ secrets.ORG_PUBLIC_REPO_RELEASE_TRIGGERING }}
