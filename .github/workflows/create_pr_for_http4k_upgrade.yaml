@@ -1,6 +1,6 @@
 on:
   repository_dispatch:
-    types: [http4k-release]
+    types: [http4k-release2]
 jobs:
   create-pr-for-http4k-upgrade:
     runs-on: ubuntu-latest
