@@ -5,21 +5,12 @@ on:
 jobs:
   build-all-examples:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [aws-lambda, graalvm, hello-world, hotwire, http4k-connect, graphql, json-api, oauth, openapi, quarkus, react-app, typesafe-configuration, web-content]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
           java-version: 11
-      - run: pushd aws-lambda && ./gradlew test && popd
-      - run: pushd graalvm && ./gradlew test && popd
-      - run: pushd hello-world && ./gradlew test && popd
-      - run: pushd hotwire && ./gradlew test && popd
-      - run: pushd http4k-connect && ./gradlew test && popd
-      - run: pushd graphql && ./gradlew test && popd
-      - run: pushd json-api && ./gradlew test && popd
-      - run: pushd oauth && ./gradlew test && popd
-      - run: pushd openapi && ./gradlew test && popd
-      - run: pushd quarkus && ./gradlew test && popd
-      - run: pushd react-app && ./gradlew test && popd
-      - run: pushd typesafe-configuration && ./gradlew test && popd
-      - run: pushd web-content && ./gradlew test && popd
+      - run: pushd ${{ matrix.project }} && ./gradlew test
