@@ -7,6 +7,12 @@ jobs:
   handle-pr-for-http4k-upgrade:
     runs-on: ubuntu-latest
     steps:
+      - name: Label PR
+        uses: TimonVS/pr-labeler-action@v3
+        with:
+          configuration-path: .github/pr-labeler.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.ORG_PUBLIC_REPO_RELEASE_TRIGGERING }}
       - name: Automatically Merge
         uses: plm9606/automerge_actions@1.2.2
         with:
