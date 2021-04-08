@@ -5,24 +5,23 @@ import com.example.S3BucketContents
 import dev.forkhandles.result4k.valueOrNull
 import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
+import org.http4k.connect.amazon.core.model.KMSKeyId
+import org.http4k.connect.amazon.core.model.Region
 import org.http4k.connect.amazon.kms.FakeKMS
 import org.http4k.connect.amazon.kms.Http
 import org.http4k.connect.amazon.kms.KMS
 import org.http4k.connect.amazon.kms.createKey
-import org.http4k.connect.amazon.model.BucketKey
-import org.http4k.connect.amazon.model.BucketName
-import org.http4k.connect.amazon.model.CustomerMasterKeySpec.SYMMETRIC_DEFAULT
-import org.http4k.connect.amazon.model.KMSKeyId
-import org.http4k.connect.amazon.model.Region
+import org.http4k.connect.amazon.kms.model.CustomerMasterKeySpec.SYMMETRIC_DEFAULT
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.s3.Http
 import org.http4k.connect.amazon.s3.S3
 import org.http4k.connect.amazon.s3.S3Bucket
 import org.http4k.connect.amazon.s3.createBucket
+import org.http4k.connect.amazon.s3.model.BucketKey
+import org.http4k.connect.amazon.s3.model.BucketName
 import org.http4k.core.HttpHandler
 import org.http4k.core.Uri
 import org.http4k.core.then
-import org.http4k.filter.ClientFilters
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import org.http4k.server.Http4kServer
 import org.http4k.server.SunHttp
@@ -55,7 +54,8 @@ private fun createS3BucketAndFiles(s3Http: HttpHandler, region: Region) {
     val bucketName = BucketName.of("mybucket")
     s3.createBucket(bucketName, region)
 
-    val s3Bucket = S3Bucket.Http(bucketName,
+    val s3Bucket = S3Bucket.Http(
+        bucketName,
         region, { AwsCredentials("accesskey", "secret") },
         s3Http
     )
