@@ -13,7 +13,6 @@ import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Status.Companion.SEE_OTHER
 import org.http4k.core.then
 import org.http4k.core.with
-import org.http4k.format.Jackson
 import org.http4k.lens.FormField
 import org.http4k.lens.Header
 import org.http4k.lens.Validator.Strict
@@ -32,7 +31,6 @@ object SimpleOAuthServer {
             SimpleClientValidator(*oAuthClientData),
             InMemoryAuthorizationCodes(clock),
             SimpleAccessTokens(),
-            Jackson,
             clock
         )
 
