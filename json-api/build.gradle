@@ -17,7 +17,7 @@ repositories {
 apply plugin: 'kotlin'
 apply plugin: 'application'
 
-mainClassName = "com.example.HelloWorldKt"
+mainClassName = "com.example.JsonApiKt"
 
 test {
     useJUnitPlatform()
