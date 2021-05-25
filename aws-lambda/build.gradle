@@ -15,6 +15,16 @@ dependencies {
     implementation platform("org.http4k:http4k-bom:${http4k_version}")
     implementation "org.http4k:http4k-core"
     implementation "org.http4k:http4k-serverless-lambda"
+
+    testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation "org.http4k:http4k-testing-hamkrest"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+
+}
+
+test {
+    useJUnitPlatform()
 }
 
 task buildZip(type: Zip) {
