@@ -1,3 +1,5 @@
 {
-  "httpMethod": "GET"
+    "resource": "/{proxy+}",
+    "path": "/echo/hello",
+    "httpMethod": "GET"
 }

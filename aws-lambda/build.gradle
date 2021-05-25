@@ -10,6 +10,12 @@ repositories {
     jcenter()
 }
 
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+compileTestKotlin.kotlinOptions.jvmTarget = "1.8"
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     implementation platform("org.http4k:http4k-bom:${http4k_version}")
