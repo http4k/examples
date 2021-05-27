@@ -5,9 +5,8 @@ This example shows how to build, deploy, and invoke an http4k `HttpHandler` as A
 ## Pre-requisites
 
 * Working AWS account
-* [jq](https://stedolan.github.io/jq/download/)
-* AWS CLI v2 [installed](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html)
-* An [user](https://aws.amazon.com/iam/) with the permissions specified in `./scripts/user-permissions.json`
+* Pulumi [installed](https://www.pulumi.com/docs/get-started/install/)
+* A [user](https://aws.amazon.com/iam/) with permissions to manage resources
 * User credentials configured in a `http4k-lambda-demo` [CLI profile](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html): 
 
 *~/.aws/config*:
@@ -27,4 +26,17 @@ aws_secret_access_key = <your secret>
 
 ## Running it
 
-Run `./scripts/run_demo.sh`
+Run 
+
+```bash
+./gradlew buildZip
+pulumi up --stack dev
+```
+
+The deployed URL will be printed at the end of the run.
+
+## Cleaning up
+
+```bash
+pulumi destroy --stack dev
+```

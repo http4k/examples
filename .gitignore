@@ -4,4 +4,4 @@
 build/
 out/
 intellij-settings/
-**/node-modules/
+**/node_modules/
