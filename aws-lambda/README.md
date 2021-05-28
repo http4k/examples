@@ -30,10 +30,12 @@ aws_secret_access_key = <your secret>
 ```bash
 ./gradlew buildZip
 pulumi up --stack dev
-curl $(pulumi stack --stack dev output publishedUrl) 
 ```
 
-The deployed URL will be printed at the end of the run.
+The deployed URL will be printed at the end of the run. You can test the deployed lambda with: 
+```bash
+curl $(pulumi stack --stack dev output publishedUrl) 
+```
 
 ## Cleaning up
 
