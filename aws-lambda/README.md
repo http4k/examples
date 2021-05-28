@@ -27,11 +27,10 @@ aws_secret_access_key = <your secret>
 
 ## Running it
 
-Run 
-
 ```bash
 ./gradlew buildZip
 pulumi up --stack dev
+curl $(pulumi stack --stack dev output publishedUrl) 
 ```
 
 The deployed URL will be printed at the end of the run.
