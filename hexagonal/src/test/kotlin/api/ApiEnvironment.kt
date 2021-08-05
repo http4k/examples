@@ -31,7 +31,7 @@ class ApiEnvironment(testData: TestData) : Environment {
         phoneBook,
         InMemoryUsers(testData.buyerUser, testData.sellerUser),
         Notifications.Http(Uri.of("https://notifications"), notifications.debug())
-    )
+    ).debug()
 
     override val buyer = object : Buyer {
         override fun marksItemDispatched(trackingNumber: String) {
@@ -41,7 +41,7 @@ class ApiEnvironment(testData: TestData) : Environment {
                         .body(
                             asFormatString(
                                 DispatchMessage(
-                                    testData.buyerUser.id, testData.sellerUser.id, trackingNumber
+                                    testData.sellerUser.id, testData.buyerUser.id, trackingNumber
                                 )
                             )
                         )
