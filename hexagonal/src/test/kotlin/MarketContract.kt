@@ -16,7 +16,7 @@ interface MarketContract {
     fun environmentFor(testData: TestData): Environment
 
     @Test
-    fun `seller is notified of buyer dispatching item`() {
+    fun `buyer is notified of seller dispatching item`() {
         val data = TestData()
         with(environmentFor(data)) {
 
