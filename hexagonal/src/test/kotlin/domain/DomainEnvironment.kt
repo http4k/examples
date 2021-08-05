@@ -19,7 +19,7 @@ class DomainEnvironment(testData: TestData) : Environment {
             testData.buyerUser.name to testData.buyerPhone,
             testData.sellerUser.name to testData.sellerPhone
         ),
-        InMemoryUsers(),
+        InMemoryUsers(testData.buyerUser, testData.sellerUser),
         notifications
     )
 
