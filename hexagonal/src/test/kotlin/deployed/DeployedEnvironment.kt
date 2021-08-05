@@ -1,4 +1,4 @@
-package hexagonal.test.deployed
+package deployed
 
 import TestData
 import com.natpryce.hamkrest.assertion.assertThat

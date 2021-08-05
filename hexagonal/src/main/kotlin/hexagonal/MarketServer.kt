@@ -1,9 +1,9 @@
 package hexagonal
 
 import hexagonal.api.MarketApi
-import org.http4k.server.SunHttp
+import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
 fun main() {
-    MarketApi().asServer(SunHttp(8000)).start()
+    MarketApi().asServer(Undertow(8000)).start()
 }
