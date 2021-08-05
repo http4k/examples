@@ -33,7 +33,7 @@ class DomainEnvironment(testData: TestData) : Environment {
     }
 
     override val seller = object : Seller {
-        override fun receivedTrackingId() =
+        override fun receivedMessage() =
             notifications.sent.first { it.first == testData.sellerPhone }.second
     }
 }

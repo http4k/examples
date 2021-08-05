@@ -22,7 +22,7 @@ interface MarketContract {
 
             buyer.marksItemDispatched("12345")
 
-            expectThat(seller.receivedTrackingId()).isEqualTo(
+            expectThat(seller.receivedMessage()).isEqualTo(
                 """Hi ${data.buyerUser.name},
               |I have sent your item.
               |The tracking number is 12345!

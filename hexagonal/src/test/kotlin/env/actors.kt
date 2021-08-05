@@ -5,5 +5,5 @@ interface Buyer {
 }
 
 interface Seller {
-    fun receivedTrackingId(): String?
+    fun receivedMessage(): String?
 }

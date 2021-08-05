@@ -44,7 +44,7 @@ class DeployedEnvironment(
     }
 
     override val seller = object : Seller {
-        override fun receivedTrackingId() = asA<List<String>>(
+        override fun receivedMessage() = asA<List<String>>(
             notifications(Request(GET, "/${testData.sellerPhone}")).bodyString()
         ).first()
     }
