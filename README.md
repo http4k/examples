@@ -10,6 +10,7 @@ These sample projects are designed to demonstrate how easy it is to use the vari
 - **aws-lambda**: Building and deploying `HttpHandler` as a Serverless function.
 - **graalvm** :  "Hello world" application with a single endpoint, compiled to a native binary using GraalVM.
 - **graphql** : Using the http4k graphql routing module to build an API which exposes a data graph backed by the GraphQL-Java library.
+- **hexagonal**: Writing Hexagonal http4k applications with DomainDrivenTests.
 - **hotwire** : Serve a [Hotwire](https://hotwire.dev/) application via http4k (with Websocket support)!
 - **http4k-connect** : A app which utilises the `http4k-connect`  libraries, which provide both a framework for http4k client connectors to external systems and Fake versions of those systems.
 - **json-api** : A app which uses Jackson to automatically marshall Kotlin data classes into JSON objects.
