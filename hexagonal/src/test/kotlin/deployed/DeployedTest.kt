@@ -1,7 +1,8 @@
-package hexagonal.test.deployed
+package deployed
 
-import hexagonal.test.MarketContract
-import hexagonal.test.TestData
+import MarketContract
+import TestData
+import hexagonal.test.deployed.DeployedEnvironment
 import org.http4k.core.Uri
 import org.junit.jupiter.api.Disabled
 

@@ -1,4 +1,4 @@
-package hexagonal.test
+package fakes
 
 import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Result4k

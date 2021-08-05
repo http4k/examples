@@ -1,7 +1,5 @@
-package hexagonal.test
-
+import env.Environment
 import hexagonal.domain.User
-import hexagonal.test.env.Environment
 import org.junit.jupiter.api.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
@@ -22,11 +20,13 @@ interface MarketContract {
         val data = TestData()
         with(environmentFor(data)) {
             buyer.marksItemDispatched("12345")
-            expectThat(seller.receivedTrackingId()).isEqualTo("""Hi ${data.buyerUser.name},
+            expectThat(seller.receivedTrackingId()).isEqualTo(
+                """Hi ${data.buyerUser.name},
               |I have sent your item.
               |The tracking number is 12345!
               |Regards,
-              |${data.sellerUser.name}""".trimMargin())
+              |${data.sellerUser.name}""".trimMargin()
+            )
         }
     }
 }

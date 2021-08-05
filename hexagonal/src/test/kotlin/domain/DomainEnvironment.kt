@@ -1,16 +1,16 @@
-package hexagonal.test.domain
+package domain
 
+import TestData
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import env.Buyer
+import env.Environment
+import env.Seller
+import fakes.InMemoryNotifications
+import fakes.InMemoryPhoneBook
+import fakes.InMemoryUsers
 import hexagonal.domain.DispatchResult.Ok
 import hexagonal.domain.MarketHub
-import hexagonal.test.InMemoryNotifications
-import hexagonal.test.InMemoryPhoneBook
-import hexagonal.test.InMemoryUsers
-import hexagonal.test.TestData
-import hexagonal.test.env.Buyer
-import hexagonal.test.env.Environment
-import hexagonal.test.env.Seller
 
 class DomainEnvironment(testData: TestData) : Environment {
     private val notifications = InMemoryNotifications()
@@ -32,10 +32,8 @@ class DomainEnvironment(testData: TestData) : Environment {
         }
     }
 
-    override val seller: Seller = object : Seller {
-        override fun receivedTrackingId(): String {
-            println(notifications.sent)
-            return notifications.sent.first { it.first == testData.sellerPhone }.second
-        }
+    override val seller = object : Seller {
+        override fun receivedTrackingId() =
+            notifications.sent.first { it.first == testData.sellerPhone }.second
     }
 }

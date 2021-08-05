@@ -1,4 +1,4 @@
-package hexagonal.test.env
+package env
 
 interface Buyer {
     fun marksItemDispatched(trackingNumber: String)

@@ -1,6 +1,5 @@
-package hexagonal.test.fakes
+package fakes
 
-import hexagonal.test.InMemoryNotifications
 import org.http4k.chaos.ChaoticHttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST

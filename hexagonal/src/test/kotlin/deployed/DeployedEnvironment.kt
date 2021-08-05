@@ -1,11 +1,11 @@
 package hexagonal.test.deployed
 
+import TestData
 import com.natpryce.hamkrest.assertion.assertThat
+import env.Buyer
+import env.Environment
+import env.Seller
 import hexagonal.api.DispatchMessage
-import hexagonal.test.TestData
-import hexagonal.test.env.Buyer
-import hexagonal.test.env.Environment
-import hexagonal.test.env.Seller
 import org.http4k.client.OkHttp
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
@@ -43,7 +43,7 @@ class DeployedEnvironment(
         }
     }
 
-    override val seller: Seller = object : Seller {
+    override val seller = object : Seller {
         override fun receivedTrackingId() = asA<List<String>>(
             notifications(Request(GET, "/${testData.sellerPhone}")).bodyString()
         ).first()

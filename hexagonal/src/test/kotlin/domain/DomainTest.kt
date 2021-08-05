@@ -1,7 +1,7 @@
-package hexagonal.test.domain
+package domain
 
-import hexagonal.test.MarketContract
-import hexagonal.test.TestData
+import MarketContract
+import TestData
 
 class DomainTest : MarketContract {
     override fun environmentFor(testData: TestData) = DomainEnvironment(testData)

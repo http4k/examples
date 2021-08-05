@@ -1,17 +1,17 @@
 package api
 
+import TestData
 import com.natpryce.hamkrest.assertion.assertThat
+import env.Buyer
+import env.Environment
+import env.Seller
+import fakes.FakeNotificationsServer
+import fakes.InMemoryPhoneBook
+import fakes.InMemoryUsers
 import hexagonal.api.DispatchMessage
 import hexagonal.api.MarketApi
 import hexagonal.domain.Notifications
 import hexagonal.http.Http
-import hexagonal.test.InMemoryPhoneBook
-import hexagonal.test.InMemoryUsers
-import hexagonal.test.TestData
-import hexagonal.test.env.Buyer
-import hexagonal.test.env.Environment
-import hexagonal.test.env.Seller
-import hexagonal.test.fakes.FakeNotificationsServer
 import org.http4k.core.Method.POST
 import org.http4k.core.Request
 import org.http4k.core.Status.Companion.OK
