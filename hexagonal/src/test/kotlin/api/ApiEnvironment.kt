@@ -16,7 +16,6 @@ import org.http4k.core.Method.POST
 import org.http4k.core.Request
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Uri
-import org.http4k.filter.debug
 import org.http4k.format.Jackson.asFormatString
 import org.http4k.hamkrest.hasStatus
 
@@ -30,8 +29,8 @@ class ApiEnvironment(testData: TestData) : Environment {
     private val api = MarketApi(
         phoneBook,
         InMemoryUsers(testData.buyerUser, testData.sellerUser),
-        Notifications.Http(Uri.of("https://notifications"), notifications.debug())
-    ).debug()
+        Notifications.Http(Uri.of("https://notifications"), notifications)
+    )
 
     override val buyer = object : Buyer {
         override fun marksItemDispatched(trackingNumber: String) {
