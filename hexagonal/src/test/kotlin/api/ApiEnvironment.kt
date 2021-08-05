@@ -49,7 +49,7 @@ class ApiEnvironment(testData: TestData) : Environment {
         }
     }
 
-    override val seller: Seller = object : Seller {
+    override val seller = object : Seller {
         override fun receivedTrackingId() =
             notifications.notificationsFor(testData.sellerPhone)
                 .first { it.first == testData.sellerUser.name }.second
