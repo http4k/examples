@@ -1,0 +1,9 @@
+package hexagonal.test.env
+
+interface Buyer {
+    fun marksItemDispatched(trackingNumber: String)
+}
+
+interface Seller {
+    fun receivedTrackingId(): String?
+}
