@@ -2,6 +2,7 @@ package hexagonal.domain
 
 import dev.forkhandles.result4k.map
 import dev.forkhandles.result4k.recover
+import hexagonal.domain.DispatchResult.Ok
 
 class MarketHub(
     private val phoneBook: PhoneBook,
@@ -9,10 +10,10 @@ class MarketHub(
     private val notifications: Notifications
 ) {
     fun markDispatched(senderId: Int, recipientId: Int, trackingNumber: String): DispatchResult {
-        val recipient = users.nameFor(recipientId)
-            ?: return DispatchResult.UserNotFound(recipientId)
         val sender = users.nameFor(senderId)
             ?: return DispatchResult.UserNotFound(senderId)
+        val recipient = users.nameFor(recipientId)
+            ?: return DispatchResult.UserNotFound(recipientId)
 
         return phoneBook.numberFor(recipient.name)
 
@@ -25,7 +26,7 @@ class MarketHub(
                 |${sender.name}""".trimMargin()
                 )
             }
-            .map { DispatchResult.Ok }
+            .map { Ok }
             .recover {
                 DispatchResult.OtherFailure("no number for $recipient")
             }
