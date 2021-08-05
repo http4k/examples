@@ -37,11 +37,13 @@ private fun getNotifications(notifications: InMemoryNotifications): RoutingHttpH
 }
 
 private fun sendNotification(notifications: InMemoryNotifications): RoutingHttpHandler {
+    var counter = 0
+
     val phone = Query.required("phoneNumber")
     val message = Query.required("message")
 
-    return "/" bind POST to { req: Request ->
+    return "/notify" bind POST to { req: Request ->
         notifications.notify(phone(req), message(req))
-        Response(OK)
+        Response(OK).body(counter++.toString())
     }
 }

@@ -22,11 +22,11 @@ interface MarketContract {
         val data = TestData()
         with(environmentFor(data)) {
             buyer.marksItemDispatched("12345")
-            expectThat(seller.receivedTrackingId()).isEqualTo("""Hi Bob,
+            expectThat(seller.receivedTrackingId()).isEqualTo("""Hi ${data.buyerUser.name},
               |I have sent your item.
               |The tracking number is 12345!
               |Regards,
-              |Alice""".trimMargin())
+              |${data.sellerUser.name}""".trimMargin())
         }
     }
 }

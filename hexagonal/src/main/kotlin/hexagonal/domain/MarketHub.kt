@@ -15,6 +15,7 @@ class MarketHub(
             ?: return DispatchResult.UserNotFound(senderId)
 
         return phoneBook.numberFor(recipient.name)
+
             .map { phoneNumber ->
                 notifications.notify(
                     phoneNumber, """Hi ${recipient.name},

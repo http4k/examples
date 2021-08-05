@@ -1,4 +1,4 @@
-package hexagonal.external
+package hexagonal.http
 
 import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Result4k
@@ -19,7 +19,7 @@ fun Notifications.Companion.Http(uri: Uri, _http: HttpHandler) = object : Notifi
     override fun notify(phoneNumber: String, message: String): Result4k<Int, Exception> {
         val response = http(
             Request(POST, "/notify")
-                .query("phone", phoneNumber)
+                .query("phoneNumber", phoneNumber)
                 .query("message", message)
         )
         return when {

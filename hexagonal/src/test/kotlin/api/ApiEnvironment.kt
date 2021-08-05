@@ -4,7 +4,7 @@ import com.natpryce.hamkrest.assertion.assertThat
 import hexagonal.api.DispatchMessage
 import hexagonal.api.MarketApi
 import hexagonal.domain.Notifications
-import hexagonal.external.Http
+import hexagonal.http.Http
 import hexagonal.test.InMemoryPhoneBook
 import hexagonal.test.InMemoryUsers
 import hexagonal.test.TestData
@@ -16,6 +16,7 @@ import org.http4k.core.Method.POST
 import org.http4k.core.Request
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Uri
+import org.http4k.filter.debug
 import org.http4k.format.Jackson.asFormatString
 import org.http4k.hamkrest.hasStatus
 
@@ -29,7 +30,7 @@ class ApiEnvironment(testData: TestData) : Environment {
     private val api = MarketApi(
         phoneBook,
         InMemoryUsers(testData.buyerUser, testData.sellerUser),
-        Notifications.Http(Uri.of("https://notifications"), notifications)
+        Notifications.Http(Uri.of("https://notifications"), notifications.debug())
     )
 
     override val buyer = object : Buyer {
@@ -52,6 +53,6 @@ class ApiEnvironment(testData: TestData) : Environment {
     override val seller = object : Seller {
         override fun receivedTrackingId() =
             notifications.notificationsFor(testData.sellerPhone)
-                .first { it.first == testData.sellerUser.name }.second
+                .first { it.first == testData.sellerPhone }.second
     }
 }
