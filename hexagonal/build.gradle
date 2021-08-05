@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+    }
+}
+
+apply plugin: 'application'
+
+mainClassName = "org.http4k.hexagonal.MarketKt"
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'kotlin'
+
+compileKotlin.kotlinOptions.jvmTarget = "11"
+compileTestKotlin.kotlinOptions.jvmTarget = "11"
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    implementation(platform("org.http4k:http4k-bom:${http4kVersion}"))
+    implementation(platform("dev.forkhandles:forkhandles-bom:${forkHandlesVersion}"))
+
+    implementation "org.http4k:http4k-core"
+    implementation "org.http4k:http4k-client-okhttp"
+    implementation "org.http4k:http4k-format-jackson"
+    implementation "org.http4k:http4k-server-undertow"
+    implementation "org.http4k:http4k-cloudnative"
+    implementation "dev.forkhandles:result4k"
+
+    testImplementation "org.http4k:http4k-testing-chaos"
+    testImplementation "org.http4k:http4k-testing-strikt"
+    testImplementation "org.http4k:http4k-testing-webdriver"
+    testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+}
