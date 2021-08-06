@@ -12,7 +12,7 @@ class TestData {
     val buyerPhone = "01234567890"
 }
 
-interface MarketContract {
+interface MarketTests {
     fun environmentFor(testData: TestData): Environment
 
     @Test

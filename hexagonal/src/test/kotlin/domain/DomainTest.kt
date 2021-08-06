@@ -1,9 +1,9 @@
 package domain
 
-import MarketContract
+import MarketTests
 import TestData
 
-class DomainTest : MarketContract {
+class DomainTest : MarketTests {
     override fun environmentFor(testData: TestData) = DomainEnvironment(testData)
 }
 
