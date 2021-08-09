@@ -18,14 +18,17 @@ interface MarketTests {
     @Test
     fun `buyer is notified of seller dispatching item`() {
         val data = TestData()
+
+        val trackingNumber = "12345"
+
         with(environmentFor(data)) {
 
-            buyer.marksItemDispatched("12345")
+            buyer.marksItemDispatched(trackingNumber)
 
             expectThat(seller.receivedMessage()).isEqualTo(
                 """Hi ${data.buyerUser.name},
               |I have sent your item.
-              |The tracking number is 12345!
+              |The tracking number is $trackingNumber!
               |Regards,
               |${data.sellerUser.name}""".trimMargin()
             )
