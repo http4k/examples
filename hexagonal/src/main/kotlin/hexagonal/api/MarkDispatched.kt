@@ -21,7 +21,6 @@ fun MarkDispatched(transactions: MarketHub) = "/dispatch" bind POST to { req: Re
         is UserNotFound -> Response(NOT_FOUND)
         is OtherFailure -> Response(SERVICE_UNAVAILABLE).body(result.message)
     }
-    Response(OK)
 }
 
 data class DispatchMessage(val senderId: Int, val recipientId: Int, val trackingNumber: String)
