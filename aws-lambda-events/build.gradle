@@ -1,0 +1,43 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version "${kotlin_version}"
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+compileTestKotlin.kotlinOptions.jvmTarget = "1.8"
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    implementation platform("org.http4k:http4k-bom:${http4k_version}")
+    implementation "org.http4k:http4k-core"
+    implementation "org.http4k:http4k-serverless-lambda"
+    implementation "com.amazonaws:aws-lambda-java-events:3.10.0"
+
+    testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation "org.http4k:http4k-testing-hamkrest"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task buildZip(type: Zip) {
+    from compileKotlin
+    from processResources
+    into('lib') {
+        from configurations.compileClasspath
+    }
+}
