@@ -18,7 +18,7 @@ class FakeExpensesSystem(
     )
 }
 
-// if you run this you will see the (static) port which is allocated automatically by http4k-connect
+// if you run this you will see the (static) port which is allocated automatically by http4k
 fun main() {
     FakeExpensesSystem().start()
 }
