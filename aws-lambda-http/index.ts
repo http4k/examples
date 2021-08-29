@@ -26,7 +26,7 @@ new RolePolicyAttachment("http4k-example-lambda-default-role-policy",
     });
 
 const lambdaFunction = new aws.lambda.Function("http4k-example-lambda", {
-    code: new pulumi.asset.FileArchive("build/distributions/http4k-aws-lambda-example-1.0-SNAPSHOT.zip"),
+    code: new pulumi.asset.FileArchive("build/distributions/http4k-aws-lambda-example-http-1.0-SNAPSHOT.zip"),
     handler: "org.http4k.example.MyHttp4kFunction",
     role: defaultRole.arn,
     runtime: "java11",
