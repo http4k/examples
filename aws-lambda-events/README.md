@@ -32,7 +32,7 @@ aws_secret_access_key = <your secret>
 pulumi up --stack dev
 ```
 
-To test, go to the AWS console and invoke the lambda manually using the SQS event template.
+To test, go to the AWS console and invoke the lambda manually using the SQS event template. 
 
 ## Cleaning up
 

@@ -4,6 +4,7 @@ import com.example.KMSEncrypt
 import com.example.S3BucketContents
 import dev.forkhandles.result4k.valueOrNull
 import org.http4k.aws.AwsCredentials
+import org.http4k.chaos.start
 import org.http4k.client.JavaHttpClient
 import org.http4k.connect.amazon.core.model.KMSKeyId
 import org.http4k.connect.amazon.core.model.Region

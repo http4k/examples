@@ -38,6 +38,7 @@ dependencies {
 
     testImplementation platform("org.junit:junit-bom:$junit_version")
     testImplementation "org.http4k:http4k-testing-hamkrest"
+    testImplementation "org.http4k:http4k-testing-chaos"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-engine"
     testImplementation "io.mockk:mockk:$mockk_version"
