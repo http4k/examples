@@ -1,8 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
-    }
+        }
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
@@ -14,7 +13,6 @@ sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {

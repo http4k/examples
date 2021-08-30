@@ -1,8 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
-        maven {
+            maven {
             url "https://plugins.gradle.org/m2/"
         }
     }
@@ -15,8 +14,7 @@ buildscript {
 allprojects {
     repositories {
         mavenCentral()
-        jcenter()
-    }
+        }
 
     apply plugin: 'kotlin'
 

@@ -1,8 +1,7 @@
 pluginManagement {
     repositories {
         mavenCentral()
-        jcenter()
-        gradlePluginPortal()
+            gradlePluginPortal()
     }
     plugins {
         id 'io.quarkus' version "${quarkus_version}"

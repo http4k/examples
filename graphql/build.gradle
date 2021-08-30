@@ -1,8 +1,7 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
-    }
+        }
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
@@ -11,7 +10,6 @@ buildscript {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 apply plugin: 'kotlin'
