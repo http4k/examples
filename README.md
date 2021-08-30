@@ -8,6 +8,7 @@ These sample projects are designed to demonstrate how easy it is to use the vari
 - **hello-world** : "Hello world" application with a single endpoint.
 
 - **aws-lambda-http**: Building and deploying `HttpHandler` as a Serverless function.
+- **aws-lambda-events**: Building and deploying an event-based `FnHandler` as a Serverless function.
 - **graalvm** :  "Hello world" application with a single endpoint, compiled to a native binary using GraalVM.
 - **graphql** : Using the http4k graphql routing module to build an API which exposes a data graph backed by the GraphQL-Java library.
 - **hexagonal**: Writing Hexagonal http4k applications with DomainDrivenTests.
