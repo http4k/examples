@@ -7,7 +7,7 @@ import org.http4k.routing.ResourceLoader.Companion.Classpath
 import org.http4k.routing.bind
 import org.http4k.routing.static
 import org.http4k.routing.websockets
-import org.http4k.websocket.PolyHandler
+import org.http4k.server.PolyHandler
 import org.http4k.websocket.Websocket
 import org.http4k.websocket.WsMessage
 import java.util.concurrent.ConcurrentHashMap
