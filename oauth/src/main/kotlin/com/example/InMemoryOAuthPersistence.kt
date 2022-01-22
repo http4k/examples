@@ -63,7 +63,9 @@ class InMemoryOAuthPersistence(private val clock: Clock) : OAuthPersistence {
         ?.removePrefix("Bearer ")
         ?.let { AccessToken(it) }
 
-    private fun expiring(name: String, value: String) = Cookie(name, value,
+    private fun expiring(name: String, value: String) = Cookie(
+        name, value,
         path = "/",
-        expires = LocalDateTime.ofInstant(clock.instant().plus(Duration.ofHours(3)), clock.zone))
+        expires = clock.instant()
+    )
 }
