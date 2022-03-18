@@ -11,6 +11,7 @@ import org.http4k.security.AccessToken
 import org.http4k.security.CrossSiteRequestForgeryToken
 import org.http4k.security.Nonce
 import org.http4k.security.OAuthPersistence
+import org.http4k.security.OauthCallbackError
 import org.http4k.security.openid.IdToken
 import java.time.Clock
 import java.time.Duration
@@ -51,7 +52,7 @@ class InMemoryOAuthPersistence(private val clock: Clock) : OAuthPersistence {
                 .invalidateCookie(originalUriName)
         }
 
-    override fun authFailureResponse() = Response(FORBIDDEN)
+    override fun authFailureResponse(reason: OauthCallbackError) = Response(FORBIDDEN)
         .invalidateCookie(csrfName)
         .invalidateCookie(originalUriName)
         .invalidateCookie(clientAuthCookie)
