@@ -47,5 +47,6 @@ shadowJar {
     archiveClassifier.set(null)
     archiveVersion.set(null)
     mergeServiceFiles()
+    minimize()
 }
 
