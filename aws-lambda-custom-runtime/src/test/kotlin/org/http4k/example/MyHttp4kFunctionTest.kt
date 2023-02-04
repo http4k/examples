@@ -8,16 +8,16 @@ import org.http4k.core.Request
 import org.http4k.core.Status.Companion.OK
 import org.http4k.hamkrest.hasBody
 import org.http4k.hamkrest.hasStatus
+import org.http4k.serverless.ApiGatewayV1FnLoader
 import org.junit.jupiter.api.Test
-import java.io.ByteArrayOutputStream
 import java.lang.reflect.Proxy
 
 class MyHttp4kFunctionTest {
 
     @Test
     fun `Testing the entire function`() {
-        val output = ByteArrayOutputStream()
-        MyHttp4kFunction().handleRequest(
+        val function = ApiGatewayV1FnLoader(http4kApp)(mapOf())
+        val output = function(
             """
                 {
                   "body": "eyJ0ZXN0IjoiYm9keSJ9",
@@ -46,9 +46,12 @@ class MyHttp4kFunctionTest {
                     "requestTimeEpoch": 1428582896000
                   }
                 }
-            """.trimIndent().byteInputStream(), output, proxy()
+            """.trimIndent().byteInputStream(), proxy()
         )
-        assertThat(String(output.toByteArray()), equalTo("""{"statusCode":200,"headers":{},"body":"aGVsbG8=","isBase64Encoded":true}"""))
+        assertThat(
+            String(output.readAllBytes()),
+            equalTo("""{"statusCode":200,"headers":{},"body":"aGVsbG8=","isBase64Encoded":true}""")
+        )
     }
 
     @Test

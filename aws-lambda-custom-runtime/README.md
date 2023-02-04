@@ -1,6 +1,7 @@
 ### AWS Lambda with custom http4k runtime + http4k example
 
-This example shows how to build, deploy, and invoke an http4k `HttpHandler` as AWS Lambda with a custom http4k runtime.
+This example shows how to build, deploy, and invoke an http4k `HttpHandler` as AWS Lambda with a custom http4k runtime 
+running on AMD64 architecture.
 
 ## Pre-requisites
 
@@ -28,11 +29,11 @@ aws_secret_access_key = <your secret>
 ## Running it
 
 ```bash
-./gradlew shadowJar
+./gradlew clean shadowJar
 
-docker run -v $(pwd):/source http4k/amazoncorretto-lambda-runtime:latest build/libs/http4k-lambda.jar build/distributions/http4-lambda.zip
+docker run -v $(pwd):/source http4k/amazoncorretto-lambda-runtime-arm64:latest build/libs/http4k-lambda.jar build/distributions/http4k-lambda.zip
 
-pulumi up --stack dev
+pulumi up -y --stack dev
 ```
 
 The deployed URL will be printed at the end of the run. You can test the deployed lambda with: 

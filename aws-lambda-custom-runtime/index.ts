@@ -27,7 +27,7 @@ new RolePolicyAttachment("http4k-example-lambda-default-role-policy",
 
 const lambdaFunction = new aws.lambda.Function("http4k-example-lambda", {
     code: new pulumi.asset.FileArchive("build/distributions/http4k-lambda.zip"),
-    // architectures: ["arm64"],
+    architectures: ["arm64"],
     handler: "unused",
     role: defaultRole.arn,
     runtime: "provided.al2",
