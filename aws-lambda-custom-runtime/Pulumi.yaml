@@ -1,0 +1,3 @@
+name: http4k-examples
+runtime: nodejs
+description: http4k deployments on aws
