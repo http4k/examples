@@ -1,0 +1,52 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "gradle.plugin.com.github.johnrengelman:shadow:7.1.2"
+    }
+}
+
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "${kotlin_version}"
+}
+
+apply plugin: "com.github.johnrengelman.shadow"
+
+repositories {
+    mavenCentral()
+}
+
+compileKotlin.kotlinOptions.jvmTarget = "11"
+compileTestKotlin.kotlinOptions.jvmTarget = "11"
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
+
+dependencies {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib")
+    implementation(platform("org.http4k:http4k-bom:${http4k_version}"))
+    implementation("org.http4k:http4k-core")
+    implementation("org.http4k:http4k-serverless-lambda")
+    implementation("org.http4k:http4k-serverless-lambda-runtime")
+
+    testImplementation(platform("org.junit:junit-bom:${junit_version}"))
+    testImplementation("org.http4k:http4k-testing-hamkrest")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    manifest.attributes['Main-Class'] = 'org.http4k.example.MyHttp4kFunctionKt'
+    archiveBaseName.set("http4k-lambda")
+    archiveClassifier.set(null)
+    archiveVersion.set(null)
+    mergeServiceFiles()
+    minimize()
+}
+
