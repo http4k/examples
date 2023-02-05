@@ -5,6 +5,7 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
+        classpath "com.google.devtools.ksp:com.google.devtools.ksp.gradle.plugin:1.8.10-1.0.9"
     }
 }
 
@@ -12,8 +13,8 @@ repositories {
     mavenCentral()
 }
 
-apply plugin: 'kotlin'
-apply plugin: "kotlin-kapt" // only required for generating custom actions
+apply plugin: "kotlin"
+apply(plugin: "com.google.devtools.ksp") // only required for generating custom actions
 
 test {
     useJUnitPlatform()
@@ -23,10 +24,10 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
     implementation platform("org.http4k:http4k-bom:$http4kVersion")
-    implementation platform("org.http4k:http4k-connect-bom:$http4k_connect_version")
+    implementation platform("org.http4k:http4k-connect-bom:$http4kConnectVersion")
     implementation "org.http4k:http4k-core"
 
-    kapt("org.http4k:http4k-connect-kapt-generator:$http4k_connect_version")
+    ksp("org.http4k:http4k-connect-ksp-generator:$http4kConnectVersion")
 
     // dependencies from http4k-connect
     implementation "org.http4k:http4k-connect-amazon-s3"
