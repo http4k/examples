@@ -11,8 +11,8 @@ import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import org.http4k.format.Jackson.asA
-import org.http4k.webdriver.By
 import org.http4k.webdriver.Http4kWebDriver
+import org.openqa.selenium.By
 
 class BrowserEnvironment(
     testData: TestData,
