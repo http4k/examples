@@ -6,8 +6,8 @@ NEW_VERSION=$1
 function upgrade() {
     TARGET=$1
     VERSION=$2
-    cat "$TARGET" | grep -v "http4k_version" > out.txt
-    echo "http4k_version=$VERSION" >> out.txt
+    cat "$TARGET" | grep -v "http4kVersion" > out.txt
+    echo "http4kVersion=$VERSION" >> out.txt
     mv out.txt "$TARGET"
 }
 

@@ -1,11 +1,11 @@
 apply plugin: 'application'
 
 dependencies {
-    api platform("org.http4k:http4k-bom:$http4k_version")
+    api platform("org.http4k:http4k-bom:$http4kVersion")
     api "org.http4k:http4k-core"
     implementation project(':frontend')
 
-    testImplementation platform("org.junit:junit-bom:$junit_version")
+    testImplementation platform("org.junit:junit-bom:$junitVersion")
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-engine"
 }

@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}"
     }
 }
 
@@ -22,11 +22,11 @@ test {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin_version}"
-    implementation platform("org.http4k:http4k-bom:${http4k_version}")
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}"
+    implementation platform("org.http4k:http4k-bom:${http4kVersion}")
     implementation "org.http4k:http4k-core"
 
-    testImplementation platform("org.junit:junit-bom:${junit_version}")
+    testImplementation platform("org.junit:junit-bom:${junitVersion}")
     testImplementation "org.http4k:http4k-testing-hamkrest"
     testImplementation "org.junit.jupiter:junit-jupiter-api"
     testImplementation "org.junit.jupiter:junit-jupiter-engine"
