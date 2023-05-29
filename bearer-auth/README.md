@@ -11,7 +11,6 @@ The access tokens in this example are JWTs, but any lookup can be used.
 To generate an access token:
 ```shell script
 $ curl http://localhost:8080/token/<user_id>
-<jwt>
 ```
 
 To verify the access token:
