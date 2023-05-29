@@ -8,13 +8,13 @@ The access tokens in this example are JWTs, but any lookup can be used.
 ./gradlew test run
 ```
 
-To generate an access token:
+To generate an access token (for any `user_id` of your choice):
 ```shell script
 $ curl http://localhost:8080/token/<user_id>
 ```
 
 To verify the access token:
 ```shell script
-curl http://localhost:8080/hello --header "Authorization: Bearer <jwt>"
+$ curl http://localhost:8080/hello --header "Authorization: Bearer <access_token>"
 ```
 
