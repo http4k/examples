@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project: [aws-lambda-http, aws-lambda-custom-runtime, aws-lambda-events, graalvm, hello-world, hexagonal, hotwire, http4k-connect, graphql, json-api, oauth, openapi, quarkus, react-app, typesafe-configuration, web-content, websockets]
+        project: [aws-lambda-http, aws-lambda-custom-runtime, aws-lambda-events, bearer-auth, graalvm, hello-world, hexagonal, hotwire, http4k-connect, graphql, json-api, oauth, openapi, quarkus, react-app, typesafe-configuration, web-content, websockets]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
