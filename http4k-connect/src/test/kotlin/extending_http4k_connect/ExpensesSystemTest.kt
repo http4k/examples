@@ -6,6 +6,8 @@ import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.get
 import extending_http4k_connect.actions.ExpenseReport
 import extending_http4k_connect.actions.GetMyExpenses
+import extending_http4k_connect.actions.addExpense
+import extending_http4k_connect.actions.getMyExpenses
 import extending_http4k_connect.model.Expense
 import io.mockk.every
 import io.mockk.mockk

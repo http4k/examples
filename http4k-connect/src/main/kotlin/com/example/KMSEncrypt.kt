@@ -4,13 +4,13 @@ import dev.forkhandles.result4k.Failure
 import dev.forkhandles.result4k.Success
 import org.http4k.aws.AwsCredentials
 import org.http4k.client.JavaHttpClient
-import org.http4k.connect.amazon.core.model.Base64Blob
 import org.http4k.connect.amazon.core.model.KMSKeyId
 import org.http4k.connect.amazon.core.model.Region
 import org.http4k.connect.amazon.kms.Http
 import org.http4k.connect.amazon.kms.KMS
 import org.http4k.connect.amazon.kms.encrypt
 import org.http4k.connect.amazon.kms.model.EncryptionAlgorithm.SYMMETRIC_DEFAULT
+import org.http4k.connect.model.Base64Blob
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
