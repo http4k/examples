@@ -1,0 +1,5 @@
+config:
+  aws-native:profile: http4k-lambda-demo
+  aws-native:region: eu-west-2
+  aws:profile: http4k-lambda-demo
+  aws:region: eu-west-2

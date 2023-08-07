@@ -1,0 +1,3 @@
+name: hello-http4k
+description: http4k deployment on aws
+runtime: java
