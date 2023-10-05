@@ -13,7 +13,7 @@ import org.http4k.routing.routes
 import org.http4k.routing.static
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
-import org.http4k.template.HandlebarsTemplates
+import org.http4k.template.PebbleTemplates
 import org.http4k.template.ViewModel
 import org.http4k.template.viewModel
 import java.time.Clock
@@ -38,8 +38,8 @@ fun WebContent(clock: Clock, hotReload: Boolean): HttpHandler {
 }
 
 private fun buildResourceLoaders(hotReload: Boolean) = when {
-    hotReload -> HandlebarsTemplates().HotReload("./src/main/resources") to ResourceLoader.Classpath("public")
-    else -> HandlebarsTemplates().CachingClasspath() to ResourceLoader.Classpath("public")
+    hotReload -> PebbleTemplates().HotReload("./src/main/resources") to ResourceLoader.Classpath("public")
+    else -> PebbleTemplates().CachingClasspath() to ResourceLoader.Classpath("public")
 }
 
 fun main() {
