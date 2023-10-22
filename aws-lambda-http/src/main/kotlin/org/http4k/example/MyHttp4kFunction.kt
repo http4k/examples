@@ -8,7 +8,6 @@ import org.http4k.routing.bind
 import org.http4k.routing.path
 import org.http4k.routing.routes
 import org.http4k.serverless.ApiGatewayV1LambdaFunction
-import org.http4k.serverless.ApiGatewayV2LambdaFunction
 
 val http4kApp = routes(
     "/echo/{message:.*}" bind GET to {
@@ -21,4 +20,4 @@ val http4kApp = routes(
 )
 
 @Suppress("unused")
-class MyHttp4kFunction : ApiGatewayV2LambdaFunction(http4kApp)
+class MyHttp4kFunction : ApiGatewayV1LambdaFunction(http4kApp)
