@@ -61,7 +61,7 @@ const lambdaIntegration = new aws.apigatewayv2.Integration("http4k-example-api-l
     apiId: api.id,
     integrationType: "AWS_PROXY",
     integrationUri: lambdaFunction.arn,
-    payloadFormatVersion: "1.0"
+    payloadFormatVersion: "2.0"
 });
 
 const apiDefaultRole = new aws.apigatewayv2.Route("http4k-example-api-route", {
