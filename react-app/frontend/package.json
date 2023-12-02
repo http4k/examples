@@ -1,40 +1,43 @@
 {
-  "name": "chinelo",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-router": "^5.2.0",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1"
-  },
-  "proxy": "http://localhost:8000",
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test-watch": "react-scripts test",
-    "test": "react-scripts test --no-watch",
-    "eject": "react-scripts eject",
-    "reset": "rm -rf node_modules && yarn",
-    "testci": "react-scripts test --no-watch --reporters=default"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "http4k",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@testing-library/jest-dom": "^5.17.0",
+        "@testing-library/react": "^13.4.0",
+        "react-router": "^5.2.0",
+        "@testing-library/user-event": "^13.5.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^5.2.0",
+        "react-scripts": "5.0.1",
+        "web-vitals": "^2.1.4"
+    },
+    "proxy": "http://localhost:8000",
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test-watch": "react-scripts test",
+        "test": "react-scripts test --no-watch",
+        "eject": "react-scripts eject",
+        "testci": "react-scripts test --no-watch --reporters=default"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }
