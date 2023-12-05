@@ -1,9 +1,9 @@
-FROM ghcr.io/graalvm/native-image:21 as graalvm
+FROM ghcr.io/graalvm/native-image-community:21 as graalvm
 
 COPY . /home/app/http4k-example
 WORKDIR /home/app/http4k-example
 
-RUN native-image --no-fallback -cp build/libs/example.jar com.example.HelloWorldKt
+RUN native-image --static --no-fallback -cp build/libs/example.jar com.example.HelloWorldKt
 
 FROM frolvlad/alpine-glibc
 RUN apk update && apk add libstdc++
