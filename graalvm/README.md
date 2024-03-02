@@ -12,7 +12,7 @@ There is a dependency, however, on the underlying server platform to also not us
 
 ```shell script
 ./gradlew test shadowJar
-java -jar build/libs/Example-all.jar
+java -jar build/libs/example.jar
 ```
 
 then:
