@@ -3,7 +3,7 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.8.10"
+    kotlin("jvm") version "1.9.23"
     application
 }
 
@@ -21,11 +21,11 @@ java {
 }
 
 tasks.compileKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "21"
 }
 
 tasks.compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "21"
 }
 
 dependencies {
