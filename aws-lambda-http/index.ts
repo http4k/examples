@@ -29,7 +29,7 @@ const lambdaFunction = new aws.lambda.Function("http4k-example-lambda", {
     code: new pulumi.asset.FileArchive("build/distributions/http4k-aws-lambda-example-http-1.0-SNAPSHOT.zip"),
     handler: "org.http4k.example.MyHttp4kFunction",
     role: defaultRole.arn,
-    runtime: "java11",
+    runtime: "java21",
     timeout: 15
 });
 

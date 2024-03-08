@@ -47,7 +47,7 @@ fun main() {
                 .code(FileArchive("hello-function/build/distributions/hello-function.zip"))
                 .handler("org.http4k.example.HelloServerlessHttp4k")
                 .role(lambdaRole.arn())
-                .runtime("java11")
+                .runtime("java21")
                 .timeout(15)
                 .build()
         )
