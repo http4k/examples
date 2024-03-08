@@ -5,7 +5,7 @@ jobs:
   create-pr-for-http4k-upgrade:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.3.0
+      - uses: actions/checkout@v4.1.1
       - name: Update release
         uses: technote-space/create-pr-action@v2
         with:
