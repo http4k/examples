@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Properties
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.8.22"
-    id("com.google.devtools.ksp") version "1.8.22-1.0.11"
+    id("org.jetbrains.kotlin.jvm") version "1.9.23"
+    id("com.google.devtools.ksp") version "1.9.22-1.0.17"
 }
 
 buildscript {
