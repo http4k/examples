@@ -8,24 +8,13 @@ There is a dependency, however, on the underlying server platform to also not us
 - ApacheServer (`http4k-server-apache`)
 - SunHttp (bundled with `http4k-core`)
 
-## Build/test locally
+## Build into a native binary and run
 
 ```shell script
-./gradlew test shadowJar
-java -jar build/libs/example.jar
+./gradlew clean test nativeCompile
+
+./build/native/nativeCompile/helloworld
 ```
-
-then:
-```shell script
-curl -v http://localhost:8080/
-```
-
-## Build into a native binary and run in Docker
-
-```shell script
-./build_and_run.sh
-```
-
 then:
 ```shell script
 curl -v http://localhost:8080/
