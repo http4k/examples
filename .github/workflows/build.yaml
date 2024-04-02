@@ -21,7 +21,7 @@ jobs:
       - run: pushd ${{ matrix.project }} && ./gradlew test
       - name: Tag automerge branch
         if: ${{ github.event_name == 'pull_request' }}
-        uses: TimonVS/pr-labeler-action@v3
+        uses: TimonVS/pr-labeler-action@v5.0.0
         with:
           configuration-path: .github/pr-labeler.yml
         env:
