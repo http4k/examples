@@ -1,7 +1,6 @@
 package api
 
 import TestData
-import com.natpryce.hamkrest.assertion.assertThat
 import env.Buyer
 import env.Environment
 import env.Seller
@@ -17,7 +16,8 @@ import org.http4k.core.Request
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.Uri
 import org.http4k.format.Jackson.asFormatString
-import org.http4k.hamkrest.hasStatus
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 class ApiEnvironment(testData: TestData) : Environment {
     private val notifications = FakeNotificationsServer()
@@ -34,7 +34,7 @@ class ApiEnvironment(testData: TestData) : Environment {
 
     override val buyer = object : Buyer {
         override fun marksItemDispatched(trackingNumber: String) {
-            assertThat(
+            expectThat(
                 api(
                     Request(POST, "/dispatch")
                         .body(
@@ -44,8 +44,8 @@ class ApiEnvironment(testData: TestData) : Environment {
                                 )
                             )
                         )
-                ), hasStatus(OK)
-            )
+                ).status
+            ).isEqualTo(OK)
         }
     }
 

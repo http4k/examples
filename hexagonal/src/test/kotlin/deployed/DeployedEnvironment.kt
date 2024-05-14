@@ -1,7 +1,6 @@
 package deployed
 
 import TestData
-import com.natpryce.hamkrest.assertion.assertThat
 import env.Buyer
 import env.Environment
 import env.Seller
@@ -16,7 +15,8 @@ import org.http4k.core.then
 import org.http4k.filter.ClientFilters.SetBaseUriFrom
 import org.http4k.format.Jackson.asA
 import org.http4k.format.Jackson.asFormatString
-import org.http4k.hamkrest.hasStatus
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 class DeployedEnvironment(
     testData: TestData,
@@ -28,7 +28,7 @@ class DeployedEnvironment(
 
     override val buyer = object : Buyer {
         override fun marksItemDispatched(trackingNumber: String) {
-            assertThat(
+            expectThat(
                 market(
                     Request(POST, "/dispatch")
                         .body(
@@ -38,8 +38,8 @@ class DeployedEnvironment(
                                 )
                             )
                         )
-                ), hasStatus(OK)
-            )
+                ).status
+            ).isEqualTo(OK)
         }
     }
 

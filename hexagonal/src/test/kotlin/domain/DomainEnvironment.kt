@@ -1,8 +1,6 @@
 package domain
 
 import TestData
-import com.natpryce.hamkrest.assertion.assertThat
-import com.natpryce.hamkrest.equalTo
 import env.Buyer
 import env.Environment
 import env.Seller
@@ -11,6 +9,8 @@ import fakes.InMemoryPhoneBook
 import fakes.InMemoryUsers
 import hexagonal.domain.DispatchResult.Ok
 import hexagonal.domain.MarketHub
+import strikt.api.expectThat
+import strikt.assertions.isEqualTo
 
 class DomainEnvironment(testData: TestData) : Environment {
     private val notifications = InMemoryNotifications()
@@ -25,10 +25,9 @@ class DomainEnvironment(testData: TestData) : Environment {
 
     override val buyer = object : Buyer {
         override fun marksItemDispatched(trackingNumber: String) {
-            assertThat(
+            expectThat(
                 hub.markDispatched(testData.sellerUser.id, testData.buyerUser.id, trackingNumber),
-                equalTo(Ok)
-            )
+            ).isEqualTo(Ok)
         }
     }
 
