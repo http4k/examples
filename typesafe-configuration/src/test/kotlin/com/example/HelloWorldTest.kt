@@ -4,8 +4,8 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.containsSubstring
 import com.natpryce.hamkrest.has
 import com.natpryce.hamkrest.throws
-import org.http4k.cloudnative.env.Environment.Companion.EMPTY
-import org.http4k.cloudnative.env.Environment.Companion.from
+import org.http4k.config.Environment.Companion.EMPTY
+import org.http4k.config.Environment.Companion.from
 import org.http4k.core.Method.GET
 import org.http4k.core.Request
 import org.http4k.hamkrest.hasBody

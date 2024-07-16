@@ -2,9 +2,9 @@ package com.example
 
 import com.example.Settings.GITHUB_URI
 import com.example.Settings.TIMEOUT
-import org.http4k.cloudnative.env.Environment
-import org.http4k.cloudnative.env.Environment.Companion.ENV
-import org.http4k.cloudnative.env.EnvironmentKey
+import org.http4k.config.Environment
+import org.http4k.config.Environment.Companion.ENV
+import org.http4k.config.EnvironmentKey
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
