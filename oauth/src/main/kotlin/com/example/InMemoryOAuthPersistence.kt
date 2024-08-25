@@ -10,12 +10,11 @@ import org.http4k.core.cookie.invalidateCookie
 import org.http4k.security.AccessToken
 import org.http4k.security.CrossSiteRequestForgeryToken
 import org.http4k.security.Nonce
-import org.http4k.security.OAuthPersistence
 import org.http4k.security.OAuthCallbackError
+import org.http4k.security.OAuthPersistence
+import org.http4k.security.PkceChallengeAndVerifier
 import org.http4k.security.openid.IdToken
 import java.time.Clock
-import java.time.Duration
-import java.time.LocalDateTime
 import java.util.UUID
 
 /**
@@ -34,15 +33,22 @@ class InMemoryOAuthPersistence(private val clock: Clock) : OAuthPersistence {
     override fun retrieveOriginalUri(request: Request): Uri? =
         request.cookie(originalUriName)?.value?.let(Uri::of)
 
+    override fun retrievePkce(request: Request) = null
+
     override fun retrieveToken(request: Request) = (tryBearerToken(request)
         ?: tryCookieToken(request))
         ?.takeIf { it.value.startsWith("ACCESS_TOKEN") }
 
-    override fun assignCsrf(redirect: Response, csrf: CrossSiteRequestForgeryToken) = redirect.cookie(expiring(csrfName, csrf.value))
+    override fun assignCsrf(redirect: Response, csrf: CrossSiteRequestForgeryToken) =
+        redirect.cookie(expiring(csrfName, csrf.value))
 
     override fun assignNonce(redirect: Response, nonce: Nonce): Response = redirect
     override fun assignOriginalUri(redirect: Response, originalUri: Uri): Response =
         redirect.cookie(expiring(originalUriName, originalUri.toString()))
+
+    override fun assignPkce(redirect: Response, pkce: PkceChallengeAndVerifier): Response {
+        TODO("Not yet implemented")
+    }
 
     override fun assignToken(request: Request, redirect: Response, accessToken: AccessToken, idToken: IdToken?) =
         UUID.randomUUID().let {
