@@ -73,6 +73,6 @@ class InMemoryOAuthPersistence(private val clock: Clock) : OAuthPersistence {
     private fun expiring(name: String, value: String) = Cookie(
         name, value,
         path = "/",
-        expires = clock.instant()
+        expires = clock.instant().plusSeconds(900)
     )
 }
