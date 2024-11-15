@@ -56,7 +56,7 @@ dependencies {
     implementation("org.http4k:http4k-format-moshi")
 
     // this and the plugin are only required for generating custom action extension functions (if you want to)
-    ksp("org.http4k:http4k-connect-ksp-generator")
+    ksp("org.http4k:http4k-connect-ksp-generator:${gradleProperties["http4kVersion"]}")
 
     testImplementation(platform("org.junit:junit-bom:${gradleProperties["junitVersion"]}"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
