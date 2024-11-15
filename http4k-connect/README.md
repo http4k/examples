@@ -1,21 +1,10 @@
-# http4k-connect integrations and fake dependencies
 
-This project contains the following pieces which show how to use http4k-connect:
+## http4k Connect examples
 
-1. Apps which show how to use the http4k-connect AWS clients, one for S3 and the other for KMS. Run the `RunnableEnvironment` from your IDE to see them running with the FakeKMS and FakeS3 provided by http4k-connect. The apps run on port 8080 and 9090.
-   
-2. How to extend http4k-connect to build a lightweight adapter and a Fake for a new "ExpensesSystem". You need to write the following simple pieces to make this work:
+These sample projects are designed to demonstrate how easy it is to use the various features of http4k in isolation.
 
-a. `ExpensesAction` - An Action interface which defines the actions used by the ExpensesSystem.
-b. `ExpensesSystem` - The http4k-connect interface that accepts the ExpensesActions. Note that this is annotated with `@Http4kConnectAdapter` which is used by the KSP annotation processor. This interface is test-friendly (with or without mocks).
-c. `GetMyExpenses` - The implementation of an `ExpensesAction` which retrieves expenses for a named person. Note that all of the Action and response classes are Kotlin Data classes so are test-friendly. Note that the action is annotated with `@Http4kConnectAction` which is used by the KSP annotation processor to generate an IDE-friendly method `ExpensesSystem.getMyExpenses()`.
-d. `ExpensesClient` - A client domain wrapper to wrap our `ExpensesSystem`.
-e. `ExpensesSystem.Http` - HTTP implementation of the ExpensesSystem which wraps the underlying http4k HttpHandler.
-f. `FakeExpensesSystem` - A fake implementation of our external system.
-g. `build.gradle` - Note the additions of the KSP plugin and the `org.http4k:http4k-connect-ksp-generator` which will generate the convenience methods for the Actions during the compile phase.
-
-So after all of that, what do you get? Well, you get:
-
-1. a consistent API-driven interface which returns a Result4k monad
-2. a client interface which is extensible by others using the same mechanic 
-3. a runnable, Chaos-enabled Fake implementation of the service, which also doubles as a standard HttpHandler, so can be swapped out to run tests edge-to-edge and completely in-memory.
+- **connect-pattern** : Code accompanying [the post](https://dentondav.id/posts/2021/02/smash-your-adapter-monolith) describing the basic Connect pattern and how it is structured. It only relies on [http4k](https://http4k.org) as a basic implementation platform.
+- **extending-connect-api-clients** : Shows how to extend the library API Clients (in this case GitHub) with custom Action classes.
+- **using-connect-api-clients** : How to use the library API Clients (in this case AWS KMS) and Fake which ship with http4k-connect.
+- **custom-api-clients-and-fake** : Implementing your own custom http4k-connect compliant api-clients and a Fake HTTP system to connect to, along with examples of testing techniques. Also demonstrates the usage of the Kapt compile-time code-generators in a custom api-clients.
+- **fakes-in-official-aws-sdk**: How to use fake AWS API Clients with the official V2 AWS SDK in your tests.

@@ -1,0 +1,41 @@
+buildscript {
+    repositories {
+        mavenCentral()
+
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'kotlin'
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+
+    testImplementation "org.http4k:http4k-core:$http4k_version"
+    testImplementation "org.http4k:http4k-client-okhttp:$http4k_version"
+    testImplementation "org.http4k:http4k-server-netty:$http4k_version"
+
+    testImplementation platform("org.junit:junit-bom:$junit_version")
+    testImplementation "org.http4k:http4k-testing-hamkrest:$http4k_version"
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation "io.mockk:mockk:$mockk_version"
+    testImplementation("dev.forkhandles:result4k:2.2.0.0")
+}
+
+compileKotlin.kotlinOptions.jvmTarget = "11"
+compileTestKotlin.kotlinOptions.jvmTarget = "11"
+
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
