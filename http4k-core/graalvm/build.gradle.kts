@@ -28,7 +28,7 @@ graalvmNative {
 }
 
 val http4kVersion = providers.gradleProperty("http4kVersion").orNull
-val kotlinVersion = "2.0.21".orNull
+val kotlinVersion = "2.0.21"
 val junitVersion = providers.gradleProperty("junitVersion").orNull
 
 dependencies {
