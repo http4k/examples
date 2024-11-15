@@ -21,7 +21,7 @@ test {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
-    implementation platform("org.http4k:http4k-connect-bom:$http4k_connect_version")
+    implementation platform("org.http4k:http4k-bom:$http4kVersion")
 
     implementation "org.http4k:http4k-connect-amazon-kms"
     testImplementation "org.http4k:http4k-connect-amazon-kms-fake"

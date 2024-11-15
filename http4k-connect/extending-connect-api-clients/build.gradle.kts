@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Properties
 
 plugins {
-    kotlin("jvm") version providers.gradleProperty("kotlinVersion")
+    kotlin("jvm") version "2.0.21"
 }
 buildscript {
     repositories {
@@ -44,7 +44,7 @@ val gradleProperties = Properties().apply {
 }
 
 dependencies {
-    api(platform("org.http4k:http4k-connect-bom:${gradleProperties["http4k_connect_version"]}"))
+    api(platform("org.http4k:http4k-bom:${gradleProperties["http4kVersion"]}"))
 
     api("org.http4k:http4k-connect-core")
 

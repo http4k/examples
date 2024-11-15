@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Properties
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version providers.gradleProperty("kotlinVersion")
+    id("org.jetbrains.kotlin.jvm") version "2.0.21"
     id("com.google.devtools.ksp") version "2.0.21-1.0.27"
 }
 
@@ -43,7 +43,6 @@ val gradleProperties = Properties().apply {
 
 dependencies {
     implementation(platform("org.http4k:http4k-bom:${gradleProperties["http4kVersion"]}"))
-    implementation(platform("org.http4k:http4k-connect-bom:${gradleProperties["http4kConnectVersion"]}"))
     implementation("org.http4k:http4k-core")
 
     ksp("org.http4k:http4k-connect-ksp-generator:${gradleProperties["http4kConnectVersion"]}")

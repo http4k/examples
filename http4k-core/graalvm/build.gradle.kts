@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version providers.gradleProperty("kotlinVersion")
+    id("org.jetbrains.kotlin.jvm") version "2.0.21"
     application
     id("org.graalvm.buildtools.native") version "0.9.28"
 }
@@ -28,7 +28,7 @@ graalvmNative {
 }
 
 val http4kVersion = providers.gradleProperty("http4kVersion").orNull
-val kotlinVersion = providers.gradleProperty("kotlinVersion").orNull
+val kotlinVersion = "2.0.21".orNull
 val junitVersion = providers.gradleProperty("junitVersion").orNull
 
 dependencies {

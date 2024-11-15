@@ -2,15 +2,16 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Properties
 
 plugins {
-    kotlin("jvm") version providers.gradleProperty("kotlinVersion")
+    kotlin("jvm") version "2.0.21"
     id("com.google.devtools.ksp") version "2.0.21-1.0.27"
 }
+
 buildscript {
     repositories {
         mavenCentral()
     }
-
 }
+
 repositories {
     mavenCentral()
 }
@@ -46,7 +47,7 @@ val gradleProperties = Properties().apply {
 }
 
 dependencies {
-    implementation(platform("org.http4k:http4k-connect-bom:${gradleProperties["http4k_connect_version"]}"))
+    implementation(platform("org.http4k:http4k-bom:${gradleProperties["http4kVersion"]}"))
 
     // this is required for implementing your own adapter
     implementation("org.http4k:http4k-connect-core")
@@ -55,7 +56,7 @@ dependencies {
     implementation("org.http4k:http4k-format-moshi")
 
     // this and the plugin are only required for generating custom action extension functions (if you want to)
-    ksp("org.http4k:http4k-connect-ksp-generator:${gradleProperties["http4k_connect_version"]}")
+    ksp("org.http4k:http4k-connect-ksp-generator")
 
     testImplementation(platform("org.junit:junit-bom:${gradleProperties["junitVersion"]}"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
