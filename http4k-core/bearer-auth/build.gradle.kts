@@ -3,7 +3,7 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version providers.gradleProperty("kotlinVersion")
     application
 }
 

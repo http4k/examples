@@ -2,8 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Properties
 
 plugins {
-    kotlin("jvm") version "1.9.23"
-    id("com.google.devtools.ksp") version "1.9.23-1.0.20"
+    kotlin("jvm") version providers.gradleProperty("kotlinVersion")
+    id("com.google.devtools.ksp") version "2.0.21-1.0.27"
 }
 buildscript {
     repositories {
@@ -57,11 +57,11 @@ dependencies {
     // this and the plugin are only required for generating custom action extension functions (if you want to)
     ksp("org.http4k:http4k-connect-ksp-generator:${gradleProperties["http4k_connect_version"]}")
 
-    testImplementation(platform("org.junit:junit-bom:${gradleProperties["junit_version"]}"))
+    testImplementation(platform("org.junit:junit-bom:${gradleProperties["junitVersion"]}"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")
-    testImplementation("io.mockk:mockk:${gradleProperties["mockk_version"]}")
+    testImplementation("io.mockk:mockk:${gradleProperties["mockkVersion"]}")
 
     // these are required for implementing your own fake
     testImplementation("org.http4k:http4k-connect-core-fake")

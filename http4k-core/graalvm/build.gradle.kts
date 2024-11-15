@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.23"
+    id("org.jetbrains.kotlin.jvm") version providers.gradleProperty("kotlinVersion")
     application
     id("org.graalvm.buildtools.native") version "0.9.28"
 }

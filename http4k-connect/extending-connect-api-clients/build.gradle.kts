@@ -2,7 +2,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.Properties
 
 plugins {
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version providers.gradleProperty("kotlinVersion")
 }
 buildscript {
     repositories {
@@ -53,9 +53,9 @@ dependencies {
 
     api("org.http4k:http4k-format-moshi")
 
-    testImplementation(platform("org.junit:junit-bom:${gradleProperties["junit_version"]}"))
+    testImplementation(platform("org.junit:junit-bom:${gradleProperties["junitVersion"]}"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")
-    testImplementation("io.mockk:mockk:${gradleProperties["mockk_version"]}")
+    testImplementation("io.mockk:mockk:${gradleProperties["mockkVersion"]}")
 }

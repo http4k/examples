@@ -1,7 +1,7 @@
 import java.util.Properties
 
 plugins {
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version providers.gradleProperty("kotlinVersion")
 }
 
 repositories {
@@ -18,7 +18,7 @@ val gradleProperties = Properties().apply {
 
 dependencies {
     implementation(platform("software.amazon.awssdk:bom:${gradleProperties["aws_sdk_version"]}"))
-    testImplementation(platform("org.http4k:http4k-bom:${gradleProperties["http4k_version"]}"))
+    testImplementation(platform("org.http4k:http4k-bom:${gradleProperties["http4kVersion"]}"))
     testImplementation(platform("org.http4k:http4k-connect-bom:${gradleProperties["http4k_connect_version"]}"))
 
     implementation("software.amazon.awssdk:dynamodb") // Use the official V2 AWS SDK in your production code
