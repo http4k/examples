@@ -1,5 +1,5 @@
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "2.0.21"
+    kotlin("jvm") version "2.0.21"
     application
     id("org.graalvm.buildtools.native") version "0.9.28"
 }

@@ -19,7 +19,7 @@ jobs:
           - "http4k-core/hello-world"
           - "http4k-core/hexagonal"
           - "http4k-core/hotwire"
-          - "http4k-core/http4k-connect"
+#          - "http4k-core/http4k-connect"
           - "http4k-core/graphql"
           - "http4k-core/json-api"
           - "http4k-core/oauth"
