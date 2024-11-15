@@ -8,6 +8,7 @@ import org.http4k.core.then
 import org.http4k.filter.ClientFilters
 import org.junit.Test
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import java.util.UUID
 
@@ -24,6 +25,7 @@ class CatPicturesRepoTest {
     fun `set and get - with in-memory server`() {
         val client = S3Client.builder()
             .httpClient(AwsSdkClient(FakeS3()))
+            .region(Region.US_EAST_1)
             .credentialsProvider { AwsBasicCredentials.create("key_id", "secret_key") }
             .build()
             .catPicturesRepo()
@@ -44,6 +46,7 @@ class CatPicturesRepoTest {
         val client = S3Client.builder()
             .httpClient(AwsSdkClient(ClientFilters.SetHostFrom(FakeS3::class.defaultLocalUri).then(JavaHttpClient())))
             .credentialsProvider { AwsBasicCredentials.create("key_id", "secret_key") }
+            .region(Region.US_EAST_1)
             .build()
             .catPicturesRepo()
 

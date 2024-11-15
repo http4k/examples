@@ -4,6 +4,7 @@ import org.http4k.chaos.start
 import org.http4k.connect.amazon.dynamodb.FakeDynamoDb
 import org.junit.Test
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
+import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient
 import software.amazon.awssdk.services.dynamodb.model.AttributeDefinition
 import software.amazon.awssdk.services.dynamodb.model.KeySchemaElement
@@ -32,6 +33,7 @@ class CatsRepoTest {
         val testObj = DynamoDbClient.builder()
             .httpClient(AwsSdkClient(FakeDynamoDb()))
             .credentialsProvider { AwsBasicCredentials.create("key_id", "secret_key") }
+            .region(Region.US_EAST_1)
             .build()
             .catsRepo()
 
@@ -48,6 +50,7 @@ class CatsRepoTest {
         val testObj = DynamoDbClient.builder()
             .endpointOverride(URI("http://localhost:${server.port()}"))
             .credentialsProvider { AwsBasicCredentials.create("key_id", "secret_key") }
+            .region(Region.US_EAST_1)
             .build()
             .catsRepo()
 
