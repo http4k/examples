@@ -40,7 +40,8 @@ dependencies {
     implementation "org.http4k:http4k-client-okhttp"
     implementation "org.http4k:http4k-format-jackson"
     implementation "org.http4k:http4k-server-undertow"
-    implementation "org.http4k:http4k-cloudnative"
+    implementation "org.http4k:http4k-config"
+    implementation "org.http4k:http4k-platform-core"
     implementation "dev.forkhandles:result4k"
 
     testImplementation "org.http4k:http4k-testing-chaos"
