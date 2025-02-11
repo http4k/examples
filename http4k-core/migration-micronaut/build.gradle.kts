@@ -12,6 +12,7 @@ group = "com.example"
 
 val kotlinVersion=project.properties.get("kotlinVersion")
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -22,6 +23,9 @@ dependencies {
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
+    implementation("org.http4k:http4k-bridge-micronaut:${properties["http4kVersion"]}")
+    implementation("org.http4k:http4k-format-jackson:${properties["http4kVersion"]}")
+
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")

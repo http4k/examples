@@ -1,28 +1,10 @@
-## Micronaut 4.7.5 Documentation
+# Migration from Micronaut to http4k
 
-- [User Guide](https://docs.micronaut.io/4.7.5/guide/index.html)
-- [API Reference](https://docs.micronaut.io/4.7.5/api/index.html)
-- [Configuration Reference](https://docs.micronaut.io/4.7.5/guide/configurationreference.html)
-- [Micronaut Guides](https://guides.micronaut.io/index.html)
----
+This repository shows a simple example of how to migrate a Micronaut application to http4k.
 
-- [Micronaut Gradle Plugin documentation](https://micronaut-projects.github.io/micronaut-gradle-plugin/latest/)
-- [GraalVM Gradle Plugin documentation](https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html)
-- [Shadow Gradle Plugin](https://plugins.gradle.org/plugin/com.github.johnrengelman.shadow)
-## Feature ksp documentation
+The main parts are:
+1. The usage of the http4k-bridge-micronaut to act as a fallback HTTP handler. (see [Application.kt](src/main/kotlin/example/Application.kt#L13))
+2. The definition of equivalent routes in http4k (see [Controllers.kt](src/main/kotlin/example/Controllers.kt#L24))
 
-- [Micronaut Kotlin Symbol Processing (KSP) documentation](https://docs.micronaut.io/latest/guide/#kotlin)
-
-- [https://kotlinlang.org/docs/ksp-overview.html](https://kotlinlang.org/docs/ksp-overview.html)
-
-
-## Feature serialization-jackson documentation
-
-- [Micronaut Serialization Jackson Core documentation](https://micronaut-projects.github.io/micronaut-serialization/latest/guide/)
-
-
-## Feature micronaut-aot documentation
-
-- [Micronaut AOT documentation](https://micronaut-projects.github.io/micronaut-aot/latest/guide/)
-
+Using this incremental approach, each `@Controller` in the application can be converted to http4k while keeping the application working as a whole. Once all routes are migrated, the dependency on Micronaut can be removed and the application can be deployed as a standalone http4k application.
 
