@@ -2,7 +2,7 @@ import io.kotest.matchers.shouldBe
 import org.http4k.aws.AwsSdkClient
 import org.http4k.chaos.start
 import org.http4k.connect.amazon.dynamodb.FakeDynamoDb
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient

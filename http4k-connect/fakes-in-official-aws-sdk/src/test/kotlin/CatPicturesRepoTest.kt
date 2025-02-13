@@ -6,11 +6,11 @@ import org.http4k.client.JavaHttpClient
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.core.then
 import org.http4k.filter.ClientFilters
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
-import java.util.UUID
+import java.util.*
 
 class CatPicturesRepoTest {
 
