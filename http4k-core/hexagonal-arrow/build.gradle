@@ -46,6 +46,7 @@ dependencies {
 
     testImplementation "org.http4k:http4k-testing-chaos"
     testImplementation "org.http4k:http4k-testing-strikt"
+    testImplementation "org.http4k:http4k-testing-hamkrest"
     testImplementation "org.http4k:http4k-testing-webdriver"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
