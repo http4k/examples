@@ -1,14 +1,15 @@
 package org.http4k.demo
 
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
+import org.http4k.core.PolyHandler
 import org.http4k.core.Request
 import org.http4k.core.then
 import org.http4k.filter.ServerFilters.BasicAuth
 import org.http4k.routing.ResourceLoader.Companion.Classpath
+import org.http4k.routing.poly
 import org.http4k.routing.static
+import org.http4k.routing.websocket.bind
 import org.http4k.routing.websockets
-import org.http4k.routing.ws.bind
-import org.http4k.server.PolyHandler
 import org.http4k.websocket.Websocket
 import org.http4k.websocket.WsMessage
 import org.http4k.websocket.WsResponse
@@ -38,9 +39,9 @@ fun IrcApp(env: Environment): PolyHandler {
     }
 
     val http = BasicAuth("http4k", env[CREDENTIALS]).then(static(Classpath()))
-    val ws = websockets("/ws" bind { _: Request ->
+    val ws = websockets("/ws" bind  { _: Request ->
         WsResponse(::newConnection)
     })
 
-    return PolyHandler(http, ws)
+    return poly(http, ws)
 }

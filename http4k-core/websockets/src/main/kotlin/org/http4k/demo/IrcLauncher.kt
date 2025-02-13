@@ -1,6 +1,6 @@
 package org.http4k.demo
 
-import org.http4k.cloudnative.env.Environment
+import org.http4k.config.Environment
 import org.http4k.server.Undertow
 import org.http4k.server.asServer
 

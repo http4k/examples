@@ -1,6 +1,6 @@
 package org.http4k.demo
 
-import org.http4k.cloudnative.env.EnvironmentKey
+import org.http4k.config.EnvironmentKey
 import org.http4k.core.Credentials
 
 val CREDENTIALS = EnvironmentKey.map(String::toCredentials, Credentials::fromCredentials)
