@@ -1,14 +1,13 @@
-package datastar
-
 import org.http4k.core.Method.GET
 import org.http4k.core.PolyHandler
 import org.http4k.format.Moshi
 import org.http4k.format.asDatastarSignal
-import org.http4k.routing.RoutingSseHandler
 import org.http4k.routing.poly
 import org.http4k.routing.sse
 import org.http4k.routing.sse.bind
 import org.http4k.routing.static
+import org.http4k.server.Jetty
+import org.http4k.server.asServer
 import org.http4k.sse.Sse
 import org.http4k.sse.sendMergeSignals
 import java.io.File
@@ -66,4 +65,8 @@ private fun loadAnimation(zipFile: File): AsciiAnimation {
     }
 
     return AsciiAnimation(frames)
+}
+
+fun main() {
+    BadApples().asServer(Jetty(8999)).start()
 }
