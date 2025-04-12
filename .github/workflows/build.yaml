@@ -15,6 +15,7 @@ jobs:
           - "http4k-core/aws-lambda-custom-runtime"
           - "http4k-core/aws-lambda-events"
           - "http4k-core/bearer-auth"
+          - "http4k-core/datastar"
           - "http4k-core/graalvm"
           - "http4k-core/hello-world"
           - "http4k-core/hexagonal"
@@ -35,6 +36,7 @@ jobs:
           - "http4k-connect/extending-connect-api-clients"
           - "http4k-connect/fakes-in-official-aws-sdk"
           - "http4k-connect/using-connect-api-clients"
+
     steps:
       - uses: actions/checkout@v4.1.1
       - uses: actions/setup-java@v4.0.0

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>http4k Datastar demo</title>
+    <link rel="stylesheet" type="text/css" href="styles.css"/>
+    <script type="module" src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.11/bundles/datastar.js"></script>
+    <style>
+        #contents {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        pre {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div id="users" data-on-load="@get('/users')">hello</div>
+<div
+        id="contents"
+        data-signals="{_contents: 'bad apple frames go here', percentage: 0}"
+        data-on-click="@get('/bad_apple/updates')"
+>
+    <div>
+        <input type="range" min="1" max="100" data-model="percentage" disabled/>
+        <div><span data-text="$percentage.toFixed(2)"></span>%</div>
+    </div>
+    <div>
+        <pre data-text="$_contents"></pre>
+    </div>
+</div>
+</body>
+</html>

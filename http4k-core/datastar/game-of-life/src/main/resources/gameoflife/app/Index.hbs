@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Game of Life</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Conway's Game of Life" name="description">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        html {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 18px;
+            color: black;
+        }
+        
+        .main {
+            height: 100dvh;
+            width: min(100% - 2rem, 30rem);
+            margin-inline: auto;
+            padding-block: 2dvh;
+            display: flex;
+            gap: 5px;
+            flex-direction: column;
+        }
+        
+        .board {
+            background: black;
+            gap: 1px;
+            padding: 2px;
+            margin-inline: auto;
+            max-width: min(100%, 30rem);
+            display: grid;
+            aspect-ratio: 1/1;
+            grid-template-rows: repeat({{boardSize}}, 1fr);
+            grid-template-columns: repeat({{boardSize}}, 1fr);
+        }
+        
+        .tile {
+            transition: background 0.4s ease;
+        }
+    </style>
+    <script type="module"
+            src="https://cdn.jsdelivr.net/gh/starfederation/datastar@v1.0.0-beta.1/bundles/datastar.js"></script>
+</head>
+<body>
+<main id="morph" class="main">
+    <h1>Conway's Game of Life</h1>
+    <p>Built with ❤️ using
+        <a href="https://kotlinlang.org/">Kotlin</a>,
+        <a href="https://http4k.org/">http4k</a>
+        and
+        <a href="https://data-star.dev/">Datastar</a> 🚀
+    </p>
+    <p>Original source code can be found
+        <a href="https://github.com/andersmurphy/hyperlith/blob/master/examples/game_of_life/src/app/main.clj">here</a>
+    </p>
+    <div id="game-board-container">
+        <div class="board" id="game-board" data-on-load="@get('/game-board')">
+        </div>
+    </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<div id="users" class="table-responsive">
+    <table class="table table-hover mb-0">
+        <thead class="bg-primary text-white">
+        <tr>
+            <th scope="col" class="ps-4">User</th>
+            <th scope="col">Email</th>
+            <th scope="col">Status</th>
+            <th scope="col">Last Login</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each users}}
+            <tr>
+                <td class="ps-4">
+                    <div class="d-flex align-items-center">
+                        <div class="bg-primary rounded-circle d-flex justify-content-center align-items-center text-white"
+                             style="width: 40px; height: 40px;">
+                            <span>{{ initial}}</span>
+                        </div>
+                        <span class="ms-2">{{ name }}</span>
+                    </div>
+                </td>
+                <td>{{ email }}</td>
+                {{#if active }}
+                    <td><span class="badge bg-success">Active</span></td>
+                {{else}}
+                    <td><span class="badge bg-danger">Inactive</span></td>
+                {{/if}}
+                <td>{{ login }}</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+</div>
