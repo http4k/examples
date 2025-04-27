@@ -1,7 +1,6 @@
 
 
 dependencies {
-    testImplementation("org.jetbrains.kotlin:kotlin-stdlib:${project.property("kotlinVersion")}")
 
     testImplementation("org.http4k:http4k-core:${project.property("http4kVersion")}")
     testImplementation("org.http4k:http4k-client-okhttp:${project.property("http4kVersion")}")

@@ -24,7 +24,6 @@ dependencies {
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime:$micronautKotlinVersion")
     implementation("io.micronaut.serde:micronaut-serde-jackson:$micronautSerdeVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${project.property("kotlinVersion")}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.property("kotlinVersion")}")
     implementation("org.http4k:http4k-bridge-micronaut:${project.property("http4kVersion")}")
     implementation("org.http4k:http4k-format-jackson:${project.property("http4kVersion")}")
     implementation("io.micronaut:micronaut-runtime:$micronautVersion")

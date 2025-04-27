@@ -8,7 +8,6 @@ plugins {
 val quarkusVersion = "3.2.0.Final"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.property("kotlinVersion")}")
     implementation(enforcedPlatform("io.quarkus:quarkus-universe-bom:$quarkusVersion"))
     implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
     implementation("org.http4k:http4k-core")

@@ -7,7 +7,6 @@ plugins {
 val arrowVersion = "1.1.2"
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.property("kotlinVersion")}")
     implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
     implementation(platform("dev.forkhandles:forkhandles-bom:${project.property("forkHandlesVersion")}"))
 
