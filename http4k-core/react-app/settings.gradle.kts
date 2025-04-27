@@ -1,4 +1,3 @@
 rootProject.name = "react-app"
 
-include "backend"
-
+include("backend")
