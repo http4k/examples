@@ -1,8 +1,8 @@
 
 
 plugins {
-    id("com.github.johnrengelman.shadow")
-    id("io.quarkus")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.quarkus") version "3.2.0.Final"
 }
 
 val quarkusVersion = "3.2.0.Final"

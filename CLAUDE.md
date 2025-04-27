@@ -91,6 +91,29 @@ This document tracks the maintenance tasks performed on the http4k examples repo
   - Improving readability of build files
   - Making future dependency upgrades easier to manage
 
+### 8. Modularize Plugin Dependencies (2025-04-27)
+- Moved plugin declarations from root project to individual modules:
+  - Kept only the Kotlin JVM plugin at the root level
+  - Moved specialized plugins to the modules that use them
+- Updated specific plugins in each module:
+  - KSP plugin (version 2.1.20-1.0.31) moved to:
+    - http4k-core/migration-micronaut
+    - http4k-core/http4k-connect
+    - http4k-connect/custom-api-client-and-fake
+  - Shadow plugin (version 7.1.2) moved to:
+    - http4k-core/migration-micronaut
+    - http4k-core/quarkus
+    - http4k-core/aws-lambda-custom-runtime
+  - Quarkus plugin (version 3.2.0.Final) moved to:
+    - http4k-core/quarkus
+  - Micronaut Application plugin added to:
+    - http4k-core/migration-micronaut
+- Updated GitHub workflow to use new multi-module structure:
+  - Updated matrix to use Gradle module paths (e.g., :core:bearer-auth)
+  - Changed build command to run against specific modules
+  - Added missing modules to build matrix (migration modules, hexagonal-arrow)
+  - Improved build step naming for better CI logs
+
 ### Summary of improvements
 - Standardized Gradle version to 8.13 across all projects
 - Upgraded Kotlin version to 2.1.20 and related plugins
@@ -99,8 +122,9 @@ This document tracks the maintenance tasks performed on the http4k examples repo
 - Complete conversion to Kotlin DSL for all Gradle files (build and settings)
 - Consolidated into a single multi-module Gradle project for simplified management
 - Centralized core version management in gradle.properties file
-- Modularized other dependency versions for better maintainability
+- Modularized other dependency versions and plugins for better maintainability
 - Fixed dependency issues and incompatibilities
+- Updated CI workflow for proper multi-module builds
 - Maintained documentation for future maintenance work
 
 ### Future Work

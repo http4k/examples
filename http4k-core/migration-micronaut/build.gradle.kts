@@ -2,8 +2,8 @@
 
 plugins {
     application
-    id("com.github.johnrengelman.shadow")
-    id("com.google.devtools.ksp")
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.google.devtools.ksp") version "2.1.20-1.0.31"
     id("io.micronaut.application") version "4.0.3"
 }
 

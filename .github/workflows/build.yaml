@@ -11,31 +11,35 @@ jobs:
     strategy:
       matrix:
         project:
-          - "http4k-core/aws-lambda-http"
-          - "http4k-core/aws-lambda-custom-runtime"
-          - "http4k-core/aws-lambda-events"
-          - "http4k-core/bearer-auth"
-          - "http4k-core/datastar"
-          - "http4k-core/graalvm"
-          - "http4k-core/hello-world"
-          - "http4k-core/hexagonal"
-          - "http4k-core/hotwire"
-          - "http4k-core/http4k-connect"
-          - "http4k-core/graphql"
-          - "http4k-core/json-api"
-          - "http4k-core/oauth"
-          - "http4k-core/openapi"
-          - "http4k-core/quarkus"
-          - "http4k-core/react-app"
-          - "http4k-core/typesafe-configuration"
-          - "http4k-core/web-content"
-          - "http4k-core/websockets"
+          - ":core:aws-lambda-http"
+          - ":core:aws-lambda-custom-runtime"
+          - ":core:aws-lambda-events"
+          - ":core:bearer-auth"
+          - ":core:datastar"
+          - ":core:graalvm"
+          - ":core:hello-world"
+          - ":core:hexagonal"
+          - ":core:hexagonal-arrow"
+          - ":core:hotwire"
+          - ":core:http4k-connect"
+          - ":core:graphql"
+          - ":core:json-api"
+          - ":core:migration-micronaut"
+          - ":core:migration-spring"
+          - ":core:migration-ktor"
+          - ":core:oauth"
+          - ":core:openapi"
+          - ":core:quarkus"
+          - ":core:react-app"
+          - ":core:typesafe-configuration"
+          - ":core:web-content"
+          - ":core:websockets"
 
-          - "http4k-connect/connect-pattern"
-          - "http4k-connect/custom-api-client-and-fake"
-          - "http4k-connect/extending-connect-api-clients"
-          - "http4k-connect/fakes-in-official-aws-sdk"
-          - "http4k-connect/using-connect-api-clients"
+          - ":connect:connect-pattern"
+          - ":connect:custom-api-client-and-fake"
+          - ":connect:extending-connect-api-clients"
+          - ":connect:fakes-in-official-aws-sdk"
+          - ":connect:using-connect-api-clients"
 
     steps:
       - uses: actions/checkout@v4.1.1
@@ -44,7 +48,8 @@ jobs:
           distribution: temurin
           java-version: 21
           cache: gradle
-      - run: pushd ${{ matrix.project }} && ./gradlew test
+      - name: Build and test module
+        run: ./gradlew ${{ matrix.project }}:build
       - name: Tag automerge branch
         if: ${{ github.event_name == 'pull_request' }}
         uses: TimonVS/pr-labeler-action@v5.0.0
@@ -52,5 +57,4 @@ jobs:
           configuration-path: .github/pr-labeler.yml
         env:
           GITHUB_TOKEN: ${{ secrets.ORG_PUBLIC_REPO_RELEASE_TRIGGERING }}
-
 
