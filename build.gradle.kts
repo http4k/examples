@@ -23,7 +23,7 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = "org.jetbrains.kotlin.jvm")
+    apply(plugin = "kotlin")
 
     tasks.withType<KotlinCompile> {
         compilerOptions {
