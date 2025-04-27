@@ -1,3 +1,5 @@
+package merge_signals
+
 import org.http4k.core.Method.GET
 import org.http4k.core.PolyHandler
 import org.http4k.format.Moshi
@@ -16,7 +18,7 @@ import java.lang.Thread.startVirtualThread
 import java.util.zip.ZipFile
 
 fun BadApples(): PolyHandler {
-    val animation = loadAnimation(File("signals/src/main/resources/bad-apples.zip"))
+    val animation = loadAnimation(File("merge_signals/src/main/resources/bad-apples.zip"))
 
     return poly(
         "/bad_apple/updates" bind sse(

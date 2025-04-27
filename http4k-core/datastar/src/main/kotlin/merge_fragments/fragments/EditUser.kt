@@ -1,6 +1,6 @@
-package datastar.fragments
+package merge_fragments.fragments
 
-import datastar.User
+import merge_fragments.User
 import org.http4k.format.Moshi
 import org.http4k.template.ViewModel
 

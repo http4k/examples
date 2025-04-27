@@ -1,8 +1,8 @@
-package datastar
+package merge_fragments
 
-import datastar.web.UserList
-import datastar.web.index
-import datastar.web.manageUsers
+import merge_fragments.web.UserList
+import merge_fragments.web.index
+import merge_fragments.web.manageUsers
 import org.http4k.core.Body
 import org.http4k.core.ContentType
 import org.http4k.core.PolyHandler

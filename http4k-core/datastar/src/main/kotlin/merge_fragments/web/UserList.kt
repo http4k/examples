@@ -1,8 +1,8 @@
-package datastar.web
+package merge_fragments.web
 
-import datastar.User
-import datastar.Users
-import datastar.fragments.ListUsers
+import merge_fragments.User
+import merge_fragments.Users
+import merge_fragments.fragments.ListUsers
 import org.http4k.core.Method.GET
 import org.http4k.routing.sse
 import org.http4k.routing.sse.bind

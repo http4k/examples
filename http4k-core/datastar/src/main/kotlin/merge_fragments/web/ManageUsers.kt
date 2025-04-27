@@ -1,10 +1,10 @@
-package datastar.web
+package merge_fragments.web
 
-import datastar.User
-import datastar.Users
-import datastar.fragments.AddUser
-import datastar.fragments.EditUser
-import datastar.fragments.ListUsers
+import merge_fragments.User
+import merge_fragments.Users
+import merge_fragments.fragments.AddUser
+import merge_fragments.fragments.EditUser
+import merge_fragments.fragments.ListUsers
 import org.http4k.core.Method.DELETE
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.PATCH

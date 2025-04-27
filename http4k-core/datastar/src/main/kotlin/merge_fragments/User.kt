@@ -1,4 +1,4 @@
-package datastar
+package merge_fragments
 
 sealed interface User {
     val firstName: String

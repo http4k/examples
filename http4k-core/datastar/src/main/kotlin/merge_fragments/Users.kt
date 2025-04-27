@@ -1,4 +1,4 @@
-package datastar
+package merge_fragments
 
 class Users {
     private var count = 0

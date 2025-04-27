@@ -1,4 +1,4 @@
-package datastar.pages
+package merge_fragments.pages
 
 import org.http4k.template.ViewModel
 

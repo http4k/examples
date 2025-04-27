@@ -1,3 +1,5 @@
+package gameoflife
+
 import gameoflife.app.GameOfLife
 import org.http4k.server.Jetty
 import org.http4k.server.asServer

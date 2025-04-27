@@ -1,6 +1,6 @@
-package datastar.web
+package merge_fragments.web
 
-import datastar.pages.Index
+import merge_fragments.pages.Index
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.with
