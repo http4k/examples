@@ -16,7 +16,7 @@ jobs:
         id: set-modules
         run: |
           # Find all build.gradle.kts files except the root one
-          MODULES=$(find . -type f -name "build.gradle.kts" -not -path "./build.gradle.kts" | sed -e 's|^./||' -e 's|/build.gradle.kts||' | sed -e 's|/|\\-|g' | awk '{print "\":" $0 "\""}' | tr '\n' ',' | sed 's/,$//')
+          MODULES=$(find . -type f -name "build.gradle.kts" -not -path "./build.gradle.kts" | sed -e 's|^./||' -e 's|/build.gradle.kts||' | sed -e 's|/|-|g' | awk '{print "\":" $0 "\""}' | tr '\n' ',' | sed 's/,$//')
           echo "modules=[${MODULES}]" >> $GITHUB_OUTPUT
           echo "Found modules: [${MODULES}]"
 
