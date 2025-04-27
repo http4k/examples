@@ -1,35 +1,26 @@
 
+
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.ktor)
+    application
 }
 
-group = "com.example"
-version = "0.0.1"
+val ktorVersion = "3.0.3"
+val logbackVersion = "1.4.14"
+
+dependencies {
+    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
+    implementation("org.http4k:http4k-bridge-ktor:${project.property("http4kVersion")}")
+
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${project.property("kotlinVersion")}")
+}
 
 application {
     mainClass.set("io.ktor.server.netty.EngineMain")
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
-}
-
-repositories {
-    mavenLocal()
-    mavenCentral()
-}
-
-dependencies {
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.netty)
-    implementation(libs.logback.classic)
-    implementation(libs.ktor.server.core)
-    implementation(libs.ktor.server.config.yaml)
-    implementation("org.http4k:http4k-bridge-ktor:${properties["http4kVersion"]}")
-//    implementation("io.ktor:ktor-server-core-jvm:3.0.3")
-//    implementation("io.ktor:ktor-server-host-common-jvm:3.0.3")
-//    implementation("io.ktor:ktor-server-status-pages-jvm:3.0.3")
-
-    testImplementation(libs.ktor.server.test.host)
-    testImplementation(libs.kotlin.test.junit)
 }

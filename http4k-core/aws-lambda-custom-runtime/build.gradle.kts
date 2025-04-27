@@ -1,41 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 
 plugins {
-    kotlin("jvm") version "2.1.20"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-}
-
-repositories {
-    mavenCentral()
-}
-
-tasks {
-    test {
-        useJUnitPlatform()
-    }
-
-    withType<KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-        }
-    }
-
-    withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_21.toString()
-        targetCompatibility = JavaVersion.VERSION_21.toString()
-    }
-
-    withType<ShadowJar> {
-        manifest {
-            attributes(mapOf("Main-Class" to "org.http4k.example.MyHttp4kFunctionKt"))
-        }
-        archiveBaseName.set("http4k-lambda")
-        archiveClassifier.set("")
-        archiveVersion.set("")
-        mergeServiceFiles()
-        minimize()
-    }
+    id("com.github.johnrengelman.shadow")
 }
 
 dependencies {

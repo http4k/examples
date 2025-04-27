@@ -1,28 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 
 plugins {
-    kotlin("jvm") version "2.1.20"
     application
-}
-
-repositories {
-    mavenCentral()
-}
-
-application {
-    mainClass.set("com.example.WebContentKt")
-}
-
-tasks {
-    test {
-        useJUnitPlatform()
-    }
-
-    withType<KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-        }
-    }
 }
 
 dependencies {
@@ -35,4 +14,8 @@ dependencies {
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
+}
+
+application {
+    mainClass.set("com.example.WebContentKt")
 }

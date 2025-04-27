@@ -1,29 +1,4 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-plugins {
-    kotlin("jvm") version "2.1.20"
-}
-
-repositories {
-    mavenCentral()
-}
-
-tasks {
-    test {
-        useJUnitPlatform()
-    }
-
-    withType<KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-        }
-    }
-
-    withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_21.toString()
-        targetCompatibility = JavaVersion.VERSION_21.toString()
-    }
-}
 
 dependencies {
     implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))

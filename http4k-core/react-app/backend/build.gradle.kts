@@ -1,9 +1,7 @@
+
+
 plugins {
     application
-}
-
-application {
-    mainClass.set("org.http4k.examples.Http4kReactMainKt")
 }
 
 dependencies {
@@ -15,6 +13,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
 }
 
-tasks.register("stage") {
-    dependsOn("installDist")
+application {
+    mainClass.set("org.http4k.examples.Http4kReactMainKt")
 }

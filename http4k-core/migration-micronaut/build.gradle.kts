@@ -1,19 +1,9 @@
+
+
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.9.25"
-    id("org.jetbrains.kotlin.plugin.allopen") version "1.9.25"
-    id("com.google.devtools.ksp") version "1.9.25-1.0.20"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("io.micronaut.application") version "4.4.4"
-    id("io.micronaut.aot") version "4.4.4"
-}
-
-version = "0.1"
-group = "com.example"
-
-val kotlinVersion=project.properties.get("kotlinVersion")
-repositories {
-    mavenLocal()
-    mavenCentral()
+    application
+    id("com.github.johnrengelman.shadow")
+    id("com.google.devtools.ksp")
 }
 
 dependencies {
@@ -21,10 +11,10 @@ dependencies {
     ksp("io.micronaut.serde:micronaut-serde-processor")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
-    implementation("org.http4k:http4k-bridge-micronaut:${properties["http4kVersion"]}")
-    implementation("org.http4k:http4k-format-jackson:${properties["http4kVersion"]}")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:${project.property("kotlinVersion")}")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.property("kotlinVersion")}")
+    implementation("org.http4k:http4k-bridge-micronaut:${project.property("http4kVersion")}")
+    implementation("org.http4k:http4k-format-jackson:${project.property("http4kVersion")}")
 
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
@@ -32,41 +22,6 @@ dependencies {
     testImplementation("io.micronaut:micronaut-http-client")
 }
 
-
 application {
     mainClass = "com.example.ApplicationKt"
 }
-java {
-    sourceCompatibility = JavaVersion.toVersion("21")
-}
-
-
-graalvmNative.toolchainDetection = false
-
-micronaut {
-    runtime("netty")
-    testRuntime("junit5")
-    processing {
-        incremental(true)
-        annotations("com.example.*")
-    }
-    aot {
-        // Please review carefully the optimizations enabled below
-        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
-        optimizeServiceLoading = false
-        convertYamlToJava = false
-        precomputeOperations = true
-        cacheEnvironment = true
-        optimizeClassLoading = true
-        deduceEnvironment = true
-        optimizeNetty = true
-        replaceLogbackXml = true
-    }
-}
-
-
-tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
-    jdkVersion = "21"
-}
-
-

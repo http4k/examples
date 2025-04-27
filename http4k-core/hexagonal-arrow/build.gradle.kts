@@ -1,33 +1,7 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 
 plugins {
-    kotlin("jvm") version "2.1.20"
     application
-}
-
-repositories {
-    mavenCentral()
-}
-
-application {
-    mainClass.set("org.http4k.hexagonal.MarketKt")
-}
-
-tasks {
-    test {
-        useJUnitPlatform()
-    }
-
-    withType<KotlinCompile> {
-        compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
-        }
-    }
-
-    withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_21.toString()
-        targetCompatibility = JavaVersion.VERSION_21.toString()
-    }
 }
 
 dependencies {
@@ -49,4 +23,8 @@ dependencies {
     testImplementation("org.http4k:http4k-testing-webdriver")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${project.property("junitVersion")}")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:${project.property("junitVersion")}")
+}
+
+application {
+    mainClass.set("org.http4k.hexagonal.MarketKt")
 }

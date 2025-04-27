@@ -1,1 +1,0 @@
-rootProject.name = "http4k-aws-lambda-example-http"
