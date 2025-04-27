@@ -6,39 +6,26 @@ on:
     branches:
       - '*'
 jobs:
+  discover_modules:
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.set-modules.outputs.modules }}
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - name: Find all build.gradle.kts files and extract module paths
+        id: set-modules
+        run: |
+          MODULES=$(find http4k-core http4k-connect -type f -name "build.gradle.kts" | sed -e 's|/build.gradle.kts||' | sed -e 's|/|\\-|g' | awk '{print "\":" $0 "\""}' | tr '\n' ',' | sed 's/,$//')
+          echo "modules=[${MODULES}]" >> $GITHUB_OUTPUT
+          echo "Found modules: [${MODULES}]"
+
   build:
+    needs: discover_modules
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        project:
-          - ":http4k-core-aws-lambda-http"
-          - ":http4k-core-aws-lambda-custom-runtime"
-          - ":http4k-core-aws-lambda-events"
-          - ":http4k-core-bearer-auth"
-          - ":http4k-core-datastar"
-          - ":http4k-core-graalvm"
-          - ":http4k-core-hello-world"
-          - ":http4k-core-hexagonal"
-          - ":http4k-core-hexagonal-arrow"
-          - ":http4k-core-hotwire"
-          - ":http4k-core-http4k-connect"
-          - ":http4k-core-graphql"
-          - ":http4k-core-json-api"
-          - ":http4k-core-migration-micronaut"
-          - ":http4k-core-migration-spring"
-          - ":http4k-core-migration-ktor"
-          - ":http4k-core-oauth"
-          - ":http4k-core-openapi"
-          - ":http4k-core-quarkus"
-          - ":http4k-core-react-app"
-          - ":http4k-core-typesafe-configuration"
-          - ":http4k-core-web-content"
-          - ":http4k-core-websockets"
-          - ":http4k-connect-connect-pattern"
-          - ":http4k-connect-custom-api-client-and-fake"
-          - ":http4k-connect-extending-connect-api-clients"
-          - ":http4k-connect-fakes-in-official-aws-sdk"
-          - ":http4k-connect-using-connect-api-clients"
+        project: ${{ fromJson(needs.discover_modules.outputs.modules) }}
+      fail-fast: false # Continue running other modules even if one fails
 
     steps:
       - uses: actions/checkout@v4.1.1

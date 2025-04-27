@@ -61,6 +61,13 @@ This document tracks the maintenance tasks performed on the http4k examples repo
 - Updated GitHub workflow matrix to use the new module names
 - All 29 modules now use consistent naming format in all scripts and configuration files
 
+### 7. Implement Automatic Module Discovery (2025-04-27)
+- Modified GitHub workflow to automatically discover modules rather than using a hard-coded list
+- Added a discovery job that finds all build.gradle.kts files and converts paths to module names
+- Updated build_all.sh and verify_projects.sh to dynamically find modules using find command
+- This makes the build system resilient to adding/removing modules without manual updates
+- System now prints a list of discovered modules at the start of build or verification
+
 ## Maintenance Requirements
 
 ### README Files

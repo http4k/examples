@@ -8,38 +8,18 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 
-# List of all modules to build (from the matrix in GitHub workflow)
-MODULES=(
-  ":http4k-core-aws-lambda-http"
-  ":http4k-core-aws-lambda-custom-runtime"
-  ":http4k-core-aws-lambda-events"
-  ":http4k-core-aws-lambda-url"
-  ":http4k-core-bearer-auth"
-  ":http4k-core-datastar"
-  ":http4k-core-graalvm"
-  ":http4k-core-graphql"
-  ":http4k-core-hello-world"
-  ":http4k-core-hexagonal"
-  ":http4k-core-hexagonal-arrow"
-  ":http4k-core-hotwire"
-  ":http4k-core-http4k-connect"
-  ":http4k-core-json-api"
-  ":http4k-core-migration-micronaut"
-  ":http4k-core-migration-spring"
-  ":http4k-core-migration-ktor"
-  ":http4k-core-oauth"
-  ":http4k-core-openapi"
-  ":http4k-core-quarkus"
-  ":http4k-core-react-app"
-  ":http4k-core-typesafe-configuration"
-  ":http4k-core-web-content"
-  ":http4k-core-websockets"
-  ":http4k-connect-connect-pattern"
-  ":http4k-connect-custom-api-client-and-fake"
-  ":http4k-connect-extending-connect-api-clients"
-  ":http4k-connect-fakes-in-official-aws-sdk"
-  ":http4k-connect-using-connect-api-clients"
-)
+# Auto-discover modules by finding all build.gradle.kts files
+echo "Discovering modules..."
+# Use a more portable approach instead of mapfile (which is bash 4+ only)
+MODULES=()
+while IFS= read -r line; do
+    MODULES+=("$line")
+done < <(find http4k-core http4k-connect -type f -name "build.gradle.kts" | sed -e 's|/build.gradle.kts||' | sed -e 's|/|-|g' | awk '{print ":" $0}')
+
+# Print discovered modules
+echo -e "${GREEN}Found ${#MODULES[@]} modules:${NC}"
+printf "  %s\n" "${MODULES[@]}"
+echo ""
 
 # Track success and failure
 SUCCESS_COUNT=0
