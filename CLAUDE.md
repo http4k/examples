@@ -17,32 +17,19 @@ This document tracks the maintenance tasks performed on the http4k examples repo
 - All projects now using Kotlin 2.1.20 and functioning correctly
 
 ### 3. Convert to Kotlin DSL (2025-04-27)
-- Identified 19 projects using Groovy DSL (build.gradle) that needed to be converted to Kotlin DSL (build.gradle.kts)
-- Successfully converted 6 projects to Kotlin DSL:
-  - `/Users/david/dev/http4k/examples/http4k-connect/connect-pattern`
-  - `/Users/david/dev/http4k/examples/http4k-core/hello-world`
-  - `/Users/david/dev/http4k/examples/http4k-core/web-content`
-  - `/Users/david/dev/http4k/examples/http4k-core/websockets`
-  - `/Users/david/dev/http4k/examples/http4k-core/graphql`
-  - `/Users/david/dev/http4k/examples/http4k-core/oauth`
-- All converted projects have passing tests
-- Manual conversion process used for more reliable results
-- Common patterns identified in build files:
+- Converted all 19 Groovy DSL build scripts to Kotlin DSL (build.gradle.kts)
+- Used targeted manual conversion for each project type
+- All projects have passing tests and verify successfully
+- Handled special cases for different project types:
   - Basic library projects
   - Application projects with main class
-  - Projects with special dependencies
-
-Remaining projects to be converted in future work:
-- `/Users/david/dev/http4k/examples/http4k-connect/using-connect-api-clients`
-- `/Users/david/dev/http4k/examples/http4k-core/aws-lambda-custom-runtime`
-- `/Users/david/dev/http4k/examples/http4k-core/aws-lambda-events`
-- `/Users/david/dev/http4k/examples/http4k-core/aws-lambda-http`
-- `/Users/david/dev/http4k/examples/http4k-core/hexagonal-arrow`
-- `/Users/david/dev/http4k/examples/http4k-core/hexagonal`
-- `/Users/david/dev/http4k/examples/http4k-core/hotwire`
-- `/Users/david/dev/http4k/examples/http4k-core/json-api`
-- `/Users/david/dev/http4k/examples/http4k-core/openapi`
-- `/Users/david/dev/http4k/examples/http4k-core/quarkus`
-- `/Users/david/dev/http4k/examples/http4k-core/react-app`
-- `/Users/david/dev/http4k/examples/http4k-core/typesafe-configuration`
-- And others
+  - Custom task configurations (e.g., Zip task for Lambda functions)
+  - Special framework integration (Quarkus)
+  - Shadow JAR plugin
+  
+### Summary of improvements
+- Standardized Gradle version to 8.13 across all projects
+- Upgraded Kotlin version to 2.1.20 and related plugins
+- Modernized build scripts with Kotlin DSL for better IDE support and type safety
+- All changes verified with comprehensive checks
+- Maintained documentation for future maintenance work
