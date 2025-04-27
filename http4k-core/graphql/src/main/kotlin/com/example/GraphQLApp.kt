@@ -3,12 +3,10 @@ package com.example
 import com.example.http4k.schema.context.UserDbHandler
 import com.example.http4k.schema.simple.BookDbHandler
 import org.http4k.core.Filter
-import org.http4k.core.RequestContexts
 import org.http4k.core.then
 import org.http4k.core.with
-import org.http4k.filter.ServerFilters.InitialiseRequestContext
-import org.http4k.lens.RequestContextKey
-import org.http4k.lens.RequestContextLens
+import org.http4k.lens.RequestKey
+import org.http4k.lens.RequestLens
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.bind
 import org.http4k.routing.graphQL
@@ -25,17 +23,15 @@ private fun bookApp() = graphQL(BookDbHandler())
  * This graphQL app does require context (eg. auth) from the incoming request.
  */
 private fun userApp(): RoutingHttpHandler {
-    fun AddUserAgentToContext(user: RequestContextLens<String>) = Filter { next ->
+    fun AddUserAgentToContext(user: RequestLens<String>) = Filter { next ->
         {
             next(it.with(user of (it.header("User-Agent") ?: "unknown")))
         }
     }
 
-    val contexts = RequestContexts()
-    val user = RequestContextKey.required<String>(contexts)
+    val user = RequestKey.required<String>("user")
 
-    return InitialiseRequestContext(contexts)
-        .then(AddUserAgentToContext(user))
+    return AddUserAgentToContext(user)
         .then(graphQL(UserDbHandler(), user))
 }
 

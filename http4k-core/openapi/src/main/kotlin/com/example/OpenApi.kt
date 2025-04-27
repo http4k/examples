@@ -5,8 +5,6 @@ import org.http4k.contract.contract
 import org.http4k.contract.meta
 import org.http4k.contract.openapi.ApiInfo
 import org.http4k.contract.openapi.v3.OpenApi3
-import org.http4k.contract.security.BasicAuthSecurity
-import org.http4k.contract.security.NoSecurity
 import org.http4k.core.Body
 import org.http4k.core.Credentials
 import org.http4k.core.HttpHandler
@@ -22,6 +20,8 @@ import org.http4k.format.Jackson
 import org.http4k.format.Jackson.auto
 import org.http4k.lens.Header
 import org.http4k.lens.string
+import org.http4k.security.BasicAuthSecurity
+import org.http4k.security.NoSecurity
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 import java.time.Clock
@@ -33,9 +33,11 @@ fun OpenApi(clock: Clock, random: Random): HttpHandler =
         .then(
             contract {
                 renderer = OpenApi3(
-                    ApiInfo("http4k Open API Example", "1.0", "" +
-                        "<p>Credentials are <b>http4k/http4k</b></p>" +
-                        "<a href='https://http4k.org/openapi3/?url=http%3A%2F%2Flocalhost:8080'>view this API in OpenAPI</a>"), Jackson
+                    ApiInfo(
+                        "http4k Open API Example", "1.0", "" +
+                            "<p>Credentials are <b>http4k/http4k</b></p>" +
+                            "<a href='https://http4k.org/openapi3/?url=http%3A%2F%2Flocalhost:8080'>view this API in OpenAPI</a>"
+                    ), Jackson
                 )
                 security = BasicAuthSecurity("", Credentials("http4k", "http4k"))
                 routes += helloWorldRoute()
@@ -43,12 +45,14 @@ fun OpenApi(clock: Clock, random: Random): HttpHandler =
             }
         )
 
-fun veryUnsafeCorsFilter() = ServerFilters.Cors(CorsPolicy.UnsafeGlobalPermissive.copy(headers=listOf("*")))
+fun veryUnsafeCorsFilter() = ServerFilters.Cors(CorsPolicy.UnsafeGlobalPermissive.copy(headers = listOf("*")))
 
-data class JsonMessage(val customHeader: String?,
-                       val now: Instant,
-                       val randomNumber: Int,
-                       val bool: Boolean)
+data class JsonMessage(
+    val customHeader: String?,
+    val now: Instant,
+    val randomNumber: Int,
+    val bool: Boolean
+)
 
 private fun jsonRoute(clock: Clock, random: Random): ContractRoute {
     val header = Header.string().optional("x-custom", "header value")
