@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.http4k.schema.simple
 
 import com.expediagroup.graphql.SchemaGeneratorConfig

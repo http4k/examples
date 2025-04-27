@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 import actions.AddExpense
 import actions.ExpenseReport
 import actions.ExpensesAction

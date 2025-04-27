@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package with_connect
 
 import common.Commit

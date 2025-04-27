@@ -2,12 +2,11 @@ package com.example
 
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
-import org.http4k.core.RequestContexts
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.then
 import org.http4k.filter.ServerFilters
-import org.http4k.lens.RequestContextKey
+import org.http4k.lens.RequestKey
 import org.http4k.routing.bind
 import org.http4k.routing.path
 import org.http4k.routing.routes
@@ -21,10 +20,10 @@ fun BearerAuthApi(clock: Clock): HttpHandler {
     val secretKey = "qwertyuiopasdfghjklzxcvbnm123456".toByteArray()
 
     val verifier = createHs256JwtAuthorizer(issuer = issuer, audience = audience, clock = clock, secretKey = secretKey)
-    val signer = createHs256JwtSigner(issuer = issuer, audience = listOf("http4k.org"), clock = clock, secretKey = secretKey)
+    val signer =
+        createHs256JwtSigner(issuer = issuer, audience = listOf("http4k.org"), clock = clock, secretKey = secretKey)
 
-    val requestContexts = RequestContexts()
-    val authLens = RequestContextKey.required<User>(requestContexts)
+    val authLens = RequestKey.required<User>("user")
 
     // verify access token and generate a custom response
     val protectedApi = ServerFilters.BearerAuth(authLens, verifier).then(
@@ -41,8 +40,7 @@ fun BearerAuthApi(clock: Clock): HttpHandler {
         Response(OK).body(jwt)
     }
 
-    return ServerFilters.InitialiseRequestContext(requestContexts)
-        .then(routes(issueAccessToken, protectedApi))
+    return routes(issueAccessToken, protectedApi)
 }
 
 fun main() {

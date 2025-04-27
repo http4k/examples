@@ -1,10 +1,11 @@
 package com.example
 
+import org.http4k.core.PolyHandler
 import org.http4k.core.then
 import org.http4k.filter.ServerFilters.CatchAll
+import org.http4k.routing.poly
 import org.http4k.routing.routes
 import org.http4k.routing.sse
-import org.http4k.server.PolyHandler
 import org.http4k.server.Undertow
 import org.http4k.server.asServer
 
@@ -14,9 +15,9 @@ fun Hotwire(hotReload: Boolean): PolyHandler {
         else -> SelectingViewModelRenderers { CachingClasspath() }
     }
 
-    return PolyHandler(
+    return poly(
         CatchAll().then(routes(staticContent(hotReload), hello(renderers), clicks(renderers), index(renderers))),
-        sse = sse(time(renderers.turboRenderer))
+        sse(time(renderers.turboRenderer))
     )
 }
 
