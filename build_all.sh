@@ -14,7 +14,7 @@ echo "Discovering modules..."
 MODULES=()
 while IFS= read -r line; do
     MODULES+=("$line")
-done < <(find http4k-core http4k-connect -type f -name "build.gradle.kts" | sed -e 's|/build.gradle.kts||' | sed -e 's|/|-|g' | awk '{print ":" $0}')
+done < <(find . -type f -name "build.gradle.kts" -not -path "./build.gradle.kts" | sed -e 's|^./||' -e 's|/build.gradle.kts||' | sed -e 's|/|-|g' | awk '{print ":" $0}')
 
 # Print discovered modules
 echo -e "${GREEN}Found ${#MODULES[@]} modules:${NC}"
