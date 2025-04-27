@@ -17,7 +17,7 @@ This document tracks the maintenance tasks performed on the http4k examples repo
 - All projects now using Kotlin 2.1.20 and functioning correctly
 
 ### 3. Convert to Kotlin DSL (2025-04-27)
-- Converted all 19 Groovy DSL build scripts to Kotlin DSL (build.gradle.kts)
+- Converted all Groovy DSL build scripts (21 files) to Kotlin DSL (build.gradle.kts)
 - Used targeted manual conversion for each project type
 - All projects have passing tests and verify successfully
 - Handled special cases for different project types:
@@ -26,6 +26,7 @@ This document tracks the maintenance tasks performed on the http4k examples repo
   - Custom task configurations (e.g., Zip task for Lambda functions)
   - Special framework integration (Quarkus)
   - Shadow JAR plugin
+  - Multi-project builds (react-app)
   
 ### Summary of improvements
 - Standardized Gradle version to 8.13 across all projects
@@ -33,3 +34,7 @@ This document tracks the maintenance tasks performed on the http4k examples repo
 - Modernized build scripts with Kotlin DSL for better IDE support and type safety
 - All changes verified with comprehensive checks
 - Maintained documentation for future maintenance work
+
+### Future Work
+- Convert settings.gradle files to settings.gradle.kts
+- Standardize remaining project configurations
