@@ -2,6 +2,7 @@ package gameoflife.model
 
 import java.lang.Thread.sleep
 import java.lang.Thread.startVirtualThread
+import kotlin.math.abs
 
 class AppState(boardSize: Int) {
     private var board = GameBoard(boardSize, COLOURS).apply {
@@ -11,10 +12,12 @@ class AppState(boardSize: Int) {
     val cells get() = board.toCells()
 
     fun update(id: Int, sid: Int) {
-        val userColor = COLOURS[sid % COLOURS.size]
+        val userColor = COLOURS[abs(sid) % COLOURS.size]
 
         synchronized(this) {
-            board.fillCross(id, userColor)
+            if (id >= 0 && id < board.size * board.size) {
+                board.fillCross(id, userColor)
+            }
         }
     }
 

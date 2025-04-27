@@ -8,17 +8,28 @@ import org.http4k.routing.poly
 import org.http4k.routing.sse
 import org.http4k.routing.sse.bind
 import org.http4k.routing.static
-import org.http4k.server.Jetty
-import org.http4k.server.asServer
 import org.http4k.sse.Sse
 import org.http4k.sse.sendMergeSignals
 import java.io.File
+import java.io.InputStream
 import java.lang.Thread.sleep
 import java.lang.Thread.startVirtualThread
 import java.util.zip.ZipFile
 
-fun BadApples(): PolyHandler {
-    val animation = loadAnimation(File("merge_signals/src/main/resources/bad-apples.zip"))
+fun badApples(): PolyHandler {
+    val resourceName = "/merge_signals/bad-apples.zip"
+    val resourceStream: InputStream = object {}.javaClass.getResourceAsStream(resourceName)
+        ?: throw IllegalStateException("Resource not found: $resourceName")
+    
+    val tempFile = File.createTempFile("bad-apples", ".zip")
+    tempFile.deleteOnExit()
+    resourceStream.use { input ->
+        tempFile.outputStream().use { output ->
+            input.copyTo(output)
+        }
+    }
+    
+    val animation = loadAnimation(tempFile)
 
     return poly(
         "/bad_apple/updates" bind sse(
@@ -69,6 +80,3 @@ private fun loadAnimation(zipFile: File): AsciiAnimation {
     return AsciiAnimation(frames)
 }
 
-fun main() {
-    BadApples().asServer(Jetty(8999)).start()
-}

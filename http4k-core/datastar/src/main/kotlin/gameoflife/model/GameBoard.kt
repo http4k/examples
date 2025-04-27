@@ -2,7 +2,7 @@ package gameoflife.model
 
 import kotlin.random.Random
 
-class GameBoard(private val size: Int, private val colours: List<String>) {
+class GameBoard(val size: Int, private val colours: List<String>) {
 
     private val DEAD_COLOUR = "white"
 

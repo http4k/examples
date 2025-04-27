@@ -10,6 +10,9 @@ import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.core.cookie.Cookie
 import org.http4k.core.cookie.cookie
+import org.http4k.core.then
+import org.http4k.filter.ServerFilters.CatchAll
+import org.http4k.filter.debug
 import org.http4k.lens.Cookies
 import org.http4k.lens.Query
 import org.http4k.lens.int
@@ -68,9 +71,11 @@ fun GameOfLife(boardSize: Int): PolyHandler {
         }
     }
 
-    return poly(
-        TapCell(state),
-        GameBoard(state, renderer),
-        Index(boardSize, renderer),
+    return CatchAll().then(
+        poly(
+            TapCell(state),
+            GameBoard(state, renderer),
+            Index(boardSize, renderer),
+        )
     )
 }

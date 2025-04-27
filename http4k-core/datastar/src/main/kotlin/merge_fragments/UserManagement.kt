@@ -6,7 +6,7 @@ import merge_fragments.web.manageUsers
 import org.http4k.core.Body
 import org.http4k.core.ContentType
 import org.http4k.core.PolyHandler
-import org.http4k.routing.ResourceLoader
+import org.http4k.routing.ResourceLoader.Companion.Classpath
 import org.http4k.routing.poly
 import org.http4k.routing.routes
 import org.http4k.routing.static
@@ -23,7 +23,6 @@ fun UserManagement(): PolyHandler {
     return poly(
         UserList(datastarRenderer, users),
         routes(
-            static(ResourceLoader.Classpath("public")),
             manageUsers(datastarRenderer, users),
             index(Body.viewModel(renderer, ContentType.TEXT_HTML).toLens()),
         )
