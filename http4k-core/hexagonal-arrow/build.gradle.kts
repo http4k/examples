@@ -4,6 +4,8 @@ plugins {
     application
 }
 
+val arrowVersion = "1.1.2"
+
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${project.property("kotlinVersion")}")
     implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
@@ -15,7 +17,7 @@ dependencies {
     implementation("org.http4k:http4k-server-undertow")
     implementation("org.http4k:http4k-config")
     implementation("org.http4k:http4k-platform-core")
-    implementation("io.arrow-kt:arrow-core:${project.property("arrowVersion")}")
+    implementation("io.arrow-kt:arrow-core:$arrowVersion")
 
     testImplementation("org.http4k:http4k-testing-chaos")
     testImplementation("org.http4k:http4k-testing-strikt")

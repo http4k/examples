@@ -1,3 +1,6 @@
+import org.gradle.api.JavaVersion.VERSION_21
+import org.gradle.api.tasks.wrapper.Wrapper.DistributionType.BIN
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -18,7 +21,7 @@ allprojects {
 
     tasks.withType<Wrapper> {
         gradleVersion = "8.13"
-        distributionType = Wrapper.DistributionType.BIN
+        distributionType = BIN
     }
 }
 
@@ -27,14 +30,14 @@ subprojects {
 
     tasks.withType<KotlinCompile> {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21)
+            jvmTarget.set(JVM_21)
             allWarningsAsErrors = false
         }
     }
 
     tasks.withType<JavaCompile> {
-        sourceCompatibility = JavaVersion.VERSION_21.toString()
-        targetCompatibility = JavaVersion.VERSION_21.toString()
+        sourceCompatibility = VERSION_21.toString()
+        targetCompatibility = VERSION_21.toString()
     }
 
     tasks.withType<Test> {

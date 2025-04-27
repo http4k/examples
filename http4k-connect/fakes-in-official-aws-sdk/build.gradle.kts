@@ -1,7 +1,9 @@
 
 
+val awsSdkVersion = "2.21.0"
+
 dependencies {
-    implementation(platform("software.amazon.awssdk:bom:${project.property("awsSdkVersion")}"))
+    implementation(platform("software.amazon.awssdk:bom:$awsSdkVersion"))
     testImplementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
 
     implementation("software.amazon.awssdk:dynamodb") // Use the official V2 AWS SDK in your production code

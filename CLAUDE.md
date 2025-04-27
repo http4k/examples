@@ -73,6 +73,24 @@ This document tracks the maintenance tasks performed on the http4k examples repo
   - Added detailed comments for future resolution
 - Successfully verified build for all 29 subprojects
 
+### 7. Modularize Version Dependencies (2025-04-27)
+- Moved non-http4k version declarations from central gradle.properties to individual modules:
+  - Kept only essential versions in central file (kotlin, http4k, junit, forkhandles)
+  - Added framework-specific versions to their respective modules
+- Modified each module to use local version variables:
+  - Micronaut modules with proper Micronaut plugin integration
+  - Spring Boot modules with correct Spring conventions
+  - GraphQL components with local version declarations
+  - AWS modules with individual SDK versions
+  - Quarkus modules with self-contained version info
+  - Arrow core with localized version
+- Made build configuration more maintainable by:
+  - Reducing coupling between unrelated modules
+  - Allowing different modules to upgrade dependencies independently
+  - Simplifying dependency management for specialized frameworks
+  - Improving readability of build files
+  - Making future dependency upgrades easier to manage
+
 ### Summary of improvements
 - Standardized Gradle version to 8.13 across all projects
 - Upgraded Kotlin version to 2.1.20 and related plugins
@@ -80,7 +98,8 @@ This document tracks the maintenance tasks performed on the http4k examples repo
 - All changes verified with comprehensive checks
 - Complete conversion to Kotlin DSL for all Gradle files (build and settings)
 - Consolidated into a single multi-module Gradle project for simplified management
-- Centralized version management in a single gradle.properties file
+- Centralized core version management in gradle.properties file
+- Modularized other dependency versions for better maintainability
 - Fixed dependency issues and incompatibilities
 - Maintained documentation for future maintenance work
 

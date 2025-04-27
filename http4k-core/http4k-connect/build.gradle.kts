@@ -21,5 +21,5 @@ dependencies {
     testImplementation("org.http4k:http4k-testing-chaos")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("io.mockk:mockk:${project.property("mockkVersion")}")
+    testImplementation("io.mockk:mockk:1.10.5")
 }

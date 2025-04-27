@@ -18,7 +18,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")
-    testImplementation("io.mockk:mockk:${project.property("mockkVersion")}")
+    testImplementation("io.mockk:mockk:1.10.5")
 
     // these are required for implementing your own fake
     testImplementation("org.http4k:http4k-connect-core-fake")
