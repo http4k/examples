@@ -15,7 +15,7 @@ dependencies {
     implementation("org.http4k:http4k-server-undertow")
     implementation("org.http4k:http4k-config")
     implementation("org.http4k:http4k-platform-core")
-    implementation("io.arrow-kt:arrow-core:1.1.2")
+    implementation("io.arrow-kt:arrow-core:${project.property("arrowVersion")}")
 
     testImplementation("org.http4k:http4k-testing-chaos")
     testImplementation("org.http4k:http4k-testing-strikt")
