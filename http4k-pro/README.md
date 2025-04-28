@@ -7,6 +7,7 @@ http4k-pro provides advanced features for enterprise applications, building on t
 ## Examples
 
 - **[Hot Reload](./hot-reload)**: Demonstrates the http4k hot-reload feature that allows for automatic application reloading during development without server restarts.
+- **[MCP (Model Context Protocol)](./mcp)**: Examples of building and using MCP servers and clients for AI agent communication.
 
 ## Commercial License
 
