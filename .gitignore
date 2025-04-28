@@ -6,3 +6,4 @@ out/
 intellij-settings/
 **/node_modules/
 .DS_store
+/invoices/

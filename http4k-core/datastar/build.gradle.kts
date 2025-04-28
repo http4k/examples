@@ -11,9 +11,7 @@ dependencies {
     implementation("org.http4k:http4k-web-datastar")
     implementation("org.http4k:http4k-template-handlebars")
     implementation("org.http4k:http4k-server-jetty")
-    implementation("org.http4k:http4k-server-undertow")
     implementation("org.http4k:http4k-format-moshi")
-    implementation("org.http4k:http4k-server-JettyLoom")
     implementation("dev.forkhandles:time4k:${project.property("forkHandlesVersion")}")
 
     testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
