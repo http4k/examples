@@ -12,6 +12,7 @@ import building_servers.completions
 import building_servers.prompts
 import building_servers.resources
 import building_servers.tools
+import org.http4k.mcp.server.security.NoMcpSecurity
 
 /**
  * This example demonstrates how to create an MCP Lambda function using the non-streaming HTTP protocol.
@@ -19,6 +20,7 @@ import building_servers.tools
 class McpLambdaFunction : ApiGatewayV2LambdaFunction(AppLoader {
     mcpHttpNonStreaming(
         ServerMetaData(McpEntity.of("http4k mcp over serverless"), Version.of("0.1.0")),
+        NoMcpSecurity,
         prompts(),
         resources(),
         tools(),

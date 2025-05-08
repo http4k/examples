@@ -16,6 +16,7 @@ import building_servers.completions
 import building_servers.prompts
 import building_servers.resources
 import building_servers.tools
+import org.http4k.mcp.server.security.NoMcpSecurity
 
 /**
  * This example demonstrates how to create an MCP server using the JSONRPC protocol.
@@ -23,6 +24,7 @@ import building_servers.tools
 fun main() {
     val mcpServer = mcpJsonRpc(
         ServerMetaData(McpEntity.of("http4k mcp via jsonrpc"), Version.of("0.1.0")),
+        NoMcpSecurity,
         prompts(),
         resources(),
         tools(),

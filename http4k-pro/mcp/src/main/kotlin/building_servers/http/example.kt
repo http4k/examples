@@ -17,6 +17,7 @@ import building_servers.completions
 import building_servers.prompts
 import building_servers.resources
 import building_servers.tools
+import org.http4k.mcp.server.security.NoMcpSecurity
 
 /**
  * This example demonstrates how to create an MCP server using the draft HTTP Streaming protocol.
@@ -27,6 +28,7 @@ fun main() {
             McpEntity.of("http4k mcp via SSE"), Version.of("0.1.0"),
             *ServerProtocolCapability.entries.toTypedArray()
         ),
+        NoMcpSecurity,
         prompts(),
         resources(),
         tools(),
