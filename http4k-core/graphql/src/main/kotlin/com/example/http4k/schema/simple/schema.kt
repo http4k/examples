@@ -7,7 +7,7 @@ import com.expediagroup.graphql.TopLevelObject
 import com.expediagroup.graphql.toSchema
 import graphql.ExecutionInput.Builder
 import graphql.GraphQL.newGraphQL
-import org.dataloader.DataLoader
+import org.dataloader.DataLoaderFactory
 import org.dataloader.DataLoaderRegistry
 import org.http4k.graphql.GraphQLHandler
 import org.http4k.graphql.GraphQLRequest
@@ -54,7 +54,7 @@ class BookDbHandler : GraphQLHandler {
     private val dataLoaderRegistry = DataLoaderRegistry().apply {
         register(
             "BOOK_LOADER",
-            DataLoader { ids: List<Long> ->
+            DataLoaderFactory.newDataLoader { ids ->
                 supplyAsync {
                     BookQueries().search(Params(ids))
                 }

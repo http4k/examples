@@ -7,12 +7,15 @@ import com.expediagroup.graphql.TopLevelObject
 import com.expediagroup.graphql.toSchema
 import graphql.ExecutionInput.Builder
 import graphql.GraphQL.newGraphQL
+import org.dataloader.BatchLoader
 import org.dataloader.DataLoader
+import org.dataloader.DataLoaderFactory
 import org.dataloader.DataLoaderRegistry
 import org.http4k.graphql.GraphQLRequest
 import org.http4k.graphql.GraphQLResponse
 import org.http4k.graphql.GraphQLWithContextHandler
 import java.util.concurrent.CompletableFuture.supplyAsync
+import java.util.concurrent.CompletionStage
 
 /**
  * This is our mutable database with user records.
@@ -54,7 +57,7 @@ class UserDbHandler : GraphQLWithContextHandler<String> {
     private val dataLoaderRegistry = DataLoaderRegistry().apply {
         register(
             "USER_LOADER",
-            DataLoader { ids: List<Long> ->
+            DataLoaderFactory.newDataLoader { ids ->
                 supplyAsync {
                     UserQueries().search(Params(ids))
                 }
