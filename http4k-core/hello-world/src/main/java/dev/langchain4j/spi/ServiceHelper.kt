@@ -1,65 +1,61 @@
-package dev.langchain4j.spi;
+package dev.langchain4j.spi
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.util.ServiceLoader
+import java.util.function.Consumer
 
 /**
- * Utility wrapper around {@code ServiceLoader.load()}.
+ * Utility wrapper around `ServiceLoader.load()`.
  */
-public class ServiceHelper {
-
-    /**
-     * Utility class, no public constructor.
-     */
-    private ServiceHelper() {
-    }
-
+object ServiceHelper {
     /**
      * Load all the services of a given type.
      *
      * @param clazz the type of service
      * @param <T>   the type of service
      * @return the list of services, empty if none
-     */
-    public static <T> Collection<T> loadFactories(Class<T> clazz) {
-        return loadFactories(clazz, null);
+    </T> */
+    fun <T> loadFactories(clazz: Class<T>): Collection<T> {
+        return loadFactories(clazz, null)
     }
 
     /**
      * Load all the services of a given type.
      *
-     * <p>Utility mechanism around {@code ServiceLoader.load()}</p>
      *
-     * <ul>
-     *     <li>If classloader is {@code null}, will try {@code ServiceLoader.load(clazz)}</li>
-     *     <li>If classloader is not {@code null}, will try {@code ServiceLoader.load(clazz, classloader)}</li>
-     *     </ul>
+     * Utility mechanism around `ServiceLoader.load()`
      *
-     * <p>If the above return nothing, will fall back to {@code ServiceLoader.load(clazz, $this class loader$)}</p>
+     *
+     *  * If classloader is `null`, will try `ServiceLoader.load(clazz)`
+     *  * If classloader is not `null`, will try `ServiceLoader.load(clazz, classloader)`
+     *
+     *
+     *
+     * If the above return nothing, will fall back to `ServiceLoader.load(clazz, $this class loader$)`
      *
      * @param clazz       the type of service
      * @param classLoader the classloader to use, may be null
      * @param <T>         the type of service
      * @return the list of services, empty if none
-     */
-    public static <T> Collection<T> loadFactories(Class<T> clazz, /*  */ ClassLoader classLoader) {
-        List<T> result;
-        if (classLoader != null) {
-            result = loadAll(ServiceLoader.load(clazz, classLoader));
+    </T> */
+    fun <T> loadFactories(
+        clazz: Class<T>,  /*  */
+        classLoader: ClassLoader?
+    ): Collection<T> {
+        var result: List<T>
+        result = if (classLoader != null) {
+            loadAll(ServiceLoader.load(clazz, classLoader))
         } else {
             // this is equivalent to:
             // ServiceLoader.load(clazz, TCCL);
-            result = loadAll(ServiceLoader.load(clazz));
+            loadAll(ServiceLoader.load(clazz))
         }
         if (result.isEmpty()) {
             // By default, ServiceLoader.load uses the TCCL, this may not be enough in environment dealing with
             // classloaders differently such as OSGi. So we should try to use the classloader having loaded this
             // class. In OSGi it would be the bundle exposing vert.x and so have access to all its classes.
-            result = loadAll(ServiceLoader.load(clazz, ServiceHelper.class.getClassLoader()));
+            result = loadAll(ServiceLoader.load(clazz, ServiceHelper::class.java.classLoader))
         }
-        return result;
+        return result
     }
 
     /**
@@ -68,10 +64,10 @@ public class ServiceHelper {
      * @param loader the loader
      * @param <T>    the type of service
      * @return the list of services, empty if none
-     */
-    private static <T> List<T> loadAll(ServiceLoader<T> loader) {
-        List<T> list = new ArrayList<>();
-        loader.iterator().forEachRemaining(list::add);
-        return list;
+    </T> */
+    private fun <T> loadAll(loader: ServiceLoader<T>): List<T> {
+        val list: MutableList<T> = ArrayList()
+        loader.iterator().forEachRemaining(Consumer { e: T -> list.add(e) })
+        return list
     }
 }

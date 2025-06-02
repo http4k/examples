@@ -4,8 +4,6 @@ import dev.langchain4j.spi.json.JsonCodecFactory;
 
 import java.lang.reflect.Type;
 
-import static dev.langchain4j.spi.ServiceHelper.loadFactories;
-
 /**
  * JSON helper class. It is supposed to be used by "tools" and "structured output" functionalities.
  */
@@ -51,9 +49,6 @@ public class Json {
     private static final JsonCodec CODEC = loadCodec();
 
     private static JsonCodec loadCodec() {
-        for (JsonCodecFactory factory : loadFactories(JsonCodecFactory.class)) {
-            return factory.create();
-        }
         return new Json.JsonCodec() {
 
             @Override
