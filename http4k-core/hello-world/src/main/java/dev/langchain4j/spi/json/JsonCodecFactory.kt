@@ -1,15 +1,14 @@
-package dev.langchain4j.spi.json;
+package dev.langchain4j.spi.json
 
-import dev.langchain4j.internal.Json;
+import dev.langchain4j.internal.Json
 
 /**
- * A factory for creating {@link Json.JsonCodec} instances through SPI.
+ * A factory for creating [Json.JsonCodec] instances through SPI.
  */
-public interface JsonCodecFactory {
-
+interface JsonCodecFactory {
     /**
-     * Create a new {@link Json.JsonCodec}.
-     * @return the new {@link Json.JsonCodec}.
+     * Create a new [Json.JsonCodec].
+     * @return the new [Json.JsonCodec].
      */
-    Json.JsonCodec create();
+    fun create(): Json.JsonCodec?
 }
