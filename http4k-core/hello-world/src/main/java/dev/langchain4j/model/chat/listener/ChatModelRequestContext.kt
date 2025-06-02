@@ -1,6 +1,5 @@
 package dev.langchain4j.model.chat.listener
 
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.ModelProvider
 import dev.langchain4j.model.chat.request.ChatRequest
 
@@ -16,12 +15,9 @@ class ChatModelRequestContext(
     attributes: Map<Any, Any>
 ) {
     private val chatRequest =
-        ValidationUtils.ensureNotNull(chatRequest, "chatRequest")
+        chatRequest!!
     private val attributes =
-        ValidationUtils.ensureNotNull(
-            attributes,
-            "attributes"
-        )
+        attributes!!
 
     fun chatRequest(): ChatRequest {
         return chatRequest

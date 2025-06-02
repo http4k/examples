@@ -2,7 +2,6 @@ package dev.langchain4j.rag
 
 import dev.langchain4j.data.message.ChatMessage
 import dev.langchain4j.data.message.UserMessage
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.rag.query.Metadata
 
 /**
@@ -14,16 +13,13 @@ class AugmentationRequest(chatMessage: ChatMessage, metadata: Metadata) {
      * Currently, only [UserMessage] is supported.
      */
     private val chatMessage: ChatMessage =
-        ValidationUtils.ensureNotNull(chatMessage, "chatMessage")
+        chatMessage!!
 
     /**
      * Additional metadata related to the augmentation request.
      */
     private val metadata: Metadata =
-        ValidationUtils.ensureNotNull(
-            metadata,
-            "metadata"
-        )
+        metadata!!
 
     fun chatMessage(): ChatMessage {
         return chatMessage

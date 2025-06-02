@@ -2,7 +2,6 @@ package dev.langchain4j.data.message
 
 import dev.langchain4j.agent.tool.ToolExecutionRequest
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Arrays
 import java.util.Objects
 
@@ -21,7 +20,7 @@ class AiMessage : ChatMessage {
      * @param text the text of the message.
      */
     constructor(text: String) {
-        this.text = ValidationUtils.ensureNotNull(text, "text")
+        this.text = text!!
         this.toolExecutionRequests = listOf<ToolExecutionRequest>()
     }
 
@@ -32,7 +31,7 @@ class AiMessage : ChatMessage {
      */
     constructor(toolExecutionRequests: List<ToolExecutionRequest?>) {
         this.text = null
-        this.toolExecutionRequests = ValidationUtils.ensureNotEmpty(toolExecutionRequests, "toolExecutionRequests")
+        this.toolExecutionRequests = toolExecutionRequests!!
     }
 
     /**

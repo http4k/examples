@@ -1,10 +1,8 @@
 package dev.langchain4j.rag.content.aggregator
 
 import dev.langchain4j.data.segment.TextSegment
-import dev.langchain4j.data.segment.TextSegment.Companion.from
 import dev.langchain4j.internal.Exceptions
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.scoring.ScoringModel
 import dev.langchain4j.rag.content.Content
 import dev.langchain4j.rag.content.ContentMetadata
@@ -50,7 +48,7 @@ class ReRankingContentAggregator @JvmOverloads constructor(
     private val maxResults: Int
 
     init {
-        this.scoringModel = ValidationUtils.ensureNotNull(scoringModel, "scoringModel")
+        this.scoringModel = scoringModel!!
         this.querySelector = Utils.getOrDefault(querySelector, DEFAULT_QUERY_SELECTOR)
         this.maxResults = Utils.getOrDefault(maxResults, Int.MAX_VALUE)
     }

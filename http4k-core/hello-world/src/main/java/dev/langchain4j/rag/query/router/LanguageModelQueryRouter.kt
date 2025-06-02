@@ -2,7 +2,6 @@ package dev.langchain4j.rag.query.router
 
 import dev.langchain4j.data.message.UserMessage
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.chat.ChatModel
 import dev.langchain4j.model.input.Prompt
 import dev.langchain4j.model.input.PromptTemplate
@@ -44,8 +43,7 @@ class LanguageModelQueryRouter @JvmOverloads constructor(
     protected val fallbackStrategy: FallbackStrategy
 
     init {
-        this.chatModel = ValidationUtils.ensureNotNull(chatModel, "chatModel")
-        ValidationUtils.ensureNotEmpty(retrieverToDescription, "retrieverToDescription")
+        this.chatModel = chatModel!!
         this.promptTemplate = Utils.getOrDefault(promptTemplate, DEFAULT_PROMPT_TEMPLATE)
 
         val idToRetriever: MutableMap<Int, ContentRetriever> = HashMap()
@@ -53,14 +51,14 @@ class LanguageModelQueryRouter @JvmOverloads constructor(
         var id = 1
         for ((key, value) in retrieverToDescription!!) {
             idToRetriever[id] =
-                ValidationUtils.ensureNotNull(key, "ContentRetriever")
+                key!!
 
             if (id > 1) {
                 optionsBuilder.append("\n")
             }
             optionsBuilder.append(id)
             optionsBuilder.append(": ")
-            optionsBuilder.append(ValidationUtils.ensureNotBlank(value, "ContentRetriever description"))
+            optionsBuilder.append(value!!)
 
             id++
         }

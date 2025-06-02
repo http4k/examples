@@ -1,16 +1,12 @@
 package dev.langchain4j.store.embedding.filter.logical
 
 import dev.langchain4j.data.document.Metadata
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.store.embedding.filter.Filter
 import java.util.Objects
 
 class Not(expression: Filter) : Filter {
     private val expression: Filter =
-        ValidationUtils.ensureNotNull(
-            expression,
-            "expression"
-        )
+        expression!!
 
     fun expression(): Filter {
         return expression

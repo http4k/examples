@@ -1,7 +1,6 @@
 package dev.langchain4j.data.message
 
 import dev.langchain4j.data.image.Image
-import dev.langchain4j.internal.ValidationUtils
 import java.net.URI
 import java.util.Objects
 
@@ -31,8 +30,8 @@ class ImageContent @JvmOverloads constructor(image: Image, detailLevel: DetailLe
     }
 
     private val image: Image =
-        ValidationUtils.ensureNotNull(image, "image")
-    private val detailLevel: DetailLevel = ValidationUtils.ensureNotNull(detailLevel, "detailLevel")
+        image!!
+    private val detailLevel: DetailLevel = detailLevel!!
 
     /**
      * Create a new [ImageContent] from the given url.
@@ -61,7 +60,7 @@ class ImageContent @JvmOverloads constructor(image: Image, detailLevel: DetailLe
     @JvmOverloads
     constructor(url: URI, detailLevel: DetailLevel = DetailLevel.LOW) : this(
         Image.Companion.builder()
-            .url(ValidationUtils.ensureNotNull<URI>(url, "url"))
+            .url(url!!)
             .build(), detailLevel
     )
 
@@ -92,8 +91,8 @@ class ImageContent @JvmOverloads constructor(image: Image, detailLevel: DetailLe
     @JvmOverloads
     constructor(base64Data: String?, mimeType: String?, detailLevel: DetailLevel = DetailLevel.LOW) : this(
         Image.Companion.builder()
-            .base64Data(ValidationUtils.ensureNotBlank(base64Data, "base64Data"))
-            .mimeType(ValidationUtils.ensureNotBlank(mimeType, "mimeType"))
+            .base64Data(base64Data!!)
+            .mimeType(mimeType!!)
             .build(), detailLevel
     )
 

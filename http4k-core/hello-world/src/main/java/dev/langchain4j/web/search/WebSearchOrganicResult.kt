@@ -4,7 +4,6 @@ import dev.langchain4j.data.document.Document
 import dev.langchain4j.data.document.Metadata
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.net.URI
 import java.util.Objects
 
@@ -31,8 +30,8 @@ class WebSearchOrganicResult {
      * @param url The URL associated with the search result.
      */
     constructor(title: String?, url: URI) {
-        this.title = ValidationUtils.ensureNotBlank(title, "title")
-        this.url = ValidationUtils.ensureNotNull(url, "url")
+        this.title = title!!
+        this.url = url!!
         this.snippet = null
         this.content = null
         this.metadata = java.util.Map.of()
@@ -47,8 +46,8 @@ class WebSearchOrganicResult {
      * @param content The most query related content from the scraped url.
      */
     constructor(title: String?, url: URI, snippet: String?, content: String?) {
-        this.title = ValidationUtils.ensureNotBlank(title, "title")
-        this.url = ValidationUtils.ensureNotNull(url, "url")
+        this.title = title!!
+        this.url = url!!
         this.snippet = snippet
         this.content = content
         this.metadata = java.util.Map.of()
@@ -64,8 +63,8 @@ class WebSearchOrganicResult {
      * @param metadata  The metadata associated with the search result.
      */
     constructor(title: String?, url: URI, snippet: String?, content: String?, metadata: Map<String, String>?) {
-        this.title = ValidationUtils.ensureNotBlank(title, "title")
-        this.url = ValidationUtils.ensureNotNull(url, "url")
+        this.title = title!!
+        this.url = url!!
         this.snippet = snippet
         this.content = content
         this.metadata = Utils.copy(metadata)

@@ -1,12 +1,11 @@
 package dev.langchain4j.store.embedding.filter.comparison
 
 import dev.langchain4j.data.document.Metadata
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.store.embedding.filter.Filter
 import java.util.Objects
 
 class IsGreaterThan(key: String, comparisonValue: Comparable<*>) : Filter {
-    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
+    private val key: String = key!!
     private val comparisonValue: Comparable<*> = comparisonValue!!
 
     fun key(): String {

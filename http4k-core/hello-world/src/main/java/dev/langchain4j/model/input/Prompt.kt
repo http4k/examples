@@ -7,7 +7,6 @@ import dev.langchain4j.data.message.SystemMessage.Companion.systemMessage
 import dev.langchain4j.data.message.UserMessage
 import dev.langchain4j.data.message.UserMessage.Companion.userMessage
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -16,7 +15,7 @@ import java.util.Objects
  * A Prompt is typically created by applying one or multiple values to a PromptTemplate.
  */
 class Prompt(text: String?) {
-    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
+    private val text: String = text!!
 
     /**
      * The text of the prompt.

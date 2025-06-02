@@ -1,7 +1,6 @@
 package dev.langchain4j.model.chat.request.json
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Arrays
 import java.util.Objects
 
@@ -11,7 +10,7 @@ class JsonAnyOfSchema(builder: Builder) : JsonSchemaElement {
 
     init {
         this.description = builder.description
-        this.anyOf = Utils.copy(ValidationUtils.ensureNotEmpty(builder.anyOf, "anyOf"))
+        this.anyOf = Utils.copy(builder.anyOf!!)
     }
 
     override fun description(): String? {

@@ -1,7 +1,6 @@
 package dev.langchain4j.data.message
 
 import dev.langchain4j.data.video.Video
-import dev.langchain4j.internal.ValidationUtils
 import java.net.URI
 import java.util.Objects
 
@@ -19,7 +18,7 @@ class VideoContent : Content {
      */
     constructor(url: URI) {
         this.video = Video.Companion.builder()
-            .url(ValidationUtils.ensureNotNull<URI>(url, "url"))
+            .url(url!!)
             .build()
     }
 
@@ -38,8 +37,8 @@ class VideoContent : Content {
      */
     constructor(base64Data: String?, mimeType: String?) {
         this.video = Video.Companion.builder()
-            .base64Data(ValidationUtils.ensureNotBlank(base64Data, "base64data"))
-            .mimeType(ValidationUtils.ensureNotBlank(mimeType, "mimeType")).build()
+            .base64Data(base64Data!!)
+            .mimeType(mimeType!!).build()
     }
 
     /**

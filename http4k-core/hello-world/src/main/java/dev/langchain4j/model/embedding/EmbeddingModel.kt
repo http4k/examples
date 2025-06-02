@@ -3,7 +3,6 @@ package dev.langchain4j.model.embedding
 import dev.langchain4j.data.embedding.Embedding
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.data.segment.TextSegment.Companion.from
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.output.Response
 
 /**
@@ -28,9 +27,9 @@ interface EmbeddingModel {
      */
     fun embed(textSegment: TextSegment): Response<Embedding> {
         val response = embedAll(listOf(textSegment))
-        ValidationUtils.ensureEq(
-            response.content().size, 1,
-            "Expected a single embedding, but got %d", response.content().size
+        response.content().size
+        arrayOf<Any?>(
+            response.content().size
         )
 
         return Response.from(response.content()[0], response.tokenUsage(), response.finishReason())

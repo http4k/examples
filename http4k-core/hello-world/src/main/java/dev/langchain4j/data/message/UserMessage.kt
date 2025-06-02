@@ -2,7 +2,6 @@ package dev.langchain4j.data.message
 
 import dev.langchain4j.internal.Exceptions
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Arrays
 import java.util.Objects
 
@@ -62,7 +61,7 @@ class UserMessage : ChatMessage {
      */
     constructor(contents: List<Content>) {
         this.name = null
-        this.contents = Utils.copy(ValidationUtils.ensureNotEmpty(contents, "contents"))
+        this.contents = Utils.copy(contents!!)
     }
 
     /**
@@ -73,7 +72,7 @@ class UserMessage : ChatMessage {
      */
     constructor(name: String?, contents: List<Content>?) {
         this.name = name
-        this.contents = Utils.copy(ValidationUtils.ensureNotEmpty(contents, "contents"))
+        this.contents = Utils.copy(contents!!)
     }
 
     /**

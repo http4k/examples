@@ -1,7 +1,6 @@
 package dev.langchain4j.store.embedding
 
 import dev.langchain4j.data.embedding.Embedding
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -15,8 +14,8 @@ class EmbeddingMatch<Embedded>(
     private val embedding: Embedding,
     private val embedded: Embedded
 ) {
-    private val score: Double = ValidationUtils.ensureNotNull(score, "score")
-    private val embeddingId: String = ValidationUtils.ensureNotBlank(embeddingId, "embeddingId")
+    private val score: Double = score!!
+    private val embeddingId: String = embeddingId!!
 
     /**
      * Returns the relevance score (derivative of cosine distance) of this embedding compared to

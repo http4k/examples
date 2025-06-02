@@ -2,7 +2,6 @@ package dev.langchain4j.store.embedding.filter.comparison
 
 import dev.langchain4j.data.document.Metadata
 import dev.langchain4j.internal.Exceptions
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.store.embedding.filter.Filter
 import java.util.Objects
 
@@ -11,11 +10,8 @@ import java.util.Objects
  * The value of the metadata key must be a string.
  */
 class ContainsString(key: String, comparisonValue: String) : Filter {
-    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
-    private val comparisonValue: String = ValidationUtils.ensureNotNull(
-        comparisonValue,
-        "comparisonValue with key '$key'"
-    )
+    private val key: String = key!!
+    private val comparisonValue: String = comparisonValue!!
 
     fun key(): String {
         return key

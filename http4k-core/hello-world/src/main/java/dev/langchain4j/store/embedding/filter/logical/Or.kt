@@ -1,21 +1,14 @@
 package dev.langchain4j.store.embedding.filter.logical
 
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.store.embedding.filter.Filter
 import java.util.Objects
 
 class Or(left: Filter, right: Filter) :
     Filter {
     private val left: Filter =
-        ValidationUtils.ensureNotNull(
-            left,
-            "left"
-        )
+        left!!
     private val right: Filter =
-        ValidationUtils.ensureNotNull(
-            right,
-            "right"
-        )
+        right!!
 
     fun left(): Filter {
         return left

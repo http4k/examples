@@ -3,7 +3,6 @@ package dev.langchain4j.rag.content
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.data.segment.TextSegment.Companion.from
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -19,7 +18,7 @@ class DefaultContent @JvmOverloads constructor(
 ) :
     Content {
     private val textSegment: TextSegment =
-        ValidationUtils.ensureNotNull(textSegment, "textSegment")
+        textSegment!!
     private val metadata: Map<ContentMetadata?, Any> =
         Utils.copy(metadata)
 

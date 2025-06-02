@@ -1,7 +1,6 @@
 package dev.langchain4j.model.output
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -16,7 +15,7 @@ class Response<T> @JvmOverloads constructor(
     private val finishReason: FinishReason? = null,
     metadata: Map<String?, Any?>? = java.util.Map.of()
 ) {
-    private val content: T = ValidationUtils.ensureNotNull(content, "content")
+    private val content: T = content!!
     private val metadata: Map<String?, Any?> = Utils.copy(metadata)
 
     /**

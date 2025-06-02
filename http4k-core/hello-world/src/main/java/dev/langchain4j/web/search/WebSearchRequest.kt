@@ -1,7 +1,6 @@
 package dev.langchain4j.web.search
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -39,7 +38,7 @@ class WebSearchRequest private constructor(builder: Builder) {
     private val additionalParams: Map<String, Any>
 
     init {
-        this.searchTerms = ValidationUtils.ensureNotBlank(builder.searchTerms, "searchTerms")
+        this.searchTerms = builder.searchTerms!!
         this.maxResults = builder.maxResults
         this.language = builder.language
         this.geoLocation = builder.geoLocation

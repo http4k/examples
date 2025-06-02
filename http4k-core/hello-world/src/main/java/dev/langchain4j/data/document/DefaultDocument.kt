@@ -1,7 +1,6 @@
 package dev.langchain4j.data.document
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -9,12 +8,9 @@ import java.util.Objects
  */
 class DefaultDocument @JvmOverloads constructor(text: String?, metadata: Metadata = Metadata()) :
     Document {
-    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
+    private val text: String = TODO()
     private val metadata: Metadata =
-        ValidationUtils.ensureNotNull(
-            metadata,
-            "metadata"
-        )
+        metadata!!
 
     override fun text(): String? {
         return text

@@ -1,6 +1,5 @@
 package dev.langchain4j.store.embedding.filter
 
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.store.embedding.filter.comparison.ContainsString
 import dev.langchain4j.store.embedding.filter.comparison.IsEqualTo
 import dev.langchain4j.store.embedding.filter.comparison.IsGreaterThan
@@ -18,7 +17,7 @@ import java.util.stream.Collectors
  * A helper class for building a [Filter] for [Metadata] key.
  */
 class MetadataFilterBuilder(key: String?) {
-    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
+    private val key: String = key!!
 
     // containsString
     fun containsString(value: String): Filter {

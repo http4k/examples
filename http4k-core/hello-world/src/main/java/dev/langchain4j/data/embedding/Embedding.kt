@@ -1,6 +1,5 @@
 package dev.langchain4j.data.embedding
 
-import dev.langchain4j.internal.ValidationUtils
 import kotlin.math.abs
 import kotlin.math.sqrt
 
@@ -13,7 +12,7 @@ import kotlin.math.sqrt
  */
 class Embedding(vector: FloatArray) {
     private val vector: FloatArray =
-        ValidationUtils.ensureNotNull(vector, "vector")
+        vector!!
 
     /**
      * Returns the vector.

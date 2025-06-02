@@ -2,7 +2,6 @@ package dev.langchain4j.rag
 
 import dev.langchain4j.data.message.ChatMessage
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.rag.content.Content
 
 /**
@@ -20,7 +19,7 @@ class AugmentationResult(chatMessage: ChatMessage?, contents: List<Content?>?) {
     private val contents: List<Content?>
 
     init {
-        this.chatMessage = ValidationUtils.ensureNotNull(chatMessage, "chatMessage")
+        this.chatMessage = chatMessage!!
         this.contents = Utils.copy(contents)
     }
 

@@ -1,7 +1,6 @@
 package dev.langchain4j.model.chat.request.json
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 class JsonEnumSchema(builder: Builder) : JsonSchemaElement {
@@ -10,7 +9,7 @@ class JsonEnumSchema(builder: Builder) : JsonSchemaElement {
 
     init {
         this.description = builder.description
-        this.enumValues = Utils.copy(ValidationUtils.ensureNotEmpty(builder.enumValues, "enumValues"))
+        this.enumValues = Utils.copy(builder.enumValues!!)
     }
 
     override fun description(): String? {

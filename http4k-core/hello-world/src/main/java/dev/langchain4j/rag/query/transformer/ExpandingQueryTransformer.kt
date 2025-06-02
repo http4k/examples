@@ -1,6 +1,5 @@
 package dev.langchain4j.rag.query.transformer
 
-import dev.langchain4j.data.segment.TextSegment.Companion.from
 import dev.langchain4j.internal.Utils
 import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.chat.ChatModel
@@ -40,14 +39,14 @@ class ExpandingQueryTransformer constructor(
 
     constructor(chatModel: ChatModel?, promptTemplate: PromptTemplate) : this(
         chatModel,
-        ValidationUtils.ensureNotNull<PromptTemplate>(promptTemplate, "promptTemplate"),
+        promptTemplate!!,
         DEFAULT_N
     )
 
     init {
-        this.chatModel = ValidationUtils.ensureNotNull(chatModel, "chatModel")
+        this.chatModel = chatModel!!
         this.promptTemplate = Utils.getOrDefault(promptTemplate, DEFAULT_PROMPT_TEMPLATE)
-        this.n = ValidationUtils.ensureGreaterThanZero(Utils.getOrDefault(n, DEFAULT_N), "n")
+        this.n = 1
     }
 
     override fun transform(query: Query): Collection<Query> {

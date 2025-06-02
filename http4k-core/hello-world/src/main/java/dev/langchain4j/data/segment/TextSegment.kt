@@ -2,7 +2,6 @@ package dev.langchain4j.data.segment
 
 import dev.langchain4j.data.document.Metadata
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -11,9 +10,9 @@ import java.util.Objects
  * This class encapsulates a piece of text and its associated metadata.
  */
 class TextSegment(text: String?, metadata: Metadata) {
-    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
+    private val text: String = text!!
     private val metadata: Metadata =
-        ValidationUtils.ensureNotNull(metadata, "metadata")
+        metadata!!
 
     /**
      * Returns the text.

@@ -1,7 +1,5 @@
 package dev.langchain4j.model.input.structured
 
-import dev.langchain4j.internal.ValidationUtils
-
 /**
  * Represents a structured prompt.
  */
@@ -30,15 +28,13 @@ annotation class StructuredPrompt(
          * @return the annotation.
          */
         fun validateStructuredPrompt(structuredPrompt: Any): StructuredPrompt {
-            ValidationUtils.ensureNotNull(structuredPrompt, "structuredPrompt")
 
             val cls: Class<*> = structuredPrompt.javaClass
 
-            return ValidationUtils.ensureNotNull(
-                cls.getAnnotation(StructuredPrompt::class.java),
-                "%s should be annotated with @StructuredPrompt to be used as a structured prompt",
+            arrayOf<Any?>(
                 cls.name
             )
+            return cls.getAnnotation(StructuredPrompt::class.java)!!
         }
 
         /**

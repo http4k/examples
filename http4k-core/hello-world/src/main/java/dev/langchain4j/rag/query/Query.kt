@@ -1,7 +1,6 @@
 package dev.langchain4j.rag.query
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -17,13 +16,13 @@ class Query {
     private val metadata: Metadata?
 
     constructor(text: String?) {
-        this.text = ValidationUtils.ensureNotBlank(text, "text")
+        this.text = text!!
         this.metadata = null
     }
 
     constructor(text: String?, metadata: Metadata?) {
-        this.text = ValidationUtils.ensureNotBlank(text, "text")
-        this.metadata = ValidationUtils.ensureNotNull(metadata, "metadata")
+        this.text = text!!
+        this.metadata = metadata!!
     }
 
     fun text(): String {

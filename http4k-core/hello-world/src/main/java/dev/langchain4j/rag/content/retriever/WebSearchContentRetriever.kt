@@ -1,9 +1,6 @@
 package dev.langchain4j.rag.content.retriever
 
 import dev.langchain4j.data.segment.TextSegment
-import dev.langchain4j.data.segment.TextSegment.Companion.from
-import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.rag.content.Content
 import dev.langchain4j.rag.query.Query
 import dev.langchain4j.web.search.WebSearchEngine
@@ -23,7 +20,7 @@ class WebSearchContentRetriever(webSearchEngine: WebSearchEngine?, maxResults: I
     private val maxResults: Int
 
     init {
-        this.webSearchEngine = ValidationUtils.ensureNotNull(webSearchEngine, "webSearchEngine")
+        this.webSearchEngine = webSearchEngine!!
         this.maxResults = maxResults!!
     }
 

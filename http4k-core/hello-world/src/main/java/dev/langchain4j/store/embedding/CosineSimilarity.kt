@@ -2,7 +2,6 @@ package dev.langchain4j.store.embedding
 
 import dev.langchain4j.data.embedding.Embedding
 import dev.langchain4j.internal.Exceptions
-import dev.langchain4j.internal.ValidationUtils
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -43,8 +42,6 @@ object CosineSimilarity {
      * @return cosine similarity in the range [-1..1]
      */
     fun between(embeddingA: Embedding, embeddingB: Embedding): Double {
-        ValidationUtils.ensureNotNull(embeddingA, "embeddingA")
-        ValidationUtils.ensureNotNull(embeddingB, "embeddingB")
 
         val vectorA = embeddingA.vector()
         val vectorB = embeddingB.vector()

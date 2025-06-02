@@ -2,7 +2,6 @@ package dev.langchain4j.data.message
 
 import dev.langchain4j.agent.tool.ToolExecutionRequest
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -10,7 +9,7 @@ import java.util.Objects
  * [ToolExecutionRequest]s come from a previous [AiMessage.toolExecutionRequests].
  */
 class ToolExecutionResultMessage(private val id: String?, private val toolName: String?, text: String?) : ChatMessage {
-    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
+    private val text: String = text!!
 
     /**
      * Returns the id of the tool.

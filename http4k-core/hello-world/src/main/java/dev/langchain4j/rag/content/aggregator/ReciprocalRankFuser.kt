@@ -1,6 +1,5 @@
 package dev.langchain4j.rag.content.aggregator
 
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.rag.content.Content
 
 /**
@@ -34,7 +33,6 @@ object ReciprocalRankFuser {
      */
     @JvmOverloads
     fun fuse(listsOfContents: Collection<List<Content>>, k: Int = 60): List<Content> {
-        ValidationUtils.ensureBetween(k, 1, Int.MAX_VALUE, "k")
 
         val scores: MutableMap<Content, Double> = LinkedHashMap()
         for (singleListOfContent in listsOfContents) {

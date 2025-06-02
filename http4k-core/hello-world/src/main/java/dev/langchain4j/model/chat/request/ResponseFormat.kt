@@ -1,6 +1,5 @@
 package dev.langchain4j.model.chat.request
 
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.chat.request.json.JsonSchema
 import java.util.Objects
 
@@ -9,7 +8,7 @@ class ResponseFormat private constructor(builder: Builder) {
     private val jsonSchema: JsonSchema?
 
     init {
-        this.type = ValidationUtils.ensureNotNull(builder.type, "type")
+        this.type = builder.type!!
         this.jsonSchema = builder.jsonSchema
         check(!(jsonSchema != null && type != ResponseFormatType.JSON)) { "JsonSchema can be specified only when type=JSON" }
     }

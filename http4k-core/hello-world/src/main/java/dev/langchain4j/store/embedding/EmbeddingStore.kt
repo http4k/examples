@@ -4,7 +4,6 @@ import dev.langchain4j.data.embedding.Embedding
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.exception.UnsupportedFeatureException
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.store.embedding.filter.Filter
 
 /**
@@ -89,7 +88,6 @@ interface EmbeddingStore<Embedded> {
      * @param id The unique ID of the embedding to be removed.
      */
     fun remove(id: String) {
-        ValidationUtils.ensureNotBlank(id, "id")
         this.removeAll(listOf(id))
     }
 

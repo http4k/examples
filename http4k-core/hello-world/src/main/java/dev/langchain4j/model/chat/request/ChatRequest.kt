@@ -3,7 +3,6 @@ package dev.langchain4j.model.chat.request
 import dev.langchain4j.agent.tool.ToolSpecification
 import dev.langchain4j.data.message.ChatMessage
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Arrays
 import java.util.Objects
 
@@ -12,7 +11,7 @@ class ChatRequest protected constructor(builder: Builder) {
     private val parameters: ChatRequestParameters?
 
     init {
-        this.messages = Utils.copy(ValidationUtils.ensureNotEmpty(builder.messages, "messages"))
+        this.messages = Utils.copy(builder.messages!!)
 
         val parametersBuilder: DefaultChatRequestParameters.Builder<*> = ChatRequestParameters.Companion.builder()
 

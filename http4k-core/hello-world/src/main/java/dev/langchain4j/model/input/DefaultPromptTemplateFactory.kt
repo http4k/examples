@@ -1,7 +1,6 @@
 package dev.langchain4j.model.input
 
 import dev.langchain4j.internal.Exceptions
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.spi.prompt.PromptTemplateFactory
 import java.util.regex.Pattern
 
@@ -13,7 +12,7 @@ internal class DefaultPromptTemplateFactory : PromptTemplateFactory {
 
     internal class DefaultTemplate(template: String) : PromptTemplateFactory.Template {
         private val template: String =
-            ValidationUtils.ensureNotBlank(template, "template")
+            template!!
         private val allVariables: Set<String>
 
         init {

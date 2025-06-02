@@ -1,7 +1,6 @@
 package dev.langchain4j.model.chat.request.json
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 class JsonArraySchema(builder: Builder) : JsonSchemaElement {
@@ -10,7 +9,7 @@ class JsonArraySchema(builder: Builder) : JsonSchemaElement {
 
     init {
         this.description = builder.description
-        this.items = ValidationUtils.ensureNotNull(builder.items, "items")
+        this.items = builder.items!!
     }
 
     override fun description(): String? {

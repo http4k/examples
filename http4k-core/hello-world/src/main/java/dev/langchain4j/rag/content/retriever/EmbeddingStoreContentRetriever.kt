@@ -1,9 +1,7 @@
 package dev.langchain4j.rag.content.retriever
 
 import dev.langchain4j.data.segment.TextSegment
-import dev.langchain4j.data.segment.TextSegment.Companion.from
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.embedding.EmbeddingModel
 import dev.langchain4j.rag.content.Content
 import dev.langchain4j.rag.content.ContentMetadata
@@ -108,13 +106,10 @@ class EmbeddingStoreContentRetriever private constructor(
 
     init {
         this.displayName = Utils.getOrDefault(displayName, DEFAULT_DISPLAY_NAME)
-        this.embeddingStore = ValidationUtils.ensureNotNull(embeddingStore, "embeddingStore")
-        this.embeddingModel = ValidationUtils.ensureNotNull(
-            Utils.getOrDefault(
-                embeddingModel
-            ) { loadEmbeddingModel() },
-            "embeddingModel"
-        )
+        this.embeddingStore = embeddingStore!!
+        this.embeddingModel = Utils.getOrDefault(
+            embeddingModel
+        ) { loadEmbeddingModel() }!!
         this.maxResultsProvider = Utils.getOrDefault(dynamicMaxResults, DEFAULT_MAX_RESULTS)
         this.minScoreProvider = Utils.getOrDefault(dynamicMinScore, DEFAULT_MIN_SCORE)
         this.filterProvider = Utils.getOrDefault(dynamicFilter, DEFAULT_FILTER)
@@ -131,7 +126,7 @@ class EmbeddingStoreContentRetriever private constructor(
         fun maxResults(maxResults: Int?): EmbeddingStoreContentRetrieverBuilder {
             if (maxResults != null) {
                 dynamicMaxResults =
-                    Function { query: Query? -> ValidationUtils.ensureGreaterThanZero(maxResults, "maxResults") }
+                    Function { query: Query? -> maxResults }
             }
             return this
         }
@@ -139,7 +134,7 @@ class EmbeddingStoreContentRetriever private constructor(
         fun minScore(minScore: Double?): EmbeddingStoreContentRetrieverBuilder {
             if (minScore != null) {
                 dynamicMinScore =
-                    Function { query: Query? -> ValidationUtils.ensureBetween(minScore, 0.0, 1.0, "minScore") }
+                    Function { query: Query? -> minScore }
             }
             return this
         }

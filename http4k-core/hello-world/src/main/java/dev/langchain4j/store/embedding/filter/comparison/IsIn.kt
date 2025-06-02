@@ -1,28 +1,20 @@
 package dev.langchain4j.store.embedding.filter.comparison
 
 import dev.langchain4j.data.document.Metadata
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.store.embedding.filter.Filter
 import java.util.Collections
 import java.util.Objects
 import java.util.UUID
 
 class IsIn(key: String, comparisonValues: Collection<*>) : Filter {
-    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
+    private val key: String = key!!
     private val comparisonValues: Collection<*>
 
     init {
         val copy: Set<*> = HashSet(
-            ValidationUtils.ensureNotEmpty(
-                comparisonValues,
-                "comparisonValues with key '$key'"
-            )
+            comparisonValues!!
         )
         comparisonValues.forEach { value: Any? ->
-            ValidationUtils.ensureNotNull(
-                value,
-                "comparisonValue with key '$key'"
-            )
         }
         this.comparisonValues = Collections.unmodifiableSet(copy)
     }

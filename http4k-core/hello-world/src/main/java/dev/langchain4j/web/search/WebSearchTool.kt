@@ -3,12 +3,11 @@ package dev.langchain4j.web.search
 import dev.langchain4j.agent.tool.P
 import dev.langchain4j.agent.tool.Tool
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.stream.Collectors
 
 class WebSearchTool(searchEngine: WebSearchEngine) {
     private val searchEngine: WebSearchEngine =
-        ValidationUtils.ensureNotNull(searchEngine, "searchEngine")
+        searchEngine!!
 
     /**
      * Runs a search query on the web search engine and returns a pretty-string representation of the search results.

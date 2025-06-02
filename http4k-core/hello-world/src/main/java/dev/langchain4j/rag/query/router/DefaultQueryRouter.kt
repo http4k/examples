@@ -1,6 +1,5 @@
 package dev.langchain4j.rag.query.router
 
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.rag.content.retriever.ContentRetriever
 import dev.langchain4j.rag.query.Query
 import java.util.Arrays
@@ -24,10 +23,7 @@ import java.util.Collections
 class DefaultQueryRouter(contentRetrievers: Collection<ContentRetriever?>) : QueryRouter {
     private val contentRetrievers: Collection<ContentRetriever?> =
         Collections.unmodifiableCollection(
-            ValidationUtils.ensureNotEmpty(
-                contentRetrievers,
-                "contentRetrievers"
-            )
+            contentRetrievers!!
         )
 
     constructor(vararg contentRetrievers: ContentRetriever?) : this(Arrays.asList<ContentRetriever?>(*contentRetrievers))

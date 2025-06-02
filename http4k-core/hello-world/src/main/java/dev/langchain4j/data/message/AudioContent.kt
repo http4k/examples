@@ -1,7 +1,6 @@
 package dev.langchain4j.data.message
 
 import dev.langchain4j.data.audio.Audio
-import dev.langchain4j.internal.ValidationUtils
 import java.net.URI
 import java.util.Objects
 
@@ -19,7 +18,7 @@ class AudioContent : Content {
      */
     constructor(url: URI) {
         this.audio = Audio.Companion.builder()
-            .url(ValidationUtils.ensureNotNull<URI>(url, "url"))
+            .url(url!!)
             .build()
     }
 
@@ -38,8 +37,8 @@ class AudioContent : Content {
      */
     constructor(base64Data: String?, mimeType: String?) {
         this.audio = Audio.Companion.builder()
-            .base64Data(ValidationUtils.ensureNotBlank(base64Data, "base64data"))
-            .mimeType(ValidationUtils.ensureNotBlank(mimeType, "mimeType")).build()
+            .base64Data(base64Data!!)
+            .mimeType(mimeType!!).build()
     }
 
     /**

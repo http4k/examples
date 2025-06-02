@@ -2,7 +2,6 @@ package dev.langchain4j.data.document
 
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.internal.Exceptions
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 import java.util.UUID
 
@@ -417,7 +416,7 @@ class Metadata {
         }
 
         private fun validate(metadata: Map<String?, *>) {
-            ValidationUtils.ensureNotNull(metadata, "metadata").forEach { (key: String?, value: Any?) ->
+            metadata!!.forEach { (key: String?, value: Any?) ->
                 validate(
                     key!!,
                     value!!
@@ -425,7 +424,7 @@ class Metadata {
                 if (!SUPPORTED_VALUE_TYPES.contains(value.javaClass)) {
                     throw Exceptions.illegalArgument(
                         "The metadata key '%s' has the value '%s', which is of the unsupported type '%s'. "
-                                + "Currently, the supported types are: %s",
+                            + "Currently, the supported types are: %s",
                         key, value, value.javaClass.name, SUPPORTED_VALUE_TYPES
                     )
                 }
@@ -433,11 +432,6 @@ class Metadata {
         }
 
         private fun validate(key: String, value: Any) {
-            ValidationUtils.ensureNotBlank(key, "The metadata key with the value '$value'")
-            ValidationUtils.ensureNotNull(
-                value,
-                "The metadata value for the key '$key'"
-            )
         }
 
         /**

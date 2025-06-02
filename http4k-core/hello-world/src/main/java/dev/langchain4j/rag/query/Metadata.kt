@@ -2,7 +2,6 @@ package dev.langchain4j.rag.query
 
 import dev.langchain4j.data.message.ChatMessage
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.rag.RetrievalAugmentor
 import java.util.Objects
 
@@ -11,7 +10,7 @@ import java.util.Objects
  */
 class Metadata(chatMessage: ChatMessage, private val chatMemoryId: Any, chatMemory: List<ChatMessage>?) {
     private val chatMessage: ChatMessage =
-        ValidationUtils.ensureNotNull(chatMessage, "chatMessage")
+        chatMessage!!
     private val chatMemory: List<ChatMessage> =
         Utils.copy(chatMemory)
 

@@ -2,7 +2,6 @@ package dev.langchain4j.model.scoring
 
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.data.segment.TextSegment.Companion.from
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.output.Response
 
 /**
@@ -33,9 +32,9 @@ interface ScoringModel {
      */
     fun score(segment: TextSegment, query: String?): Response<Double> {
         val response = scoreAll(listOf(segment), query)
-        ValidationUtils.ensureEq(
-            response.content().size, 1,
-            "Expected a single score, but received %d", response.content().size
+        response.content().size
+        arrayOf<Any?>(
+            response.content().size
         )
         return Response.from(response.content()[0], response.tokenUsage(), response.finishReason())
     }

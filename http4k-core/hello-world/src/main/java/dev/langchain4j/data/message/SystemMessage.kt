@@ -1,7 +1,6 @@
 package dev.langchain4j.data.message
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -9,7 +8,7 @@ import java.util.Objects
  * This type of message usually provides instructions regarding the AI's actions, such as its behavior or response style.
  */
 class SystemMessage(text: String?) : ChatMessage {
-    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
+    private val text: String = text!!
 
     /**
      * Returns the message text.

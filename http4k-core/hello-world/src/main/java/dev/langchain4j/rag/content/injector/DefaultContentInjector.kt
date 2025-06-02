@@ -4,7 +4,6 @@ import dev.langchain4j.data.document.Metadata
 import dev.langchain4j.data.message.ChatMessage
 import dev.langchain4j.data.message.UserMessage
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.input.Prompt
 import dev.langchain4j.model.input.PromptTemplate
 import dev.langchain4j.rag.content.Content
@@ -44,14 +43,11 @@ class DefaultContentInjector constructor(
 
     constructor(metadataKeysToInclude: List<String>) : this(
         DEFAULT_PROMPT_TEMPLATE,
-        ValidationUtils.ensureNotEmpty<List<String>>(metadataKeysToInclude, "metadataKeysToInclude")
+        metadataKeysToInclude!!
     )
 
     constructor(promptTemplate: PromptTemplate) : this(
-        ValidationUtils.ensureNotNull<PromptTemplate>(
-            promptTemplate,
-            "promptTemplate"
-        ), null
+        promptTemplate!!, null
     )
 
     init {

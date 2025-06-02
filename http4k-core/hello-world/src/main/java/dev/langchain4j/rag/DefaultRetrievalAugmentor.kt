@@ -1,9 +1,7 @@
 package dev.langchain4j.rag
 
 import dev.langchain4j.data.message.UserMessage
-import dev.langchain4j.data.segment.TextSegment.Companion.from
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.rag.content.Content
 import dev.langchain4j.rag.content.aggregator.ContentAggregator
 import dev.langchain4j.rag.content.aggregator.DefaultContentAggregator
@@ -17,15 +15,12 @@ import dev.langchain4j.rag.query.transformer.DefaultQueryTransformer
 import dev.langchain4j.rag.query.transformer.QueryTransformer
 import java.util.Collections
 import java.util.concurrent.CompletableFuture
-import java.util.concurrent.CompletionStage
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.SynchronousQueue
 import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
-import java.util.function.Consumer
-import java.util.function.Function
 import java.util.stream.Collectors
 
 /**
@@ -116,7 +111,7 @@ class DefaultRetrievalAugmentor(
         this.queryTransformer = Utils.getOrDefault(
             queryTransformer
         ) { DefaultQueryTransformer() }
-        this.queryRouter = ValidationUtils.ensureNotNull(queryRouter, "queryRouter")
+        this.queryRouter = queryRouter!!
         this.contentAggregator = Utils.getOrDefault(
             contentAggregator
         ) { DefaultContentAggregator() }
@@ -220,7 +215,7 @@ class DefaultRetrievalAugmentor(
         private var executor: Executor? = null
 
         fun contentRetriever(contentRetriever: ContentRetriever): DefaultRetrievalAugmentorBuilder {
-            this.queryRouter = DefaultQueryRouter(ValidationUtils.ensureNotNull(contentRetriever, "contentRetriever"))
+            this.queryRouter = DefaultQueryRouter(contentRetriever!!)
             return this
         }
 

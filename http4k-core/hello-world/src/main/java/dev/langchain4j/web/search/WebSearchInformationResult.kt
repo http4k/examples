@@ -1,7 +1,6 @@
 package dev.langchain4j.web.search
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
@@ -20,7 +19,7 @@ class WebSearchInformationResult @JvmOverloads constructor(
     metadata: Map<String, Any>? = null
 ) {
     private val totalResults: Long =
-        ValidationUtils.ensureNotNull(totalResults, "totalResults")
+        totalResults!!
     private val metadata: Map<String, Any> = Utils.copy(metadata)
 
     /**

@@ -1,14 +1,13 @@
 package dev.langchain4j.data.message
 
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 
 /**
  * Represents a text content.
  */
 class TextContent(text: String?) : Content {
-    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
+    private val text: String = text!!
 
     /**
      * Returns the text.

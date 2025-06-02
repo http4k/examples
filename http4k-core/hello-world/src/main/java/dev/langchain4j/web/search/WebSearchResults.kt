@@ -3,7 +3,6 @@ package dev.langchain4j.web.search
 import dev.langchain4j.data.document.Document
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import java.util.Objects
 import java.util.stream.Collectors
 
@@ -28,7 +27,7 @@ class WebSearchResults(
     private val searchMetadata: Map<String?, Any?> =
         Utils.copy(searchMetadata)
     private val searchInformation: WebSearchInformationResult =
-        ValidationUtils.ensureNotNull(searchInformation, "searchInformation")
+        searchInformation!!
     private val results: List<WebSearchOrganicResult?> = Utils.copy(results)
 
     /**

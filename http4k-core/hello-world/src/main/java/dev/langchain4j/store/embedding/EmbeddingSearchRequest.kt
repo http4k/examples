@@ -37,9 +37,9 @@ class EmbeddingSearchRequest(
      * This is an optional parameter. Default: no filtering
      */
     init {
-        this.queryEmbedding = ValidationUtils.ensureNotNull(queryEmbedding!!, "queryEmbedding")
-        this.maxResults = ValidationUtils.ensureGreaterThanZero(Utils.getOrDefault(maxResults, 3), "maxResults")
-        this.minScore = ValidationUtils.ensureBetween(Utils.getOrDefault(minScore, 0.0), 0.0, 1.0, "minScore")
+        this.queryEmbedding = queryEmbedding!!!!
+        this.maxResults = 1
+        this.minScore = 1.0
     }
 
     fun queryEmbedding(): Embedding {

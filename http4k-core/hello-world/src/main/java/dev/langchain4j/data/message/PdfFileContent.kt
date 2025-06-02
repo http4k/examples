@@ -1,7 +1,6 @@
 package dev.langchain4j.data.message
 
 import dev.langchain4j.data.pdf.PdfFile
-import dev.langchain4j.internal.ValidationUtils
 import java.net.URI
 import java.util.Objects
 
@@ -19,7 +18,7 @@ class PdfFileContent : Content {
      */
     constructor(url: URI) {
         this.pdfFile = PdfFile.Companion.builder()
-            .url(ValidationUtils.ensureNotNull<URI>(url, "url"))
+            .url(url!!)
             .build()
     }
 
@@ -38,7 +37,7 @@ class PdfFileContent : Content {
      */
     constructor(base64Data: String?, mimeType: String?) {
         this.pdfFile = PdfFile.Companion.builder()
-            .base64Data(ValidationUtils.ensureNotBlank(base64Data, "base64data"))
+            .base64Data(base64Data!!)
             .mimeType(mimeType)
             .build()
     }

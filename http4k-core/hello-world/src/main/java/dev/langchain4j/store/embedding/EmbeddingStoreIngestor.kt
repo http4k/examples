@@ -7,13 +7,11 @@ import dev.langchain4j.data.embedding.Embedding
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.data.segment.TextSegmentTransformer
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.embedding.EmbeddingModel
 import dev.langchain4j.spi.ServiceHelper
 import dev.langchain4j.spi.data.document.splitter.DocumentSplitterFactory
 import dev.langchain4j.spi.model.embedding.EmbeddingModelFactory
 import dev.langchain4j.store.embedding.EmbeddingStore
-import java.util.Arrays
 import java.util.stream.Collectors
 
 /**
@@ -69,7 +67,7 @@ class EmbeddingStoreIngestor(
             documentSplitter
         ) { loadDocumentSplitter() }
         this.embeddingModel = embeddingModel!!
-        this.embeddingStore = ValidationUtils.ensureNotNull(embeddingStore!!, "embeddingStore")
+        this.embeddingStore = embeddingStore!!!!
     }
 
     /**

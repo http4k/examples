@@ -3,9 +3,7 @@ package dev.langchain4j.rag.query.transformer
 import dev.langchain4j.data.message.AiMessage
 import dev.langchain4j.data.message.ChatMessage
 import dev.langchain4j.data.message.UserMessage
-import dev.langchain4j.data.segment.TextSegment.Companion.from
 import dev.langchain4j.internal.Utils
-import dev.langchain4j.internal.ValidationUtils
 import dev.langchain4j.model.chat.ChatModel
 import dev.langchain4j.model.input.Prompt
 import dev.langchain4j.model.input.PromptTemplate
@@ -37,7 +35,7 @@ class CompressingQueryTransformer @JvmOverloads constructor(
     protected val chatModel: ChatModel
 
     init {
-        this.chatModel = ValidationUtils.ensureNotNull(chatModel, "chatModel")
+        this.chatModel = chatModel!!
         this.promptTemplate = Utils.getOrDefault(promptTemplate, DEFAULT_PROMPT_TEMPLATE)
     }
 
