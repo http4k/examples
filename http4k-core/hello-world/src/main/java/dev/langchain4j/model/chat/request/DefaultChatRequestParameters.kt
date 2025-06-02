@@ -1,144 +1,124 @@
-package dev.langchain4j.model.chat.request;
+package dev.langchain4j.model.chat.request
 
-import dev.langchain4j.agent.tool.ToolSpecification;
-import dev.langchain4j.model.chat.request.json.JsonSchema;
+import dev.langchain4j.agent.tool.ToolSpecification
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.model.chat.request.json.JsonSchema
+import java.util.Arrays
+import java.util.Objects
 
-import java.util.List;
-import java.util.Objects;
+class DefaultChatRequestParameters protected constructor(builder: Builder<*>) :
+    ChatRequestParameters {
+    private val modelName: String?
+    private val temperature: Double?
+    private val topP: Double?
+    private val topK: Int?
+    private val frequencyPenalty: Double?
+    private val presencePenalty: Double?
+    private val maxOutputTokens: Int?
+    private val stopSequences: List<String?>
+    private val toolSpecifications: List<ToolSpecification?>
+    private val toolChoice: ToolChoice?
+    private val responseFormat: ResponseFormat?
 
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.Utils.getOrDefault;
-import static dev.langchain4j.model.chat.request.ResponseFormatType.JSON;
-import static java.util.Arrays.asList;
-
-public class DefaultChatRequestParameters implements ChatRequestParameters {
-
-    private final String modelName;
-    private final Double temperature;
-    private final Double topP;
-    private final Integer topK;
-    private final Double frequencyPenalty;
-    private final Double presencePenalty;
-    private final Integer maxOutputTokens;
-    private final List<String> stopSequences;
-    private final List<ToolSpecification> toolSpecifications;
-    private final ToolChoice toolChoice;
-    private final ResponseFormat responseFormat;
-
-    protected DefaultChatRequestParameters(Builder<?> builder) {
-        this.modelName = builder.modelName;
-        this.temperature = builder.temperature;
-        this.topP = builder.topP;
-        this.topK = builder.topK;
-        this.frequencyPenalty = builder.frequencyPenalty;
-        this.presencePenalty = builder.presencePenalty;
-        this.maxOutputTokens = builder.maxOutputTokens;
-        this.stopSequences = copy(builder.stopSequences);
-        this.toolSpecifications = copy(builder.toolSpecifications);
-        this.toolChoice = builder.toolChoice;
-        this.responseFormat = builder.responseFormat;
+    init {
+        this.modelName = builder.modelName
+        this.temperature = builder.temperature
+        this.topP = builder.topP
+        this.topK = builder.topK
+        this.frequencyPenalty = builder.frequencyPenalty
+        this.presencePenalty = builder.presencePenalty
+        this.maxOutputTokens = builder.maxOutputTokens
+        this.stopSequences = Utils.copy(builder.stopSequences)
+        this.toolSpecifications = Utils.copy(builder.toolSpecifications)
+        this.toolChoice = builder.toolChoice
+        this.responseFormat = builder.responseFormat
     }
 
-    @Override
-    public String modelName() {
-        return modelName;
+    override fun modelName(): String? {
+        return modelName
     }
 
-    @Override
-    public Double temperature() {
-        return temperature;
+    override fun temperature(): Double? {
+        return temperature
     }
 
-    @Override
-    public Double topP() {
-        return topP;
+    override fun topP(): Double? {
+        return topP
     }
 
-    @Override
-    public Integer topK() {
-        return topK;
+    override fun topK(): Int? {
+        return topK
     }
 
-    @Override
-    public Double frequencyPenalty() {
-        return frequencyPenalty;
+    override fun frequencyPenalty(): Double? {
+        return frequencyPenalty
     }
 
-    @Override
-    public Double presencePenalty() {
-        return presencePenalty;
+    override fun presencePenalty(): Double? {
+        return presencePenalty
     }
 
-    @Override
-    public Integer maxOutputTokens() {
-        return maxOutputTokens;
+    override fun maxOutputTokens(): Int? {
+        return maxOutputTokens
     }
 
-    @Override
-    public List<String> stopSequences() {
-        return stopSequences;
+    override fun stopSequences(): List<String?> {
+        return stopSequences
     }
 
-    @Override
-    public List<ToolSpecification> toolSpecifications() {
-        return toolSpecifications;
+    override fun toolSpecifications(): List<ToolSpecification?> {
+        return toolSpecifications
     }
 
-    @Override
-    public ToolChoice toolChoice() {
-        return toolChoice;
+    override fun toolChoice(): ToolChoice? {
+        return toolChoice
     }
 
-    @Override
-    public ResponseFormat responseFormat() {
-        return responseFormat;
+    override fun responseFormat(): ResponseFormat? {
+        return responseFormat
     }
 
-    @Override
-    public ChatRequestParameters overrideWith(ChatRequestParameters that) {
-        return DefaultChatRequestParameters.builder()
-                .overrideWith(this)
-                .overrideWith(that)
-                .build();
+    override fun overrideWith(that: ChatRequestParameters): ChatRequestParameters {
+        return builder()
+            .overrideWith(this)!!
+            .overrideWith(that)!!
+            .build()
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        DefaultChatRequestParameters that = (DefaultChatRequestParameters) o;
-        return Objects.equals(modelName, that.modelName)
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as DefaultChatRequestParameters
+        return modelName == that.modelName
                 && Objects.equals(temperature, that.temperature)
                 && Objects.equals(topP, that.topP)
-                && Objects.equals(topK, that.topK)
+                && topK == that.topK
                 && Objects.equals(frequencyPenalty, that.frequencyPenalty)
                 && Objects.equals(presencePenalty, that.presencePenalty)
-                && Objects.equals(maxOutputTokens, that.maxOutputTokens)
-                && Objects.equals(stopSequences, that.stopSequences)
-                && Objects.equals(toolSpecifications, that.toolSpecifications)
-                && Objects.equals(toolChoice, that.toolChoice)
-                && Objects.equals(responseFormat, that.responseFormat);
+                && maxOutputTokens == that.maxOutputTokens
+                && stopSequences == that.stopSequences
+                && toolSpecifications == that.toolSpecifications
+                && toolChoice == that.toolChoice
+                && responseFormat == that.responseFormat
     }
 
-    @Override
-    public int hashCode() {
+    override fun hashCode(): Int {
         return Objects.hash(
-                modelName,
-                temperature,
-                topP,
-                topK,
-                frequencyPenalty,
-                presencePenalty,
-                maxOutputTokens,
-                stopSequences,
-                toolSpecifications,
-                toolChoice,
-                responseFormat
-        );
+            modelName,
+            temperature,
+            topP,
+            topK,
+            frequencyPenalty,
+            presencePenalty,
+            maxOutputTokens,
+            stopSequences,
+            toolSpecifications,
+            toolChoice,
+            responseFormat
+        )
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "DefaultChatRequestParameters{" +
                 "modelName='" + modelName + '\'' +
                 ", temperature=" + temperature +
@@ -151,136 +131,138 @@ public class DefaultChatRequestParameters implements ChatRequestParameters {
                 ", toolSpecifications=" + toolSpecifications +
                 ", toolChoice=" + toolChoice +
                 ", responseFormat=" + responseFormat +
-                '}';
+                '}'
     }
 
-    public static Builder<?> builder() {
-        return new Builder<>();
-    }
+    class Builder<T : Builder<T>?> {
+        var modelName: String? = null
+        var temperature: Double? = null
+        var topP: Double? = null
+        var topK: Int? = null
+        var frequencyPenalty: Double? = null
+        var presencePenalty: Double? = null
+        var maxOutputTokens: Int? = null
+        var stopSequences: List<String?>? = null
+        var toolSpecifications: List<ToolSpecification?>? = null
+        var toolChoice: ToolChoice? = null
+        var responseFormat: ResponseFormat? = null
 
-    public static class Builder<T extends Builder<T>> {
-
-        private String modelName;
-        private Double temperature;
-        private Double topP;
-        private Integer topK;
-        private Double frequencyPenalty;
-        private Double presencePenalty;
-        private Integer maxOutputTokens;
-        private List<String> stopSequences;
-        private List<ToolSpecification> toolSpecifications;
-        private ToolChoice toolChoice;
-        private ResponseFormat responseFormat;
-
-        public T overrideWith(ChatRequestParameters parameters) {
-            modelName(getOrDefault(parameters.modelName(), modelName));
-            temperature(getOrDefault(parameters.temperature(), temperature));
-            topP(getOrDefault(parameters.topP(), topP));
-            topK(getOrDefault(parameters.topK(), topK));
-            frequencyPenalty(getOrDefault(parameters.frequencyPenalty(), frequencyPenalty));
-            presencePenalty(getOrDefault(parameters.presencePenalty(), presencePenalty));
-            maxOutputTokens(getOrDefault(parameters.maxOutputTokens(), maxOutputTokens));
-            stopSequences(getOrDefault(parameters.stopSequences(), stopSequences));
-            toolSpecifications(getOrDefault(parameters.toolSpecifications(), toolSpecifications));
-            toolChoice(getOrDefault(parameters.toolChoice(), toolChoice));
-            responseFormat(getOrDefault(parameters.responseFormat(), responseFormat));
-            return (T) this;
+        fun overrideWith(parameters: ChatRequestParameters): T {
+            modelName(Utils.getOrDefault(parameters.modelName(), modelName))
+            temperature(Utils.getOrDefault(parameters.temperature(), temperature))
+            topP(Utils.getOrDefault(parameters.topP(), topP))
+            topK(Utils.getOrDefault(parameters.topK(), topK))
+            frequencyPenalty(Utils.getOrDefault(parameters.frequencyPenalty(), frequencyPenalty))
+            presencePenalty(Utils.getOrDefault(parameters.presencePenalty(), presencePenalty))
+            maxOutputTokens(Utils.getOrDefault(parameters.maxOutputTokens(), maxOutputTokens))
+            stopSequences(Utils.getOrDefault(parameters.stopSequences(), stopSequences))
+            toolSpecifications(Utils.getOrDefault(parameters.toolSpecifications(), toolSpecifications))
+            toolChoice(Utils.getOrDefault(parameters.toolChoice(), toolChoice))
+            responseFormat(Utils.getOrDefault(parameters.responseFormat(), responseFormat))
+            return this as T
         }
 
-        public T modelName(String modelName) {
-            this.modelName = modelName;
-            return (T) this;
+        fun modelName(modelName: String?): T {
+            this.modelName = modelName
+            return this as T
         }
 
-        public T temperature(Double temperature) {
-            this.temperature = temperature;
-            return (T) this;
+        fun temperature(temperature: Double?): T {
+            this.temperature = temperature
+            return this as T
         }
 
-        public T topP(Double topP) {
-            this.topP = topP;
-            return (T) this;
+        fun topP(topP: Double?): T {
+            this.topP = topP
+            return this as T
         }
 
-        public T topK(Integer topK) {
-            this.topK = topK;
-            return (T) this;
+        fun topK(topK: Int?): T {
+            this.topK = topK
+            return this as T
         }
 
-        public T frequencyPenalty(Double frequencyPenalty) {
-            this.frequencyPenalty = frequencyPenalty;
-            return (T) this;
+        fun frequencyPenalty(frequencyPenalty: Double?): T {
+            this.frequencyPenalty = frequencyPenalty
+            return this as T
         }
 
-        public T presencePenalty(Double presencePenalty) {
-            this.presencePenalty = presencePenalty;
-            return (T) this;
+        fun presencePenalty(presencePenalty: Double?): T {
+            this.presencePenalty = presencePenalty
+            return this as T
         }
 
-        public T maxOutputTokens(Integer maxOutputTokens) {
-            this.maxOutputTokens = maxOutputTokens;
-            return (T) this;
+        fun maxOutputTokens(maxOutputTokens: Int?): T {
+            this.maxOutputTokens = maxOutputTokens
+            return this as T
         }
 
         /**
-         * @see #stopSequences(String...)
+         * @see .stopSequences
          */
-        public T stopSequences(List<String> stopSequences) {
-            this.stopSequences = stopSequences;
-            return (T) this;
+        fun stopSequences(stopSequences: List<String?>?): T {
+            this.stopSequences = stopSequences
+            return this as T
         }
 
         /**
-         * @see #stopSequences(List)
+         * @see .stopSequences
          */
-        public T stopSequences(String... stopSequences) {
-            return stopSequences(asList(stopSequences));
+        fun stopSequences(vararg stopSequences: String?): T {
+            return stopSequences(Arrays.asList(*stopSequences))
         }
 
         /**
-         * @see #toolSpecifications(ToolSpecification...)
+         * @see .toolSpecifications
          */
-        public T toolSpecifications(List<ToolSpecification> toolSpecifications) {
-            this.toolSpecifications = toolSpecifications;
-            return (T) this;
+        fun toolSpecifications(toolSpecifications: List<ToolSpecification?>?): T {
+            this.toolSpecifications = toolSpecifications
+            return this as T
         }
 
         /**
-         * @see #toolSpecifications(List)
+         * @see .toolSpecifications
          */
-        public T toolSpecifications(ToolSpecification... toolSpecifications) {
-            return toolSpecifications(asList(toolSpecifications));
+        fun toolSpecifications(vararg toolSpecifications: ToolSpecification?): T {
+            return toolSpecifications(Arrays.asList(*toolSpecifications))
         }
 
-        public T toolChoice(ToolChoice toolChoice) {
-            this.toolChoice = toolChoice;
-            return (T) this;
-        }
-
-        /**
-         * @see #responseFormat(JsonSchema)
-         */
-        public T responseFormat(ResponseFormat responseFormat) {
-            this.responseFormat = responseFormat;
-            return (T) this;
+        fun toolChoice(toolChoice: ToolChoice?): T {
+            this.toolChoice = toolChoice
+            return this as T
         }
 
         /**
-         * @see #responseFormat(ResponseFormat)
+         * @see .responseFormat
          */
-        public T responseFormat(JsonSchema jsonSchema) {
+        fun responseFormat(responseFormat: ResponseFormat?): T {
+            this.responseFormat = responseFormat
+            return this as T
+        }
+
+        /**
+         * @see .responseFormat
+         */
+        fun responseFormat(jsonSchema: JsonSchema?): T {
             if (jsonSchema != null) {
-                ResponseFormat responseFormat = ResponseFormat.builder()
-                        .type(JSON)
-                        .jsonSchema(jsonSchema)
-                        .build();
-                return responseFormat(responseFormat);
+                val responseFormat: ResponseFormat = ResponseFormat.Companion.builder()
+                    .type(ResponseFormatType.JSON)
+                    .jsonSchema(jsonSchema)
+                    .build()
+                return responseFormat(responseFormat)
             }
-            return (T) this;
+            return this as T
         }
 
-        public ChatRequestParameters build() {
-            return new DefaultChatRequestParameters(this);
+        fun build(): ChatRequestParameters {
+            return DefaultChatRequestParameters(this)
+        }
+    }
+
+    companion object {
+        fun builder(): Builder<*> {
+            TODO()
+//            return Builder<T>()
         }
     }
 }

@@ -1,12 +1,11 @@
-package dev.langchain4j.model.chat.request;
+package dev.langchain4j.model.chat.request
 
-import dev.langchain4j.model.chat.ChatModel;
+import dev.langchain4j.model.chat.ChatModel
 
 /**
- * Specifies how {@link ChatModel} should use tools.
+ * Specifies how [ChatModel] should use tools.
  */
-public enum ToolChoice {
-
+enum class ToolChoice {
     /**
      * The chat model can choose whether to use tools, which ones to use, and how many.
      */

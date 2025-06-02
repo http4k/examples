@@ -1,78 +1,72 @@
-package dev.langchain4j.model.chat.request.json;
+package dev.langchain4j.model.chat.request.json
 
-import java.util.List;
-import java.util.Objects;
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Objects
 
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.Utils.quoted;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotEmpty;
+class JsonEnumSchema(builder: Builder) : JsonSchemaElement {
+    private val description: String?
+    private val enumValues: List<String>
 
-public class JsonEnumSchema implements JsonSchemaElement {
-
-    private final String description;
-    private final List<String> enumValues;
-
-    public JsonEnumSchema(Builder builder) {
-        this.description = builder.description;
-        this.enumValues = copy(ensureNotEmpty(builder.enumValues, "enumValues"));
+    init {
+        this.description = builder.description
+        this.enumValues = Utils.copy(ValidationUtils.ensureNotEmpty(builder.enumValues, "enumValues"))
     }
 
-    @Override
-    public String description() {
-        return description;
+    override fun description(): String? {
+        return description
     }
 
-    public List<String> enumValues() {
-        return enumValues;
+    fun enumValues(): List<String> {
+        return enumValues
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        var description: String? = null
+        var enumValues: List<String>? = null
 
-    public static class Builder {
-
-        private String description;
-        private List<String> enumValues;
-
-        public Builder description(String description) {
-            this.description = description;
-            return this;
+        fun description(description: String?): Builder {
+            this.description = description
+            return this
         }
 
-        public Builder enumValues(List<String> enumValues) {
-            this.enumValues = enumValues;
-            return this;
+        fun enumValues(enumValues: List<String>?): Builder {
+            this.enumValues = enumValues
+            return this
         }
 
-        public Builder enumValues(String... enumValues) {
-            return enumValues(List.of(enumValues));
+        fun enumValues(vararg enumValues: String?): Builder {
+            return enumValues(java.util.List.of(*enumValues))
         }
 
-        public JsonEnumSchema build() {
-            return new JsonEnumSchema(this);
+        fun build(): JsonEnumSchema {
+            return JsonEnumSchema(this)
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JsonEnumSchema that = (JsonEnumSchema) o;
-        return Objects.equals(this.description, that.description)
-                && Objects.equals(this.enumValues, that.enumValues);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as JsonEnumSchema
+        return this.description == that.description
+                && this.enumValues == that.enumValues
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(description, enumValues);
+    override fun hashCode(): Int {
+        return Objects.hash(description, enumValues)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "JsonEnumSchema {" +
-                "description = " + quoted(description) +
+                "description = " + Utils.quoted(description) +
                 ", enumValues = " + enumValues +
-                " }";
+                " }"
+    }
+
+    companion object {
+        @JvmStatic
+        fun builder(): Builder {
+            return Builder()
+        }
     }
 }

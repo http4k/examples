@@ -1,66 +1,63 @@
-package dev.langchain4j.model.chat.request.json;
+package dev.langchain4j.model.chat.request.json
 
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.quoted;
+import dev.langchain4j.internal.Utils
+import java.util.Objects
 
 /**
- * Can reference {@link JsonObjectSchema} when recursion is required.
- * When used, the {@link JsonObjectSchema#definitions()} of the root JSON schema element
- * should contain an entry with a key equal to the {@link #reference()} of this {@link JsonReferenceSchema}.
+ * Can reference [JsonObjectSchema] when recursion is required.
+ * When used, the [JsonObjectSchema.definitions] of the root JSON schema element
+ * should contain an entry with a key equal to the [.reference] of this [JsonReferenceSchema].
  */
-public class JsonReferenceSchema implements JsonSchemaElement {
+class JsonReferenceSchema(builder: Builder) :
+    JsonSchemaElement {
+    private val reference: String?
 
-    private final String reference;
-
-    public JsonReferenceSchema(Builder builder) {
-        this.reference = builder.reference;
+    init {
+        this.reference = builder.reference
     }
 
-    public String reference() {
-        return reference;
+    fun reference(): String? {
+        return reference
     }
 
-    @Override
-    public String description() {
-        return null;
+    override fun description(): String? {
+        return null
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        var reference: String? = null
 
-    public static class Builder {
-
-        private String reference;
-
-        public Builder reference(String reference) {
-            this.reference = reference;
-            return this;
+        fun reference(reference: String?): Builder {
+            this.reference = reference
+            return this
         }
 
-        public JsonReferenceSchema build() {
-            return new JsonReferenceSchema(this);
+        fun build(): JsonReferenceSchema {
+            return JsonReferenceSchema(this)
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JsonReferenceSchema that = (JsonReferenceSchema) o;
-        return Objects.equals(this.reference, that.reference);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as JsonReferenceSchema
+        return this.reference == that.reference
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(reference);
+    override fun hashCode(): Int {
+        return Objects.hash(reference)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "JsonReferenceSchema {" +
-                "reference = " + quoted(reference) +
-                " }";
+                "reference = " + Utils.quoted(reference) +
+                " }"
+    }
+
+    companion object {
+        @JvmStatic
+        fun builder(): Builder {
+            return Builder()
+        }
     }
 }

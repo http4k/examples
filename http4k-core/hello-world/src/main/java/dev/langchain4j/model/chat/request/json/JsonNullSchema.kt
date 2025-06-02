@@ -1,9 +1,7 @@
-package dev.langchain4j.model.chat.request.json;
+package dev.langchain4j.model.chat.request.json
 
-public class JsonNullSchema implements JsonSchemaElement {
-
-    @Override
-    public String description() {
-        return null;
+class JsonNullSchema : JsonSchemaElement {
+    override fun description(): String? {
+        return null
     }
 }

@@ -1,143 +1,136 @@
-package dev.langchain4j.model.chat.response;
+package dev.langchain4j.model.chat.response
 
-import dev.langchain4j.data.message.AiMessage;
-import dev.langchain4j.model.output.FinishReason;
-import dev.langchain4j.model.output.TokenUsage;
+import dev.langchain4j.data.message.AiMessage
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.model.output.FinishReason
+import dev.langchain4j.model.output.TokenUsage
+import java.util.Objects
 
-import java.util.Objects;
+class ChatResponse protected constructor(builder: Builder) {
+    private val aiMessage: AiMessage
+    private val metadata: ChatResponseMetadata?
 
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+    init {
+        this.aiMessage = ValidationUtils.ensureNotNull(builder.aiMessage, "aiMessage")
 
-public class ChatResponse {
-
-    private final AiMessage aiMessage;
-    private final ChatResponseMetadata metadata;
-
-    protected ChatResponse(Builder builder) {
-        this.aiMessage = ensureNotNull(builder.aiMessage, "aiMessage");
-
-        ChatResponseMetadata.Builder<?> metadataBuilder = ChatResponseMetadata.builder();
+        val metadataBuilder: ChatResponseMetadata.Builder<*> = ChatResponseMetadata.Companion.builder()
         if (builder.id != null) {
-            validate(builder, "id");
-            metadataBuilder.id(builder.id);
+            validate(builder, "id")
+            metadataBuilder.id(builder.id)
         }
         if (builder.modelName != null) {
-            validate(builder, "modelName");
-            metadataBuilder.modelName(builder.modelName);
+            validate(builder, "modelName")
+            metadataBuilder.modelName(builder.modelName)
         }
         if (builder.tokenUsage != null) {
-            validate(builder, "tokenUsage");
-            metadataBuilder.tokenUsage(builder.tokenUsage);
+            validate(builder, "tokenUsage")
+            metadataBuilder.tokenUsage(builder.tokenUsage)
         }
         if (builder.finishReason != null) {
-            validate(builder, "finishReason");
-            metadataBuilder.finishReason(builder.finishReason);
+            validate(builder, "finishReason")
+            metadataBuilder.finishReason(builder.finishReason)
         }
         if (builder.metadata != null) {
-            this.metadata = builder.metadata;
+            this.metadata = builder.metadata
         } else {
-            this.metadata = metadataBuilder.build();
+            this.metadata = metadataBuilder.build()
         }
     }
 
-    public AiMessage aiMessage() {
-        return aiMessage;
+    fun aiMessage(): AiMessage {
+        return aiMessage
     }
 
-    public ChatResponseMetadata metadata() {
-        return metadata;
+    fun metadata(): ChatResponseMetadata? {
+        return metadata
     }
 
-    public String id() {
-        return metadata.id();
+    fun id(): String? {
+        return metadata!!.id()
     }
 
-    public String modelName() {
-        return metadata.modelName();
+    fun modelName(): String? {
+        return metadata!!.modelName()
     }
 
-    public TokenUsage tokenUsage() {
-        return metadata.tokenUsage();
+    fun tokenUsage(): TokenUsage? {
+        return metadata!!.tokenUsage()
     }
 
-    public FinishReason finishReason() {
-        return metadata.finishReason();
+    fun finishReason(): FinishReason? {
+        return metadata!!.finishReason()
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChatResponse that = (ChatResponse) o;
-        return Objects.equals(this.aiMessage, that.aiMessage)
-                && Objects.equals(this.metadata, that.metadata);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as ChatResponse
+        return this.aiMessage == that.aiMessage
+                && this.metadata == that.metadata
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(aiMessage, metadata);
+    override fun hashCode(): Int {
+        return Objects.hash(aiMessage, metadata)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "ChatResponse {" +
                 " aiMessage = " + aiMessage +
                 ", metadata = " + metadata +
-                " }";
+                " }"
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        var aiMessage: AiMessage? = null
+        var metadata: ChatResponseMetadata? = null
 
-    public static class Builder {
+        var id: String? = null
+        var modelName: String? = null
+        var tokenUsage: TokenUsage? = null
+        var finishReason: FinishReason? = null
 
-        private AiMessage aiMessage;
-        private ChatResponseMetadata metadata;
-
-        private String id;
-        private String modelName;
-        private TokenUsage tokenUsage;
-        private FinishReason finishReason;
-
-        public Builder aiMessage(AiMessage aiMessage) {
-            this.aiMessage = aiMessage;
-            return this;
+        fun aiMessage(aiMessage: AiMessage?): Builder {
+            this.aiMessage = aiMessage
+            return this
         }
 
-        public Builder metadata(ChatResponseMetadata metadata) {
-            this.metadata = metadata;
-            return this;
+        fun metadata(metadata: ChatResponseMetadata?): Builder {
+            this.metadata = metadata
+            return this
         }
 
-        public Builder id(String id) {
-            this.id = id;
-            return this;
+        fun id(id: String?): Builder {
+            this.id = id
+            return this
         }
 
-        public Builder modelName(String modelName) {
-            this.modelName = modelName;
-            return this;
+        fun modelName(modelName: String?): Builder {
+            this.modelName = modelName
+            return this
         }
 
-        public Builder tokenUsage(TokenUsage tokenUsage) {
-            this.tokenUsage = tokenUsage;
-            return this;
+        fun tokenUsage(tokenUsage: TokenUsage?): Builder {
+            this.tokenUsage = tokenUsage
+            return this
         }
 
-        public Builder finishReason(FinishReason finishReason) {
-            this.finishReason = finishReason;
-            return this;
+        fun finishReason(finishReason: FinishReason?): Builder {
+            this.finishReason = finishReason
+            return this
         }
 
-        public ChatResponse build() {
-            return new ChatResponse(this);
+        fun build(): ChatResponse {
+            return ChatResponse(this)
         }
     }
 
-    private static void validate(Builder builder, String name) {
-        if (builder.metadata != null) {
-            throw new IllegalArgumentException("Cannot set both 'metadata' and '%s' on ChatResponse".formatted(name));
+    companion object {
+        fun builder(): Builder {
+            return Builder()
+        }
+
+        private fun validate(builder: Builder, name: String) {
+            require(builder.metadata == null) { "Cannot set both 'metadata' and '%s' on ChatResponse" }
         }
     }
 }

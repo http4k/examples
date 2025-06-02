@@ -1,61 +1,57 @@
-package dev.langchain4j.model.chat.request.json;
+package dev.langchain4j.model.chat.request.json
 
-import java.util.Objects;
+import dev.langchain4j.internal.Utils
+import java.util.Objects
 
-import static dev.langchain4j.internal.Utils.quoted;
+class JsonStringSchema : JsonSchemaElement {
+    private val description: String?
 
-public class JsonStringSchema implements JsonSchemaElement {
-
-    private final String description;
-
-    public JsonStringSchema() {
-        this.description = null;
+    constructor() {
+        this.description = null
     }
 
-    public JsonStringSchema(Builder builder) {
-        this.description = builder.description;
+    constructor(builder: Builder) {
+        this.description = builder.description
     }
 
-    @Override
-    public String description() {
-        return description;
+    override fun description(): String? {
+        return description
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        var description: String? = null
 
-    public static class Builder {
-
-        private String description;
-
-        public Builder description(String description) {
-            this.description = description;
-            return this;
+        fun description(description: String?): Builder {
+            this.description = description
+            return this
         }
 
-        public JsonStringSchema build() {
-            return new JsonStringSchema(this);
+        fun build(): JsonStringSchema {
+            return JsonStringSchema(this)
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JsonStringSchema that = (JsonStringSchema) o;
-        return Objects.equals(this.description, that.description);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as JsonStringSchema
+        return this.description == that.description
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(description);
+    override fun hashCode(): Int {
+        return Objects.hash(description)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "JsonStringSchema {" +
-                "description = " + quoted(description) +
-                " }";
+                "description = " + Utils.quoted(description) +
+                " }"
+    }
+
+    companion object {
+        @JvmStatic
+        fun builder(): Builder {
+            return Builder()
+        }
     }
 }

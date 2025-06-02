@@ -1,69 +1,70 @@
-package dev.langchain4j.model.chat;
+package dev.langchain4j.model.chat
 
-import dev.langchain4j.model.ModelProvider;
-import dev.langchain4j.model.chat.listener.ChatModelErrorContext;
-import dev.langchain4j.model.chat.listener.ChatModelListener;
-import dev.langchain4j.model.chat.listener.ChatModelRequestContext;
-import dev.langchain4j.model.chat.listener.ChatModelResponseContext;
-import dev.langchain4j.model.chat.request.ChatRequest;
-import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.model.ModelProvider
+import dev.langchain4j.model.chat.listener.ChatModelErrorContext
+import dev.langchain4j.model.chat.listener.ChatModelListener
+import dev.langchain4j.model.chat.listener.ChatModelRequestContext
+import dev.langchain4j.model.chat.listener.ChatModelResponseContext
+import dev.langchain4j.model.chat.request.ChatRequest
+import dev.langchain4j.model.chat.response.ChatResponse
+import java.util.function.Consumer
 
-import java.util.List;
-import java.util.Map;
-
-class ChatModelListenerUtils {
-
-    private ChatModelListenerUtils() {
+internal object ChatModelListenerUtils {
+    fun onRequest(
+        chatRequest: ChatRequest,
+        modelProvider: ModelProvider,
+        attributes: Map<Any, Any>,
+        listeners: List<ChatModelListener>?
+    ) {
+        if (listeners == null || listeners.isEmpty()) {
+            return
+        }
+        val requestContext = ChatModelRequestContext(chatRequest, modelProvider, attributes)
+        listeners.forEach(Consumer { listener: ChatModelListener ->
+            try {
+                listener.onRequest(requestContext)
+            } catch (e: Exception) {
+            }
+        })
     }
 
-    static void onRequest(ChatRequest chatRequest,
-                          ModelProvider modelProvider,
-                          Map<Object, Object> attributes,
-                          List<ChatModelListener> listeners) {
+    fun onResponse(
+        chatResponse: ChatResponse,
+        chatRequest: ChatRequest,
+        modelProvider: ModelProvider,
+        attributes: Map<Any, Any>,
+        listeners: List<ChatModelListener>?
+    ) {
         if (listeners == null || listeners.isEmpty()) {
-            return;
+            return
         }
-        ChatModelRequestContext requestContext = new ChatModelRequestContext(chatRequest, modelProvider, attributes);
-        listeners.forEach(listener -> {
+        val responseContext = ChatModelResponseContext(
+            chatResponse, chatRequest, modelProvider, attributes
+        )
+        listeners.forEach(Consumer { listener: ChatModelListener ->
             try {
-                listener.onRequest(requestContext);
-            } catch (Exception e) {
+                listener.onResponse(responseContext)
+            } catch (e: Exception) {
             }
-        });
+        })
     }
 
-    static void onResponse(ChatResponse chatResponse,
-                           ChatRequest chatRequest,
-                           ModelProvider modelProvider,
-                           Map<Object, Object> attributes,
-                           List<ChatModelListener> listeners) {
+    fun onError(
+        error: Throwable,
+        chatRequest: ChatRequest,
+        modelProvider: ModelProvider,
+        attributes: Map<Any, Any>,
+        listeners: List<ChatModelListener>?
+    ) {
         if (listeners == null || listeners.isEmpty()) {
-            return;
+            return
         }
-        ChatModelResponseContext responseContext = new ChatModelResponseContext(
-                chatResponse, chatRequest, modelProvider, attributes);
-        listeners.forEach(listener -> {
+        val errorContext = ChatModelErrorContext(error, chatRequest, modelProvider, attributes)
+        listeners.forEach(Consumer { listener: ChatModelListener ->
             try {
-                listener.onResponse(responseContext);
-            } catch (Exception e) {
+                listener.onError(errorContext)
+            } catch (e: Exception) {
             }
-        });
-    }
-
-    static void onError(Throwable error,
-                        ChatRequest chatRequest,
-                        ModelProvider modelProvider,
-                        Map<Object, Object> attributes,
-                        List<ChatModelListener> listeners) {
-        if (listeners == null || listeners.isEmpty()) {
-            return;
-        }
-        ChatModelErrorContext errorContext = new ChatModelErrorContext(error, chatRequest, modelProvider, attributes);
-        listeners.forEach(listener -> {
-            try {
-                listener.onError(errorContext);
-            } catch (Exception e) {
-            }
-        });
+        })
     }
 }

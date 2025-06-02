@@ -1,45 +1,41 @@
-package dev.langchain4j.model.chat.listener;
+package dev.langchain4j.model.chat.listener
 
-import dev.langchain4j.model.ModelProvider;
-import dev.langchain4j.model.chat.request.ChatRequest;
-
-import java.util.Map;
-
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.model.ModelProvider
+import dev.langchain4j.model.chat.request.ChatRequest
 
 /**
  * The chat model request context.
- * It contains the {@link ChatRequest}, {@link ModelProvider} and attributes.
- * The attributes can be used to pass data between methods of a {@link ChatModelListener}
- * or between multiple {@link ChatModelListener}s.
+ * It contains the [ChatRequest], [ModelProvider] and attributes.
+ * The attributes can be used to pass data between methods of a [ChatModelListener]
+ * or between multiple [ChatModelListener]s.
  */
-public class ChatModelRequestContext {
+class ChatModelRequestContext(
+    chatRequest: ChatRequest,
+    private val modelProvider: ModelProvider,
+    attributes: Map<Any, Any>
+) {
+    private val chatRequest =
+        ValidationUtils.ensureNotNull(chatRequest, "chatRequest")
+    private val attributes =
+        ValidationUtils.ensureNotNull(
+            attributes,
+            "attributes"
+        )
 
-    private final ChatRequest chatRequest;
-    private final ModelProvider modelProvider;
-    private final Map<Object, Object> attributes;
-
-    public ChatModelRequestContext(ChatRequest chatRequest,
-                                   ModelProvider modelProvider,
-                                   Map<Object, Object> attributes) {
-        this.chatRequest = ensureNotNull(chatRequest, "chatRequest");
-        this.modelProvider = modelProvider;
-        this.attributes = ensureNotNull(attributes, "attributes");
+    fun chatRequest(): ChatRequest {
+        return chatRequest
     }
 
-    public ChatRequest chatRequest() {
-        return chatRequest;
-    }
-
-    public ModelProvider modelProvider() {
-        return modelProvider;
+    fun modelProvider(): ModelProvider {
+        return modelProvider
     }
 
     /**
-     * @return The attributes map. It can be used to pass data between methods of a {@link ChatModelListener}
-     * or between multiple {@link ChatModelListener}s.
+     * @return The attributes map. It can be used to pass data between methods of a [ChatModelListener]
+     * or between multiple [ChatModelListener]s.
      */
-    public Map<Object, Object> attributes() {
-        return attributes;
+    fun attributes(): Map<Any, Any> {
+        return attributes
     }
 }

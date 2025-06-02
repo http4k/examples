@@ -1,6 +1,5 @@
-package dev.langchain4j.model.chat.request;
+package dev.langchain4j.model.chat.request
 
-public enum ResponseFormatType {
-
+enum class ResponseFormatType {
     TEXT, JSON
 }

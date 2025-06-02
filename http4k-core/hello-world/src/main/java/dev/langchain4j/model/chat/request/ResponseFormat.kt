@@ -1,78 +1,71 @@
-package dev.langchain4j.model.chat.request;
+package dev.langchain4j.model.chat.request
 
-import dev.langchain4j.model.chat.request.json.JsonSchema;
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.model.chat.request.json.JsonSchema
+import java.util.Objects
 
-import java.util.Objects;
+class ResponseFormat private constructor(builder: Builder) {
+    private val type: ResponseFormatType
+    private val jsonSchema: JsonSchema?
 
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
-public class ResponseFormat {
-
-    public static final ResponseFormat TEXT = ResponseFormat.builder().type(ResponseFormatType.TEXT).build();
-    public static final ResponseFormat JSON = ResponseFormat.builder().type(ResponseFormatType.JSON).build();
-
-    private final ResponseFormatType type;
-    private final JsonSchema jsonSchema;
-
-    private ResponseFormat(Builder builder) {
-        this.type = ensureNotNull(builder.type, "type");
-        this.jsonSchema = builder.jsonSchema;
-        if (jsonSchema != null && type != ResponseFormatType.JSON) {
-            throw new IllegalStateException("JsonSchema can be specified only when type=JSON");
-        }
+    init {
+        this.type = ValidationUtils.ensureNotNull(builder.type, "type")
+        this.jsonSchema = builder.jsonSchema
+        check(!(jsonSchema != null && type != ResponseFormatType.JSON)) { "JsonSchema can be specified only when type=JSON" }
     }
 
-    public ResponseFormatType type() {
-        return type;
+    fun type(): ResponseFormatType {
+        return type
     }
 
-    public JsonSchema jsonSchema() {
-        return jsonSchema;
+    fun jsonSchema(): JsonSchema? {
+        return jsonSchema
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ResponseFormat that = (ResponseFormat) o;
-        return Objects.equals(this.type, that.type)
-                && Objects.equals(this.jsonSchema, that.jsonSchema);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as ResponseFormat
+        return this.type == that.type
+                && this.jsonSchema == that.jsonSchema
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(type, jsonSchema);
+    override fun hashCode(): Int {
+        return Objects.hash(type, jsonSchema)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "ResponseFormat {" +
                 " type = " + type +
                 ", jsonSchema = " + jsonSchema +
-                " }";
+                " }"
     }
 
-    public static Builder builder() {
-        return new Builder();
+    class Builder {
+        var type: ResponseFormatType? = null
+        var jsonSchema: JsonSchema? = null
+
+        fun type(type: ResponseFormatType?): Builder {
+            this.type = type
+            return this
+        }
+
+        fun jsonSchema(jsonSchema: JsonSchema?): Builder {
+            this.jsonSchema = jsonSchema
+            return this
+        }
+
+        fun build(): ResponseFormat {
+            return ResponseFormat(this)
+        }
     }
 
-    public static class Builder {
+    companion object {
+        val TEXT: ResponseFormat = builder().type(ResponseFormatType.TEXT).build()
+        val JSON: ResponseFormat = builder().type(ResponseFormatType.JSON).build()
 
-        private ResponseFormatType type;
-        private JsonSchema jsonSchema;
-
-        public Builder type(ResponseFormatType type) {
-            this.type = type;
-            return this;
-        }
-
-        public Builder jsonSchema(JsonSchema jsonSchema) {
-            this.jsonSchema = jsonSchema;
-            return this;
-        }
-
-        public ResponseFormat build() {
-            return new ResponseFormat(this);
+        fun builder(): Builder {
+            return Builder()
         }
     }
 }

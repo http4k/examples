@@ -1,105 +1,89 @@
-package dev.langchain4j.model.chat;
+package dev.langchain4j.model.chat
 
-import dev.langchain4j.data.message.ChatMessage;
-import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.ModelProvider;
-import dev.langchain4j.model.chat.listener.ChatModelListener;
-import dev.langchain4j.model.chat.request.ChatRequest;
-import dev.langchain4j.model.chat.request.ChatRequestParameters;
-import dev.langchain4j.model.chat.response.ChatResponse;
-import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
-
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import static dev.langchain4j.model.ModelProvider.OTHER;
-import static dev.langchain4j.model.chat.ChatModelListenerUtils.onRequest;
-import static dev.langchain4j.model.chat.ChatModelListenerUtils.onResponse;
+import dev.langchain4j.data.message.ChatMessage
+import dev.langchain4j.data.message.UserMessage.Companion.from
+import dev.langchain4j.model.ModelProvider
+import dev.langchain4j.model.chat.listener.ChatModelListener
+import dev.langchain4j.model.chat.request.ChatRequest
+import dev.langchain4j.model.chat.request.ChatRequestParameters
+import dev.langchain4j.model.chat.response.ChatResponse
+import dev.langchain4j.model.chat.response.StreamingChatResponseHandler
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Represents a language model that has a chat API and can stream a response one token at a time.
  *
  * @see ChatModel
  */
-public interface StreamingChatModel {
-
+interface StreamingChatModel {
     /**
      * This is the main API to interact with the chat model.
      *
-     * @param chatRequest a {@link ChatRequest}, containing all the inputs to the LLM
-     * @param handler     a {@link StreamingChatResponseHandler} that will handle streaming response from the LLM
+     * @param chatRequest a [ChatRequest], containing all the inputs to the LLM
+     * @param handler     a [StreamingChatResponseHandler] that will handle streaming response from the LLM
      */
-    default void chat(ChatRequest chatRequest, StreamingChatResponseHandler handler) {
+    fun chat(chatRequest: ChatRequest, handler: StreamingChatResponseHandler) {
+        val finalChatRequest: ChatRequest = ChatRequest.Companion.builder()
+            .messages(chatRequest.messages())
+            .parameters(defaultRequestParameters().overrideWith(chatRequest.parameters()!!))
+            .build()
 
-        ChatRequest finalChatRequest = ChatRequest.builder()
-                .messages(chatRequest.messages())
-                .parameters(defaultRequestParameters().overrideWith(chatRequest.parameters()))
-                .build();
+        val listeners = listeners()
+        val attributes: Map<Any, Any> = ConcurrentHashMap()
 
-        List<ChatModelListener> listeners = listeners();
-        Map<Object, Object> attributes = new ConcurrentHashMap<>();
-
-        StreamingChatResponseHandler observingHandler = new StreamingChatResponseHandler() {
-
-            @Override
-            public void onPartialResponse(String partialResponse) {
-                handler.onPartialResponse(partialResponse);
+        val observingHandler: StreamingChatResponseHandler = object : StreamingChatResponseHandler {
+            override fun onPartialResponse(partialResponse: String?) {
+                handler.onPartialResponse(partialResponse)
             }
 
-            @Override
-            public void onCompleteResponse(ChatResponse completeResponse) {
-                onResponse(completeResponse, finalChatRequest, provider(), attributes, listeners);
-                handler.onCompleteResponse(completeResponse);
+            override fun onCompleteResponse(completeResponse: ChatResponse) {
+                ChatModelListenerUtils.onResponse(completeResponse, finalChatRequest, provider(), attributes, listeners)
+                handler.onCompleteResponse(completeResponse)
             }
 
-            @Override
-            public void onError(Throwable error) {
-                ChatModelListenerUtils.onError(error, finalChatRequest, provider(), attributes, listeners);
-                handler.onError(error);
+            override fun onError(error: Throwable) {
+                ChatModelListenerUtils.onError(error, finalChatRequest, provider(), attributes, listeners)
+                handler.onError(error)
             }
-        };
+        }
 
-        onRequest(finalChatRequest, provider(), attributes, listeners);
-        doChat(finalChatRequest, observingHandler);
+        ChatModelListenerUtils.onRequest(finalChatRequest, provider(), attributes, listeners)
+        doChat(finalChatRequest, observingHandler)
     }
 
-    default void doChat(ChatRequest chatRequest, StreamingChatResponseHandler handler) {
-        throw new RuntimeException("Not implemented");
+    fun doChat(chatRequest: ChatRequest?, handler: StreamingChatResponseHandler?) {
+        throw RuntimeException("Not implemented")
     }
 
-    default ChatRequestParameters defaultRequestParameters() {
-        return ChatRequestParameters.builder().build();
+    fun defaultRequestParameters(): ChatRequestParameters {
+        return ChatRequestParameters.Companion.builder().build()
     }
 
-    default List<ChatModelListener> listeners() {
-        return List.of();
+    fun listeners(): List<ChatModelListener> {
+        return listOf()
     }
 
-    default ModelProvider provider() {
-        return OTHER;
+    fun provider(): ModelProvider {
+        return ModelProvider.OTHER
     }
 
-    default void chat(String userMessage, StreamingChatResponseHandler handler) {
+    fun chat(userMessage: String?, handler: StreamingChatResponseHandler) {
+        val chatRequest: ChatRequest = ChatRequest.Companion.builder()
+            .messages(from(userMessage))
+            .build()
 
-        ChatRequest chatRequest = ChatRequest.builder()
-                .messages(UserMessage.from(userMessage))
-                .build();
-
-        chat(chatRequest, handler);
+        chat(chatRequest, handler)
     }
 
-    default void chat(List<ChatMessage> messages, StreamingChatResponseHandler handler) {
+    fun chat(messages: List<ChatMessage?>?, handler: StreamingChatResponseHandler) {
+        val chatRequest: ChatRequest = ChatRequest.Companion.builder()
+            .messages(messages)
+            .build()
 
-        ChatRequest chatRequest = ChatRequest.builder()
-                .messages(messages)
-                .build();
-
-        chat(chatRequest, handler);
+        chat(chatRequest, handler)
     }
 
-    default Set<Capability> supportedCapabilities() {
-        return Set.of();
+    fun supportedCapabilities(): Set<Capability> {
+        return setOf()
     }
 }

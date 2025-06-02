@@ -73,7 +73,8 @@ class LanguageModelQueryRouter @JvmOverloads constructor(
         val prompt = createPrompt(query)
         try {
             val response = chatModel.chat(prompt.text())
-            return parse(response)
+            TODO()
+//            return parse(response)
         } catch (e: Exception) {
             return fallback(query, e)
         }

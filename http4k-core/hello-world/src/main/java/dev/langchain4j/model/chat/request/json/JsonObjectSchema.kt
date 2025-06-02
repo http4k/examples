@@ -1,295 +1,288 @@
-package dev.langchain4j.model.chat.request.json;
+package dev.langchain4j.model.chat.request.json
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import dev.langchain4j.internal.Utils
+import java.util.Arrays
+import java.util.Objects
 
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.Utils.quoted;
-import static java.util.Arrays.asList;
+class JsonObjectSchema(builder: Builder) : JsonSchemaElement {
+    private val description: String?
+    private val properties: Map<String, JsonSchemaElement>
+    private val required: List<String>
+    private val additionalProperties: Boolean?
+    private val definitions: Map<String, JsonSchemaElement>
 
-public class JsonObjectSchema implements JsonSchemaElement {
-
-    private final String description;
-    private final Map<String, JsonSchemaElement> properties;
-    private final List<String> required;
-    private final Boolean additionalProperties;
-    private final Map<String, JsonSchemaElement> definitions;
-
-    public JsonObjectSchema(Builder builder) {
-        this.description = builder.description;
-        this.properties = copy(builder.properties);
-        this.required = copy(builder.required);
-        this.additionalProperties = builder.additionalProperties;
-        this.definitions = copy(builder.definitions);
+    init {
+        this.description = builder.description
+        this.properties = Utils.copy(builder.properties)
+        this.required = Utils.copy(builder.required)
+        this.additionalProperties = builder.additionalProperties
+        this.definitions = Utils.copy(builder.definitions)
     }
 
-    @Override
-    public String description() {
-        return description;
+    override fun description(): String? {
+        return description
     }
 
-    public Map<String, JsonSchemaElement> properties() {
-        return properties;
+    fun properties(): Map<String, JsonSchemaElement> {
+        return properties
     }
 
-    public List<String> required() {
-        return required;
+    fun required(): List<String> {
+        return required
     }
 
-    public Boolean additionalProperties() {
-        return additionalProperties;
+    fun additionalProperties(): Boolean? {
+        return additionalProperties
     }
 
     /**
-     * Used together with {@link JsonReferenceSchema} when recursion is required.
+     * Used together with [JsonReferenceSchema] when recursion is required.
      */
-    public Map<String, JsonSchemaElement> definitions() {
-        return definitions;
+    fun definitions(): Map<String, JsonSchemaElement> {
+        return definitions
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        var description: String? = null
+        val properties: MutableMap<String, JsonSchemaElement> = LinkedHashMap()
+        var required: List<String>? = null
+        var additionalProperties: Boolean? = null
+        var definitions: Map<String, JsonSchemaElement>? = null
 
-    public static class Builder {
-
-        private String description;
-        private final Map<String, JsonSchemaElement> properties = new LinkedHashMap<>();
-        private List<String> required;
-        private Boolean additionalProperties;
-        private Map<String, JsonSchemaElement> definitions;
-
-        public Builder description(String description) {
-            this.description = description;
-            return this;
+        fun description(description: String?): Builder {
+            this.description = description
+            return this
         }
 
         /**
          * Adds all properties in the parameter Map to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addStringProperty(String)
-         * @see #addStringProperty(String, String)
-         * @see #addIntegerProperty(String)
-         * @see #addIntegerProperty(String, String)
-         * @see #addNumberProperty(String)
-         * @see #addNumberProperty(String, String)
-         * @see #addBooleanProperty(String)
-         * @see #addBooleanProperty(String, String)
-         * @see #addEnumProperty(String, List)
-         * @see #addEnumProperty(String, List, String)
+         * @see .addProperty
+         * @see .addStringProperty
+         * @see .addStringProperty
+         * @see .addIntegerProperty
+         * @see .addIntegerProperty
+         * @see .addNumberProperty
+         * @see .addNumberProperty
+         * @see .addBooleanProperty
+         * @see .addBooleanProperty
+         * @see .addEnumProperty
+         * @see .addEnumProperty
          */
-        public Builder addProperties(Map<String, JsonSchemaElement> properties) {
-            this.properties.putAll(properties);
-            return this;
+        fun addProperties(properties: Map<String, JsonSchemaElement>): Builder {
+            this.properties.putAll(properties)
+            return this
         }
 
         /**
          * Adds a single property to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addProperties(Map)
-         * @see #addStringProperty(String)
-         * @see #addStringProperty(String, String)
-         * @see #addIntegerProperty(String)
-         * @see #addIntegerProperty(String, String)
-         * @see #addNumberProperty(String)
-         * @see #addNumberProperty(String, String)
-         * @see #addBooleanProperty(String)
-         * @see #addBooleanProperty(String, String)
-         * @see #addEnumProperty(String, List)
-         * @see #addEnumProperty(String, List, String)
+         * @see .addProperties
+         * @see .addStringProperty
+         * @see .addStringProperty
+         * @see .addIntegerProperty
+         * @see .addIntegerProperty
+         * @see .addNumberProperty
+         * @see .addNumberProperty
+         * @see .addBooleanProperty
+         * @see .addBooleanProperty
+         * @see .addEnumProperty
+         * @see .addEnumProperty
          */
-        public Builder addProperty(String name, JsonSchemaElement jsonSchemaElement) {
-            this.properties.put(name, jsonSchemaElement);
-            return this;
+        fun addProperty(name: String, jsonSchemaElement: JsonSchemaElement): Builder {
+            properties[name] = jsonSchemaElement
+            return this
         }
 
         /**
          * Adds a single string property to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addStringProperty(String, String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addStringProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addStringProperty(String name) {
-            this.properties.put(name, new JsonStringSchema());
-            return this;
+        fun addStringProperty(name: String): Builder {
+            properties[name] = JsonStringSchema()
+            return this
         }
 
         /**
          * Adds a single string property with a description to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addStringProperty(String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addStringProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addStringProperty(String name, String description) {
-            this.properties.put(name, JsonStringSchema.builder().description(description).build());
-            return this;
+        fun addStringProperty(name: String, description: String?): Builder {
+            properties[name] = JsonStringSchema.Companion.builder().description(description).build()
+            return this
         }
 
         /**
          * Adds a single integer property to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addIntegerProperty(String, String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addIntegerProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addIntegerProperty(String name) {
-            this.properties.put(name, new JsonIntegerSchema());
-            return this;
+        fun addIntegerProperty(name: String): Builder {
+            properties[name] = JsonIntegerSchema()
+            return this
         }
 
         /**
          * Adds a single integer property with a description to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addIntegerProperty(String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addIntegerProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addIntegerProperty(String name, String description) {
-            this.properties.put(name, JsonIntegerSchema.builder().description(description).build());
-            return this;
+        fun addIntegerProperty(name: String, description: String?): Builder {
+            properties[name] = JsonIntegerSchema.Companion.builder().description(description).build()
+            return this
         }
 
         /**
          * Adds a single number property to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addNumberProperty(String, String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addNumberProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addNumberProperty(String name) {
-            this.properties.put(name, new JsonNumberSchema());
-            return this;
+        fun addNumberProperty(name: String): Builder {
+            properties[name] = JsonNumberSchema()
+            return this
         }
 
         /**
          * Adds a single number property with a description to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addNumberProperty(String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addNumberProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addNumberProperty(String name, String description) {
-            this.properties.put(name, JsonNumberSchema.builder().description(description).build());
-            return this;
+        fun addNumberProperty(name: String, description: String?): Builder {
+            properties[name] = JsonNumberSchema.Companion.builder().description(description).build()
+            return this
         }
 
         /**
          * Adds a single boolean property to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addBooleanProperty(String, String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addBooleanProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addBooleanProperty(String name) {
-            this.properties.put(name, new JsonBooleanSchema());
-            return this;
+        fun addBooleanProperty(name: String): Builder {
+            properties[name] = JsonBooleanSchema()
+            return this
         }
 
         /**
          * Adds a single boolean property with a description to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addBooleanProperty(String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addBooleanProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addBooleanProperty(String name, String description) {
-            this.properties.put(name, JsonBooleanSchema.builder().description(description).build());
-            return this;
+        fun addBooleanProperty(name: String, description: String?): Builder {
+            properties[name] = JsonBooleanSchema.Companion.builder().description(description).build()
+            return this
         }
 
         /**
          * Adds a single enum property to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addEnumProperty(String, List, String)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addEnumProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addEnumProperty(String name, List<String> enumValues) {
-            this.properties.put(name, JsonEnumSchema.builder().enumValues(enumValues).build());
-            return this;
+        fun addEnumProperty(name: String, enumValues: List<String>?): Builder {
+            properties[name] = JsonEnumSchema.Companion.builder().enumValues(enumValues).build()
+            return this
         }
 
         /**
          * Adds a single enum property with a description to the properties of this JSON object.
-         * Please note that {@link #required(List)} should be set explicitly if you want the properties to be mandatory.
+         * Please note that [.required] should be set explicitly if you want the properties to be mandatory.
          *
-         * @see #addEnumProperty(String, List)
-         * @see #addProperty(String, JsonSchemaElement)
-         * @see #addProperties(Map)
+         * @see .addEnumProperty
+         * @see .addProperty
+         * @see .addProperties
          */
-        public Builder addEnumProperty(String name, List<String> enumValues, String description) {
-            this.properties.put(name, JsonEnumSchema.builder().enumValues(enumValues).description(description).build());
-            return this;
+        fun addEnumProperty(name: String, enumValues: List<String>?, description: String?): Builder {
+            properties[name] =
+                JsonEnumSchema.Companion.builder().enumValues(enumValues).description(description).build()
+            return this
         }
 
-        public Builder required(List<String> required) {
-            this.required = required;
-            return this;
+        fun required(required: List<String>?): Builder {
+            this.required = required
+            return this
         }
 
-        public Builder required(String... required) {
-            return required(asList(required));
+        fun required(vararg required: String?): Builder {
+            return required(Arrays.asList(*required))
         }
 
-        public Builder additionalProperties(Boolean additionalProperties) {
-            this.additionalProperties = additionalProperties;
-            return this;
+        fun additionalProperties(additionalProperties: Boolean?): Builder {
+            this.additionalProperties = additionalProperties
+            return this
         }
 
         /**
-         * Used together with {@link JsonReferenceSchema} when recursion is required.
+         * Used together with [JsonReferenceSchema] when recursion is required.
          */
-        public Builder definitions(Map<String, JsonSchemaElement> definitions) {
-            this.definitions = definitions;
-            return this;
+        fun definitions(definitions: Map<String, JsonSchemaElement>?): Builder {
+            this.definitions = definitions
+            return this
         }
 
-        public JsonObjectSchema build() {
-            return new JsonObjectSchema(this);
+        fun build(): JsonObjectSchema {
+            return JsonObjectSchema(this)
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JsonObjectSchema that = (JsonObjectSchema) o;
-        return Objects.equals(this.description, that.description)
-                && Objects.equals(this.properties, that.properties)
-                && Objects.equals(this.required, that.required)
-                && Objects.equals(this.additionalProperties, that.additionalProperties)
-                && Objects.equals(this.definitions, that.definitions);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as JsonObjectSchema
+        return this.description == that.description
+                && this.properties == that.properties
+                && this.required == that.required
+                && this.additionalProperties == that.additionalProperties
+                && this.definitions == that.definitions
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(description, properties, required, additionalProperties, definitions);
+    override fun hashCode(): Int {
+        return Objects.hash(description, properties, required, additionalProperties, definitions)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "JsonObjectSchema {" +
-                "description = " + quoted(description) +
+                "description = " + Utils.quoted(description) +
                 ", properties = " + properties +
                 ", required = " + required +
                 ", additionalProperties = " + additionalProperties +
                 ", definitions = " + definitions +
-                " }";
+                " }"
+    }
+
+    companion object {
+        @JvmStatic
+        fun builder(): Builder {
+            return Builder()
+        }
     }
 }

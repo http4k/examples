@@ -1,19 +1,18 @@
-package dev.langchain4j.model.chat;
+package dev.langchain4j.model.chat
 
-import dev.langchain4j.model.ModelDisabledException;
-import dev.langchain4j.model.chat.request.ChatRequest;
-import dev.langchain4j.model.chat.response.StreamingChatResponseHandler;
+import dev.langchain4j.model.ModelDisabledException
+import dev.langchain4j.model.chat.request.ChatRequest
+import dev.langchain4j.model.chat.response.StreamingChatResponseHandler
 
 /**
- * A {@link StreamingChatModel} which throws a {@link ModelDisabledException} for all of its methods
- * <p>
+ * A [StreamingChatModel] which throws a [ModelDisabledException] for all of its methods
+ *
+ *
  * This could be used in tests, or in libraries that extend this one to conditionally enable or disable functionality.
- * </p>
+ *
  */
-public class DisabledStreamingChatModel implements StreamingChatModel {
-
-    @Override
-    public void doChat(ChatRequest chatRequest, StreamingChatResponseHandler handler) {
-        throw new ModelDisabledException("StreamingChatModel is disabled");
+class DisabledStreamingChatModel : StreamingChatModel {
+    override fun doChat(chatRequest: ChatRequest?, handler: StreamingChatResponseHandler?) {
+        throw ModelDisabledException("StreamingChatModel is disabled")
     }
 }

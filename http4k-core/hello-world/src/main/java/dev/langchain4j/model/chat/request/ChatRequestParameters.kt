@@ -1,8 +1,6 @@
-package dev.langchain4j.model.chat.request;
+package dev.langchain4j.model.chat.request
 
-import dev.langchain4j.agent.tool.ToolSpecification;
-
-import java.util.List;
+import dev.langchain4j.agent.tool.ToolSpecification
 
 /**
  * Represents common chat request parameters supported by most LLM providers.
@@ -10,57 +8,60 @@ import java.util.List;
  *
  * @see DefaultChatRequestParameters
  */
-public interface ChatRequestParameters {
+interface ChatRequestParameters {
+    fun modelName(): String?
 
-    String modelName();
+    fun temperature(): Double?
 
-    Double temperature();
+    fun topP(): Double?
 
-    Double topP();
+    fun topK(): Int?
 
-    Integer topK();
+    fun frequencyPenalty(): Double?
 
-    Double frequencyPenalty();
+    fun presencePenalty(): Double?
 
-    Double presencePenalty();
+    fun maxOutputTokens(): Int?
 
-    Integer maxOutputTokens();
+    fun stopSequences(): List<String?>
 
-    List<String> stopSequences();
+    fun toolSpecifications(): List<ToolSpecification?>
 
-    List<ToolSpecification> toolSpecifications();
+    fun toolChoice(): ToolChoice?
 
-    ToolChoice toolChoice();
-
-    ResponseFormat responseFormat();
+    fun responseFormat(): ResponseFormat?
 
     /**
-     * Creates a new {@link ChatRequestParameters} by combining the current parameters with the specified ones.
+     * Creates a new [ChatRequestParameters] by combining the current parameters with the specified ones.
      * Values from the specified parameters override values from the current parameters when there is overlap.
-     * Neither the current nor the specified {@link ChatRequestParameters} objects are modified.
+     * Neither the current nor the specified [ChatRequestParameters] objects are modified.
      *
-     * <p>Example:
+     *
+     * Example:
      * <pre>
      * Current parameters:
-     *   temperature = 1.0
-     *   maxOutputTokens = 100
+     * temperature = 1.0
+     * maxOutputTokens = 100
      *
      * Specified parameters:
-     *   temperature = 0.5
-     *   modelName = my-model
+     * temperature = 0.5
+     * modelName = my-model
      *
      * Result:
-     *   temperature = 0.5        // Overridden from specified
-     *   maxOutputTokens = 100    // Preserved from current
-     *   modelName = my-model     // Added from specified
-     * </pre>
+     * temperature = 0.5        // Overridden from specified
+     * maxOutputTokens = 100    // Preserved from current
+     * modelName = my-model     // Added from specified
+    </pre> *
      *
      * @param parameters the parameters whose values will override the current ones
-     * @return a new {@link ChatRequestParameters} instance combining both sets of parameters
+     * @return a new [ChatRequestParameters] instance combining both sets of parameters
      */
-    ChatRequestParameters overrideWith(ChatRequestParameters parameters);
+    fun overrideWith(parameters: ChatRequestParameters): ChatRequestParameters
 
-    static DefaultChatRequestParameters.Builder<?> builder() {
-        return new DefaultChatRequestParameters.Builder<>();
+    companion object {
+        fun builder(): DefaultChatRequestParameters.Builder<*> {
+            return TODO()
+//            return DefaultChatRequestParameters.Builder<*>()
+        }
     }
 }

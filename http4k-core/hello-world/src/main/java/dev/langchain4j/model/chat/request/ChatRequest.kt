@@ -1,254 +1,245 @@
-package dev.langchain4j.model.chat.request;
+package dev.langchain4j.model.chat.request
 
-import dev.langchain4j.agent.tool.ToolSpecification;
-import dev.langchain4j.data.message.ChatMessage;
+import dev.langchain4j.agent.tool.ToolSpecification
+import dev.langchain4j.data.message.ChatMessage
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Arrays
+import java.util.Objects
 
-import java.util.List;
-import java.util.Objects;
+class ChatRequest protected constructor(builder: Builder) {
+    private val messages: List<ChatMessage?>
+    private val parameters: ChatRequestParameters?
 
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.Utils.isNullOrEmpty;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotEmpty;
-import static java.util.Arrays.asList;
+    init {
+        this.messages = Utils.copy(ValidationUtils.ensureNotEmpty(builder.messages, "messages"))
 
-public class ChatRequest {
-
-    private final List<ChatMessage> messages;
-    private final ChatRequestParameters parameters;
-
-    protected ChatRequest(Builder builder) {
-        this.messages = copy(ensureNotEmpty(builder.messages, "messages"));
-
-        DefaultChatRequestParameters.Builder<?> parametersBuilder = ChatRequestParameters.builder();
+        val parametersBuilder: DefaultChatRequestParameters.Builder<*> = ChatRequestParameters.Companion.builder()
 
         if (builder.modelName != null) {
-            validate(builder, "modelName");
-            parametersBuilder.modelName(builder.modelName);
+            validate(builder, "modelName")
+            parametersBuilder.modelName(builder.modelName)
         }
         if (builder.temperature != null) {
-            validate(builder, "temperature");
-            parametersBuilder.temperature(builder.temperature);
+            validate(builder, "temperature")
+            parametersBuilder.temperature(builder.temperature)
         }
         if (builder.topP != null) {
-            validate(builder, "topP");
-            parametersBuilder.topP(builder.topP);
+            validate(builder, "topP")
+            parametersBuilder.topP(builder.topP)
         }
         if (builder.topK != null) {
-            validate(builder, "topK");
-            parametersBuilder.topK(builder.topK);
+            validate(builder, "topK")
+            parametersBuilder.topK(builder.topK)
         }
         if (builder.frequencyPenalty != null) {
-            validate(builder, "frequencyPenalty");
-            parametersBuilder.frequencyPenalty(builder.frequencyPenalty);
+            validate(builder, "frequencyPenalty")
+            parametersBuilder.frequencyPenalty(builder.frequencyPenalty)
         }
         if (builder.presencePenalty != null) {
-            validate(builder, "presencePenalty");
-            parametersBuilder.presencePenalty(builder.presencePenalty);
+            validate(builder, "presencePenalty")
+            parametersBuilder.presencePenalty(builder.presencePenalty)
         }
         if (builder.maxOutputTokens != null) {
-            validate(builder, "maxOutputTokens");
-            parametersBuilder.maxOutputTokens(builder.maxOutputTokens);
+            validate(builder, "maxOutputTokens")
+            parametersBuilder.maxOutputTokens(builder.maxOutputTokens)
         }
-        if (!isNullOrEmpty(builder.stopSequences)) {
-            validate(builder, "stopSequences");
-            parametersBuilder.stopSequences(builder.stopSequences);
+        if (!Utils.isNullOrEmpty(builder.stopSequences)) {
+            validate(builder, "stopSequences")
+            parametersBuilder.stopSequences(builder.stopSequences)
         }
-        if (!isNullOrEmpty(builder.toolSpecifications)) {
-            validate(builder, "toolSpecifications");
-            parametersBuilder.toolSpecifications(builder.toolSpecifications);
+        if (!Utils.isNullOrEmpty(builder.toolSpecifications)) {
+            validate(builder, "toolSpecifications")
+            parametersBuilder.toolSpecifications(builder.toolSpecifications)
         }
         if (builder.toolChoice != null) {
-            validate(builder, "toolChoice");
-            parametersBuilder.toolChoice(builder.toolChoice);
+            validate(builder, "toolChoice")
+            parametersBuilder.toolChoice(builder.toolChoice)
         }
         if (builder.responseFormat != null) {
-            validate(builder, "responseFormat");
-            parametersBuilder.responseFormat(builder.responseFormat);
+            validate(builder, "responseFormat")
+            parametersBuilder.responseFormat(builder.responseFormat)
         }
 
         if (builder.parameters != null) {
-            this.parameters = builder.parameters;
+            this.parameters = builder.parameters
         } else {
-            this.parameters = parametersBuilder.build();
+            this.parameters = parametersBuilder.build()
         }
     }
 
-    public List<ChatMessage> messages() {
-        return messages;
+    fun messages(): List<ChatMessage?> {
+        return messages
     }
 
-    public ChatRequestParameters parameters() {
-        return parameters;
+    fun parameters(): ChatRequestParameters? {
+        return parameters
     }
 
-    public String modelName() {
-        return parameters.modelName();
+    fun modelName(): String? {
+        return parameters!!.modelName()
     }
 
-    public Double temperature() {
-        return parameters.temperature();
+    fun temperature(): Double? {
+        return parameters!!.temperature()
     }
 
-    public Double topP() {
-        return parameters.topP();
+    fun topP(): Double? {
+        return parameters!!.topP()
     }
 
-    public Integer topK() {
-        return parameters.topK();
+    fun topK(): Int? {
+        return parameters!!.topK()
     }
 
-    public Double frequencyPenalty() {
-        return parameters.frequencyPenalty();
+    fun frequencyPenalty(): Double? {
+        return parameters!!.frequencyPenalty()
     }
 
-    public Double presencePenalty() {
-        return parameters.presencePenalty();
+    fun presencePenalty(): Double? {
+        return parameters!!.presencePenalty()
     }
 
-    public Integer maxOutputTokens() {
-        return parameters.maxOutputTokens();
+    fun maxOutputTokens(): Int? {
+        return parameters!!.maxOutputTokens()
     }
 
-    public List<String> stopSequences() {
-        return parameters.stopSequences();
+    fun stopSequences(): List<String?>? {
+        return parameters!!.stopSequences()
     }
 
-    public List<ToolSpecification> toolSpecifications() {
-        return parameters.toolSpecifications();
+    fun toolSpecifications(): List<ToolSpecification?>? {
+        return parameters!!.toolSpecifications()
     }
 
-    public ToolChoice toolChoice() {
-        return parameters.toolChoice();
+    fun toolChoice(): ToolChoice? {
+        return parameters!!.toolChoice()
     }
 
-    public ResponseFormat responseFormat() {
-        return parameters.responseFormat();
+    fun responseFormat(): ResponseFormat? {
+        return parameters!!.responseFormat()
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ChatRequest that = (ChatRequest) o;
-        return Objects.equals(this.messages, that.messages)
-                && Objects.equals(this.parameters, that.parameters);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as ChatRequest
+        return this.messages == that.messages
+                && this.parameters == that.parameters
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(messages, parameters);
+    override fun hashCode(): Int {
+        return Objects.hash(messages, parameters)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "ChatRequest {" +
                 " messages = " + messages +
                 ", parameters = " + parameters +
-                " }";
+                " }"
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        var messages: List<ChatMessage?>? = null
+        var parameters: ChatRequestParameters? = null
 
-    public static class Builder {
+        var modelName: String? = null
+        var temperature: Double? = null
+        var topP: Double? = null
+        var topK: Int? = null
+        var frequencyPenalty: Double? = null
+        var presencePenalty: Double? = null
+        var maxOutputTokens: Int? = null
+        var stopSequences: List<String?>? = null
+        var toolSpecifications: List<ToolSpecification?>? = null
+        var toolChoice: ToolChoice? = null
+        var responseFormat: ResponseFormat? = null
 
-        private List<ChatMessage> messages;
-        private ChatRequestParameters parameters;
-
-        private String modelName;
-        private Double temperature;
-        private Double topP;
-        private Integer topK;
-        private Double frequencyPenalty;
-        private Double presencePenalty;
-        private Integer maxOutputTokens;
-        private List<String> stopSequences;
-        private List<ToolSpecification> toolSpecifications;
-        private ToolChoice toolChoice;
-        private ResponseFormat responseFormat;
-
-        public Builder messages(List<ChatMessage> messages) {
-            this.messages = messages;
-            return this;
+        fun messages(messages: List<ChatMessage?>?): Builder {
+            this.messages = messages
+            return this
         }
 
-        public Builder messages(ChatMessage... messages) {
-            return messages(asList(messages));
+        fun messages(vararg messages: ChatMessage?): Builder {
+            return messages(Arrays.asList(*messages))
         }
 
-        public Builder parameters(ChatRequestParameters parameters) {
-            this.parameters = parameters;
-            return this;
+        fun parameters(parameters: ChatRequestParameters?): Builder {
+            this.parameters = parameters
+            return this
         }
 
-        public Builder modelName(String modelName) {
-            this.modelName = modelName;
-            return this;
+        fun modelName(modelName: String?): Builder {
+            this.modelName = modelName
+            return this
         }
 
-        public Builder temperature(Double temperature) {
-            this.temperature = temperature;
-            return this;
+        fun temperature(temperature: Double?): Builder {
+            this.temperature = temperature
+            return this
         }
 
-        public Builder topP(Double topP) {
-            this.topP = topP;
-            return this;
+        fun topP(topP: Double?): Builder {
+            this.topP = topP
+            return this
         }
 
-        public Builder topK(Integer topK) {
-            this.topK = topK;
-            return this;
+        fun topK(topK: Int?): Builder {
+            this.topK = topK
+            return this
         }
 
-        public Builder frequencyPenalty(Double frequencyPenalty) {
-            this.frequencyPenalty = frequencyPenalty;
-            return this;
+        fun frequencyPenalty(frequencyPenalty: Double?): Builder {
+            this.frequencyPenalty = frequencyPenalty
+            return this
         }
 
-        public Builder presencePenalty(Double presencePenalty) {
-            this.presencePenalty = presencePenalty;
-            return this;
+        fun presencePenalty(presencePenalty: Double?): Builder {
+            this.presencePenalty = presencePenalty
+            return this
         }
 
-        public Builder maxOutputTokens(Integer maxOutputTokens) {
-            this.maxOutputTokens = maxOutputTokens;
-            return this;
+        fun maxOutputTokens(maxOutputTokens: Int?): Builder {
+            this.maxOutputTokens = maxOutputTokens
+            return this
         }
 
-        public Builder stopSequences(List<String> stopSequences) {
-            this.stopSequences = stopSequences;
-            return this;
+        fun stopSequences(stopSequences: List<String?>?): Builder {
+            this.stopSequences = stopSequences
+            return this
         }
 
-        public Builder toolSpecifications(List<ToolSpecification> toolSpecifications) {
-            this.toolSpecifications = toolSpecifications;
-            return this;
+        fun toolSpecifications(toolSpecifications: List<ToolSpecification?>?): Builder {
+            this.toolSpecifications = toolSpecifications
+            return this
         }
 
-        public Builder toolSpecifications(ToolSpecification... toolSpecifications) {
-            return toolSpecifications(asList(toolSpecifications));
+        fun toolSpecifications(vararg toolSpecifications: ToolSpecification?): Builder {
+            return toolSpecifications(Arrays.asList(*toolSpecifications))
         }
 
-        public Builder toolChoice(ToolChoice toolChoice) {
-            this.toolChoice = toolChoice;
-            return this;
+        fun toolChoice(toolChoice: ToolChoice?): Builder {
+            this.toolChoice = toolChoice
+            return this
         }
 
-        public Builder responseFormat(ResponseFormat responseFormat) {
-            this.responseFormat = responseFormat;
-            return this;
+        fun responseFormat(responseFormat: ResponseFormat?): Builder {
+            this.responseFormat = responseFormat
+            return this
         }
 
-        public ChatRequest build() {
-            return new ChatRequest(this);
+        fun build(): ChatRequest {
+            return ChatRequest(this)
         }
     }
 
-    private static void validate(Builder builder, String name) {
-        if (builder.parameters != null) {
-            throw new IllegalArgumentException("Cannot set both 'parameters' and '%s' on ChatRequest".formatted(name));
+    companion object {
+        fun builder(): Builder {
+            return Builder()
+        }
+
+        private fun validate(builder: Builder, name: String) {
+            require(builder.parameters == null) { "Cannot set both 'parameters' and '%s' on ChatRequest" }
         }
     }
 }

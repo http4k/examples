@@ -1,78 +1,71 @@
-package dev.langchain4j.model.chat.request.json;
+package dev.langchain4j.model.chat.request.json
 
-import java.util.List;
-import java.util.Objects;
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Arrays
+import java.util.Objects
 
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.Utils.quoted;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotEmpty;
-import static java.util.Arrays.asList;
+class JsonAnyOfSchema(builder: Builder) : JsonSchemaElement {
+    private val description: String?
+    private val anyOf: List<JsonSchemaElement>
 
-public class JsonAnyOfSchema implements JsonSchemaElement {
-
-    private final String description;
-    private final List<JsonSchemaElement> anyOf;
-
-    public JsonAnyOfSchema(Builder builder) {
-        this.description = builder.description;
-        this.anyOf = copy(ensureNotEmpty(builder.anyOf, "anyOf"));
+    init {
+        this.description = builder.description
+        this.anyOf = Utils.copy(ValidationUtils.ensureNotEmpty(builder.anyOf, "anyOf"))
     }
 
-    @Override
-    public String description() {
-        return description;
+    override fun description(): String? {
+        return description
     }
 
-    public List<JsonSchemaElement> anyOf() {
-        return anyOf;
+    fun anyOf(): List<JsonSchemaElement> {
+        return anyOf
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        var description: String? = null
+        var anyOf: List<JsonSchemaElement>? = null
 
-    public static class Builder {
-
-        private String description;
-        private List<JsonSchemaElement> anyOf;
-
-        public Builder description(String description) {
-            this.description = description;
-            return this;
+        fun description(description: String?): Builder {
+            this.description = description
+            return this
         }
 
-        public Builder anyOf(List<JsonSchemaElement> anyOf) {
-            this.anyOf = anyOf;
-            return this;
+        fun anyOf(anyOf: List<JsonSchemaElement>?): Builder {
+            this.anyOf = anyOf
+            return this
         }
 
-        public Builder anyOf(JsonSchemaElement... anyOf) {
-            return anyOf(asList(anyOf));
+        fun anyOf(vararg anyOf: JsonSchemaElement?): Builder {
+            return anyOf(Arrays.asList(*anyOf))
         }
 
-        public JsonAnyOfSchema build() {
-            return new JsonAnyOfSchema(this);
+        fun build(): JsonAnyOfSchema {
+            return JsonAnyOfSchema(this)
         }
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof final JsonAnyOfSchema that)) return false;
-        return Objects.equals(description, that.description)
-                && Objects.equals(anyOf, that.anyOf);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o !is JsonAnyOfSchema) return false
+        return description == o.description
+                && anyOf == o.anyOf
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(description, anyOf);
+    override fun hashCode(): Int {
+        return Objects.hash(description, anyOf)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "JsonAnyOfSchema {" +
-                "description = " + quoted(description) +
+                "description = " + Utils.quoted(description) +
                 ", anyOf = " + anyOf +
-                " }";
+                " }"
+    }
+
+    companion object {
+        fun builder(): Builder {
+            return Builder()
+        }
     }
 }

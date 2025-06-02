@@ -53,15 +53,16 @@ class ExpandingQueryTransformer constructor(
     override fun transform(query: Query): Collection<Query> {
         val prompt = createPrompt(query)
         val response = chatModel.chat(prompt.text())
-        val queries = parse(response)
-        return queries.stream()
-            .map<Query> { queryText: String? ->
-                if (query.metadata() == null)
-                    Query.Companion.from(queryText)
-                else
-                    Query.Companion.from(queryText, query.metadata())
-            }
-            .collect(Collectors.toList<Query>())
+        TODO()
+//        val queries = parse(response)
+//        return queries.stream()
+//            .map<Query> { queryText: String? ->
+//                if (query.metadata() == null)
+//                    Query.Companion.from(queryText)
+//                else
+//                    Query.Companion.from(queryText, query.metadata())
+//            }
+//            .collect(Collectors.toList<Query>())
     }
 
     protected fun createPrompt(query: Query): Prompt {

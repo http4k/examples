@@ -1,70 +1,66 @@
-package dev.langchain4j.model.chat.request.json;
+package dev.langchain4j.model.chat.request.json
 
-import java.util.Objects;
+import dev.langchain4j.internal.Utils
+import java.util.Objects
 
-import static dev.langchain4j.internal.Utils.quoted;
+class JsonSchema private constructor(builder: Builder) {
+    private val name: String?
+    private val rootElement: JsonSchemaElement?
 
-public class JsonSchema {
-
-    private final String name;
-    private final JsonSchemaElement rootElement;
-
-    private JsonSchema(Builder builder) {
-        this.name = builder.name;
-        this.rootElement = builder.rootElement;
+    init {
+        this.name = builder.name
+        this.rootElement = builder.rootElement
     }
 
-    public String name() {
-        return name;
+    fun name(): String? {
+        return name
     }
 
-    public JsonSchemaElement rootElement() {
-        return rootElement;
+    fun rootElement(): JsonSchemaElement? {
+        return rootElement
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        var name: String? = null
+        var rootElement: JsonSchemaElement? = null
 
-    public static class Builder {
-
-        private String name;
-        private JsonSchemaElement rootElement;
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
+        fun name(name: String?): Builder {
+            this.name = name
+            return this
         }
 
-        public Builder rootElement(JsonSchemaElement rootElement) {
-            this.rootElement = rootElement;
-            return this;
+        fun rootElement(rootElement: JsonSchemaElement?): Builder {
+            this.rootElement = rootElement
+            return this
         }
 
-        public JsonSchema build() {
-            return new JsonSchema(this);
+        fun build(): JsonSchema {
+            return JsonSchema(this)
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        JsonSchema that = (JsonSchema) o;
-        return Objects.equals(this.name, that.name)
-                && Objects.equals(this.rootElement, that.rootElement);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as JsonSchema
+        return this.name == that.name
+                && this.rootElement == that.rootElement
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, rootElement);
+    override fun hashCode(): Int {
+        return Objects.hash(name, rootElement)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "JsonSchema {" +
-                " name = " + quoted(name) +
+                " name = " + Utils.quoted(name) +
                 ", rootElement = " + rootElement +
-                " }";
+                " }"
+    }
+
+    companion object {
+        fun builder(): Builder {
+            return Builder()
+        }
     }
 }

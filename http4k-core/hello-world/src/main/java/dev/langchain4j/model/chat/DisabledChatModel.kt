@@ -1,19 +1,18 @@
-package dev.langchain4j.model.chat;
+package dev.langchain4j.model.chat
 
-import dev.langchain4j.model.ModelDisabledException;
-import dev.langchain4j.model.chat.request.ChatRequest;
-import dev.langchain4j.model.chat.response.ChatResponse;
+import dev.langchain4j.model.ModelDisabledException
+import dev.langchain4j.model.chat.request.ChatRequest
+import dev.langchain4j.model.chat.response.ChatResponse
 
 /**
- * A {@link ChatModel} which throws a {@link ModelDisabledException} for all of its methods
- * <p>
+ * A [ChatModel] which throws a [ModelDisabledException] for all of its methods
+ *
+ *
  * This could be used in tests, or in libraries that extend this one to conditionally enable or disable functionality.
- * </p>
+ *
  */
-public class DisabledChatModel implements ChatModel {
-
-    @Override
-    public ChatResponse doChat(final ChatRequest chatRequest) {
-        throw new ModelDisabledException("ChatModel is disabled");
+class DisabledChatModel : ChatModel {
+    override fun doChat(chatRequest: ChatRequest?): ChatResponse {
+        throw ModelDisabledException("ChatModel is disabled")
     }
 }
