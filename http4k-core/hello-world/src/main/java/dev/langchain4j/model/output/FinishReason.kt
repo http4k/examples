@@ -1,9 +1,9 @@
-package dev.langchain4j.model.output;
+package dev.langchain4j.model.output
 
 /**
  * The reason why a model call finished.
  */
-public enum FinishReason {
+enum class FinishReason {
     /**
      * The model call finished because the model decided the request was done.
      */

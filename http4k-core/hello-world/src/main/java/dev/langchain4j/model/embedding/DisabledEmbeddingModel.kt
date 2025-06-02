@@ -1,32 +1,27 @@
-package dev.langchain4j.model.embedding;
+package dev.langchain4j.model.embedding
 
-import dev.langchain4j.data.embedding.Embedding;
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.model.ModelDisabledException;
-import dev.langchain4j.model.output.Response;
-
-import java.util.List;
+import dev.langchain4j.data.embedding.Embedding
+import dev.langchain4j.data.segment.TextSegment
+import dev.langchain4j.model.ModelDisabledException
+import dev.langchain4j.model.output.Response
 
 /**
- * An {@link EmbeddingModel} which throws a {@link ModelDisabledException} for all of its methods
- * <p>
+ * An [EmbeddingModel] which throws a [ModelDisabledException] for all of its methods
+ *
+ *
  * This could be used in tests, or in libraries that extend this one to conditionally enable or disable functionality.
- * </p>
+ *
  */
-public class DisabledEmbeddingModel implements EmbeddingModel {
-
-    @Override
-    public Response<Embedding> embed(String text) {
-        throw new ModelDisabledException("EmbeddingModel is disabled");
+class DisabledEmbeddingModel : EmbeddingModel {
+    override fun embed(text: String?): Response<Embedding> {
+        throw ModelDisabledException("EmbeddingModel is disabled")
     }
 
-    @Override
-    public Response<Embedding> embed(TextSegment textSegment) {
-        throw new ModelDisabledException("EmbeddingModel is disabled");
+    override fun embed(textSegment: TextSegment): Response<Embedding> {
+        throw ModelDisabledException("EmbeddingModel is disabled")
     }
 
-    @Override
-    public Response<List<Embedding>> embedAll(List<TextSegment> textSegments) {
-        throw new ModelDisabledException("EmbeddingModel is disabled");
+    override fun embedAll(textSegments: List<TextSegment?>?): Response<List<Embedding>> {
+        throw ModelDisabledException("EmbeddingModel is disabled")
     }
 }

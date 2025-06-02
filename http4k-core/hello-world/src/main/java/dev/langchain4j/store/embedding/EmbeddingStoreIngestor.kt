@@ -120,7 +120,8 @@ class EmbeddingStoreIngestor(
 
 //        embeddingStore.addAll(embeddingsResponse.content(), segments)
 
-        return IngestionResult(embeddingsResponse.tokenUsage())
+        TODO()
+//        return IngestionResult(embeddingsResponse.tokenUsage())
     }
 
     /**

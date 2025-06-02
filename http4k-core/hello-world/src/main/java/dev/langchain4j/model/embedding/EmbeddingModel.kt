@@ -1,27 +1,23 @@
-package dev.langchain4j.model.embedding;
+package dev.langchain4j.model.embedding
 
-import dev.langchain4j.data.embedding.Embedding;
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.internal.ValidationUtils;
-import dev.langchain4j.model.output.Response;
-
-import java.util.List;
-
-import static java.util.Collections.singletonList;
+import dev.langchain4j.data.embedding.Embedding
+import dev.langchain4j.data.segment.TextSegment
+import dev.langchain4j.data.segment.TextSegment.Companion.from
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.model.output.Response
 
 /**
  * Represents a model that can convert a given text into an embedding (vector representation of the text).
  */
-public interface EmbeddingModel {
-
+interface EmbeddingModel {
     /**
      * Embed a text.
      *
      * @param text the text to embed.
      * @return the embedding.
      */
-    default Response<Embedding> embed(String text) {
-        return embed(TextSegment.from(text));
+    fun embed(text: String?): Response<Embedding> {
+        return embed(from(text))
     }
 
     /**
@@ -30,11 +26,14 @@ public interface EmbeddingModel {
      * @param textSegment the text segment to embed.
      * @return the embedding.
      */
-    default Response<Embedding> embed(TextSegment textSegment) {
-        Response<List<Embedding>> response = embedAll(singletonList(textSegment));
-        ValidationUtils.ensureEq(response.content().size(), 1,
-                "Expected a single embedding, but got %d", response.content().size());
-        return Response.from(response.content().get(0), response.tokenUsage(), response.finishReason());
+    fun embed(textSegment: TextSegment): Response<Embedding> {
+        val response = embedAll(listOf(textSegment))
+        ValidationUtils.ensureEq(
+            response.content().size, 1,
+            "Expected a single embedding, but got %d", response.content().size
+        )
+
+        return Response.from(response.content()[0], response.tokenUsage(), response.finishReason())
     }
 
     /**
@@ -43,14 +42,14 @@ public interface EmbeddingModel {
      * @param textSegments the text segments to embed.
      * @return the embeddings.
      */
-    Response<List<Embedding>> embedAll(List<TextSegment> textSegments);
+    fun embedAll(textSegments: List<TextSegment?>?): Response<List<Embedding>>
 
     /**
-     * Returns the dimension of the {@link Embedding} produced by this embedding model.
+     * Returns the dimension of the [Embedding] produced by this embedding model.
      *
      * @return dimension of the embedding
      */
-    default int dimension() {
-        return embed("test").content().dimension();
+    fun dimension(): Int {
+        return embed("test").content().dimension()
     }
 }

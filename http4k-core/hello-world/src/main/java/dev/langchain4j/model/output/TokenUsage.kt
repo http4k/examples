@@ -1,64 +1,48 @@
-package dev.langchain4j.model.output;
+package dev.langchain4j.model.output
 
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.getOrDefault;
+import dev.langchain4j.internal.Utils
+import java.util.Objects
 
 /**
  * Represents the token usage of a response.
  */
-public class TokenUsage {
-
-    private final Integer inputTokenCount;
-    private final Integer outputTokenCount;
-    private final Integer totalTokenCount;
-
+class TokenUsage
+/**
+ * Creates a new [TokenUsage] instance with all fields set to null.
+ */ @JvmOverloads constructor(
+    private val inputTokenCount: Int? = null,
+    private val outputTokenCount: Int? = null,
+    private val totalTokenCount: Int? = sum(
+        inputTokenCount,
+        outputTokenCount
+    )
+) {
     /**
-     * Creates a new {@link TokenUsage} instance with all fields set to null.
-     */
-    public TokenUsage() {
-        this(null);
-    }
-
-    /**
-     * Creates a new {@link TokenUsage} instance with the given input token count.
-     *
-     * @param inputTokenCount The input token count.
-     */
-    public TokenUsage(Integer inputTokenCount) {
-        this(inputTokenCount, null);
-    }
-
-    /**
-     * Creates a new {@link TokenUsage} instance with the given input and output token counts.
-     *
-     * @param inputTokenCount  The input token count, or null if unknown.
-     * @param outputTokenCount The output token count, or null if unknown.
-     */
-    public TokenUsage(Integer inputTokenCount, Integer outputTokenCount) {
-        this(inputTokenCount, outputTokenCount, sum(inputTokenCount, outputTokenCount));
-    }
-
-    /**
-     * Creates a new {@link TokenUsage} instance with the given input, output and total token counts.
+     * Creates a new [TokenUsage] instance with the given input, output and total token counts.
      *
      * @param inputTokenCount  The input token count, or null if unknown.
      * @param outputTokenCount The output token count, or null if unknown.
      * @param totalTokenCount  The total token count, or null if unknown.
      */
-    public TokenUsage(Integer inputTokenCount, Integer outputTokenCount, Integer totalTokenCount) {
-        this.inputTokenCount = inputTokenCount;
-        this.outputTokenCount = outputTokenCount;
-        this.totalTokenCount = totalTokenCount;
-    }
+    /**
+     * Creates a new [TokenUsage] instance with the given input and output token counts.
+     *
+     * @param inputTokenCount  The input token count, or null if unknown.
+     * @param outputTokenCount The output token count, or null if unknown.
+     */
+    /**
+     * Creates a new [TokenUsage] instance with the given input token count.
+     *
+     * @param inputTokenCount The input token count.
+     */
 
     /**
      * Returns the input token count, or null if unknown.
      *
      * @return the input token count, or null if unknown.
      */
-    public Integer inputTokenCount() {
-        return inputTokenCount;
+    fun inputTokenCount(): Int? {
+        return inputTokenCount
     }
 
     /**
@@ -66,8 +50,8 @@ public class TokenUsage {
      *
      * @return the output token count, or null if unknown.
      */
-    public Integer outputTokenCount() {
-        return outputTokenCount;
+    fun outputTokenCount(): Int? {
+        return outputTokenCount
     }
 
     /**
@@ -75,93 +59,93 @@ public class TokenUsage {
      *
      * @return the total token count, or null if unknown.
      */
-    public Integer totalTokenCount() {
-        return totalTokenCount;
-    }
-
-    /**
-     * Adds two token usages.
-     * <br>
-     * If one of the token usages is null, the other is returned without changes.
-     * <br>
-     * Fields which are null in both responses will be null in the result.
-     *
-     * @param first  The first token usage to add.
-     * @param second The second token usage to add.
-     * @return a new {@link TokenUsage} instance with the sum of token usages.
-     */
-    public static TokenUsage sum(TokenUsage first, TokenUsage second) {
-        if (first == null) {
-            return second;
-        } else if (second == null) {
-            return first;
-        } else {
-            return first.add(second);
-        }
+    fun totalTokenCount(): Int? {
+        return totalTokenCount
     }
 
     /**
      * Adds the token usage of two responses together.
      *
-     * <p>Fields which are null in both responses will be null in the result.
+     *
+     * Fields which are null in both responses will be null in the result.
      *
      * @param that The token usage to add to this one.
-     * @return a new {@link TokenUsage} instance with the token usage of both responses added together.
+     * @return a new [TokenUsage] instance with the token usage of both responses added together.
      */
-    public TokenUsage add(TokenUsage that) {
+    fun add(that: TokenUsage?): TokenUsage {
         if (that == null) {
-            return this;
+            return this
         }
 
-        if (that.getClass() != TokenUsage.class) {
+        if (that.javaClass != TokenUsage::class.java) {
             // when adding TokenUsage ("this") and one of TokenUsage's subclasses ("that"),
             // we want to call "add" on the subclass to preserve extra information present in the subclass
-            return that.add(this);
+            return that.add(this)
         }
 
-        return new TokenUsage(
-                sum(this.inputTokenCount, that.inputTokenCount),
-                sum(this.outputTokenCount, that.outputTokenCount),
-                sum(this.totalTokenCount, that.totalTokenCount)
-        );
+        return TokenUsage(
+            sum(this.inputTokenCount, that.inputTokenCount),
+            sum(this.outputTokenCount, that.outputTokenCount),
+            sum(this.totalTokenCount, that.totalTokenCount)
+        )
     }
 
-    /**
-     * Sum two integers, returning null if both are null.
-     *
-     * @param first  The first integer, or null.
-     * @param second The second integer, or null.
-     * @return the sum of the two integers, or null if both are null.
-     */
-    protected static Integer sum(Integer first, Integer second) {
-        if (first == null && second == null) {
-            return null;
-        }
-
-        return getOrDefault(first, 0) + getOrDefault(second, 0);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as TokenUsage
+        return this.inputTokenCount == that.inputTokenCount
+                && this.outputTokenCount == that.outputTokenCount
+                && this.totalTokenCount == that.totalTokenCount
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        TokenUsage that = (TokenUsage) o;
-        return Objects.equals(this.inputTokenCount, that.inputTokenCount)
-                && Objects.equals(this.outputTokenCount, that.outputTokenCount)
-                && Objects.equals(this.totalTokenCount, that.totalTokenCount);
+    override fun hashCode(): Int {
+        return Objects.hash(inputTokenCount, outputTokenCount, totalTokenCount)
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(inputTokenCount, outputTokenCount, totalTokenCount);
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "TokenUsage {" +
                 " inputTokenCount = " + inputTokenCount +
                 ", outputTokenCount = " + outputTokenCount +
                 ", totalTokenCount = " + totalTokenCount +
-                " }";
+                " }"
+    }
+
+    companion object {
+        /**
+         * Adds two token usages.
+         * <br></br>
+         * If one of the token usages is null, the other is returned without changes.
+         * <br></br>
+         * Fields which are null in both responses will be null in the result.
+         *
+         * @param first  The first token usage to add.
+         * @param second The second token usage to add.
+         * @return a new [TokenUsage] instance with the sum of token usages.
+         */
+        fun sum(first: TokenUsage?, second: TokenUsage?): TokenUsage? {
+            return if (first == null) {
+                second
+            } else if (second == null) {
+                first
+            } else {
+                first.add(second)
+            }
+        }
+
+        /**
+         * Sum two integers, returning null if both are null.
+         *
+         * @param first  The first integer, or null.
+         * @param second The second integer, or null.
+         * @return the sum of the two integers, or null if both are null.
+         */
+        protected fun sum(first: Int?, second: Int?): Int? {
+            if (first == null && second == null) {
+                return null
+            }
+
+            return first!! + second!!
+        }
     }
 }
