@@ -1,15 +1,9 @@
-package dev.langchain4j.exception;
+package dev.langchain4j.exception
 
-public class RetriableException extends LangChain4jException {
-    public RetriableException(String message) {
-        super(message);
-    }
+open class RetriableException : LangChain4jException {
+    constructor(message: String?) : super(message)
 
-    public RetriableException(Throwable cause) {
-        this(cause.getMessage(), cause);
-    }
+    constructor(cause: Throwable) : this(cause.message, cause)
 
-    public RetriableException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
 }

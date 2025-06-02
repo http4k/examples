@@ -1,15 +1,7 @@
-package dev.langchain4j.exception;
+package dev.langchain4j.exception
 
-public class HttpException extends LangChain4jException {
-
-    private final int statusCode;
-
-    public HttpException(int statusCode, String message) {
-        super(message);
-        this.statusCode = statusCode;
-    }
-
-    public int statusCode() {
-        return statusCode;
+class HttpException(private val statusCode: Int, message: String?) : LangChain4jException(message) {
+    fun statusCode(): Int {
+        return statusCode
     }
 }

@@ -1,15 +1,9 @@
-package dev.langchain4j.exception;
+package dev.langchain4j.exception
 
-public class TimeoutException extends RetriableException {
-    public TimeoutException(String message) {
-        super(message);
-    }
+class TimeoutException : RetriableException {
+    constructor(message: String?) : super(message)
 
-    public TimeoutException(Throwable cause) {
-        this(cause.getMessage(), cause);
-    }
+    constructor(cause: Throwable) : this(cause.message, cause)
 
-    public TimeoutException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
 }

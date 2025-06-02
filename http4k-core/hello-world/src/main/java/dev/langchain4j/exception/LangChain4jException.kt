@@ -1,16 +1,9 @@
-package dev.langchain4j.exception;
+package dev.langchain4j.exception
 
-public class LangChain4jException extends RuntimeException {
+open class LangChain4jException : RuntimeException {
+    constructor(message: String?) : super(message)
 
-    public LangChain4jException(String message) {
-        super(message);
-    }
+    constructor(cause: Throwable) : this(cause.message, cause)
 
-    public LangChain4jException(Throwable cause) {
-        this(cause.getMessage(), cause);
-    }
-
-    public LangChain4jException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
 }

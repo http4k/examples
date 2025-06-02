@@ -1,15 +1,9 @@
-package dev.langchain4j.exception;
+package dev.langchain4j.exception
 
-public class InvalidRequestException extends NonRetriableException {
-    public InvalidRequestException(String message) {
-        super(message);
-    }
+class InvalidRequestException : NonRetriableException {
+    constructor(message: String?) : super(message)
 
-    public InvalidRequestException(Throwable cause) {
-        this(cause.getMessage(), cause);
-    }
+    constructor(cause: Throwable) : this(cause.message, cause)
 
-    public InvalidRequestException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    constructor(message: String?, cause: Throwable?) : super(message, cause)
 }
