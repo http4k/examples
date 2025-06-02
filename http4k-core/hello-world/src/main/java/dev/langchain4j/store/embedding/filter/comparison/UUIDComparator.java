@@ -1,11 +1,8 @@
 package dev.langchain4j.store.embedding.filter.comparison;
 
-import dev.langchain4j.Internal;
-
 import java.util.Collection;
 import java.util.UUID;
 
-@Internal
 class UUIDComparator {
 
     static boolean containsAsUUID(Object actualUUID, Collection<?> comparisonUUIDs) {

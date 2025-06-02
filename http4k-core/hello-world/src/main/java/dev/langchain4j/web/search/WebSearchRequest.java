@@ -1,6 +1,5 @@
 package dev.langchain4j.web.search;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 

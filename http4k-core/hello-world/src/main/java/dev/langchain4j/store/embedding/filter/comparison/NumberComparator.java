@@ -1,11 +1,8 @@
 package dev.langchain4j.store.embedding.filter.comparison;
 
-import dev.langchain4j.Internal;
-
 import java.math.BigDecimal;
 import java.util.Collection;
 
-@Internal
 class NumberComparator {
 
     static int compareAsBigDecimals(Object actualNumber, Object comparisonNumber) {

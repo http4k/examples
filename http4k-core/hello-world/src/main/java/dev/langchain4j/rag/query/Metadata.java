@@ -1,7 +1,6 @@
 package dev.langchain4j.rag.query;
 
 import dev.langchain4j.data.message.ChatMessage;
-import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.rag.AugmentationRequest;
 import dev.langchain4j.rag.RetrievalAugmentor;

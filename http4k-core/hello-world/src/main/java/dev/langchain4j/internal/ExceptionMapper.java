@@ -1,20 +1,10 @@
 package dev.langchain4j.internal;
 
-import dev.langchain4j.Internal;
-import dev.langchain4j.exception.AuthenticationException;
-import dev.langchain4j.exception.HttpException;
-import dev.langchain4j.exception.InternalServerException;
-import dev.langchain4j.exception.InvalidRequestException;
-import dev.langchain4j.exception.LangChain4jException;
-import dev.langchain4j.exception.ModelNotFoundException;
-import dev.langchain4j.exception.RateLimitException;
-import dev.langchain4j.exception.TimeoutException;
-import dev.langchain4j.exception.UnresolvedModelServerException;
+import dev.langchain4j.exception.*;
 
 import java.nio.channels.UnresolvedAddressException;
 import java.util.concurrent.Callable;
 
-@Internal
 @FunctionalInterface
 public interface ExceptionMapper {
 

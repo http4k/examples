@@ -1,24 +1,17 @@
 package dev.langchain4j.store.embedding.filter;
 
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
-
 import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.store.embedding.filter.comparison.ContainsString;
-import dev.langchain4j.store.embedding.filter.comparison.IsEqualTo;
-import dev.langchain4j.store.embedding.filter.comparison.IsGreaterThan;
-import dev.langchain4j.store.embedding.filter.comparison.IsGreaterThanOrEqualTo;
-import dev.langchain4j.store.embedding.filter.comparison.IsIn;
-import dev.langchain4j.store.embedding.filter.comparison.IsLessThan;
-import dev.langchain4j.store.embedding.filter.comparison.IsLessThanOrEqualTo;
-import dev.langchain4j.store.embedding.filter.comparison.IsNotEqualTo;
-import dev.langchain4j.store.embedding.filter.comparison.IsNotIn;
+import dev.langchain4j.store.embedding.filter.comparison.*;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
+import static java.util.Arrays.asList;
+import static java.util.Arrays.stream;
+import static java.util.stream.Collectors.toList;
 
 /**
  * A helper class for building a {@link Filter} for {@link Metadata} key.

@@ -2,7 +2,6 @@ package dev.langchain4j.model.output;
 
 import org.jspecify.annotations.NonNull;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 

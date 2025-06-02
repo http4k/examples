@@ -1,7 +1,5 @@
 package dev.langchain4j.internal;
 
-import dev.langchain4j.Internal;
-
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -32,7 +30,6 @@ import java.util.Map;
  *     but it's slower as it needs to connect to the underlying URL.
  * </p>
  */
-@Internal
 public class CustomMimeTypesFileTypeDetector extends FileTypeDetector {
 
     private static final Map<String, String> defaultMappings = new HashMap<>();

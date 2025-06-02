@@ -1,10 +1,11 @@
 package dev.langchain4j.store.embedding.filter.logical;
 
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.store.embedding.filter.Filter;
+
 import java.util.Objects;
+
+import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
 
 public class Not implements Filter {
 

@@ -1,19 +1,13 @@
 package dev.langchain4j.agent.tool;
 
+import dev.langchain4j.internal.JsonSchemaElementUtils;
 import dev.langchain4j.internal.JsonSchemaElementUtils.VisitedClassMetadata;
 import dev.langchain4j.model.chat.request.json.JsonObjectSchema;
 import dev.langchain4j.model.chat.request.json.JsonSchemaElement;
-import dev.langchain4j.internal.JsonSchemaElementUtils;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static dev.langchain4j.internal.Utils.isNullOrBlank;
 import static java.util.Arrays.stream;

@@ -1,7 +1,5 @@
 package dev.langchain4j.spi;
 
-import dev.langchain4j.Internal;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -10,7 +8,6 @@ import java.util.ServiceLoader;
 /**
  * Utility wrapper around {@code ServiceLoader.load()}.
  */
-@Internal
 public class ServiceHelper {
 
     /**

@@ -1,21 +1,14 @@
 package dev.langchain4j.data.document;
 
+import dev.langchain4j.data.segment.TextSegment;
+import dev.langchain4j.store.embedding.EmbeddingStore;
+
+import java.util.*;
+
 import static dev.langchain4j.internal.Exceptions.illegalArgument;
 import static dev.langchain4j.internal.Exceptions.runtime;
 import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
 import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.store.embedding.EmbeddingStore;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
 
 /**
  * Represents metadata of a {@link Document} or a {@link TextSegment}.

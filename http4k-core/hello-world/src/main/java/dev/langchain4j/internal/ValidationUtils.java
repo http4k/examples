@@ -1,7 +1,5 @@
 package dev.langchain4j.internal;
 
-import dev.langchain4j.Internal;
-
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -11,7 +9,6 @@ import static dev.langchain4j.internal.Exceptions.illegalArgument;
 /**
  * Utility class for validating method arguments.
  */
-@Internal
 public class ValidationUtils {
 
     private ValidationUtils() {}

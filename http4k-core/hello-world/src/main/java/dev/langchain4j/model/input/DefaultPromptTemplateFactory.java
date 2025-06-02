@@ -1,17 +1,16 @@
 package dev.langchain4j.model.input;
 
-import static dev.langchain4j.internal.Exceptions.illegalArgument;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-
-import dev.langchain4j.Internal;
 import dev.langchain4j.spi.prompt.PromptTemplateFactory;
+
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@Internal
+import static dev.langchain4j.internal.Exceptions.illegalArgument;
+import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
+
 class DefaultPromptTemplateFactory implements PromptTemplateFactory {
 
     @Override

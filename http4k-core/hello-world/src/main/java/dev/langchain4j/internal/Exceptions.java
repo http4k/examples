@@ -1,11 +1,8 @@
 package dev.langchain4j.internal;
 
-import dev.langchain4j.Internal;
-
 /**
  * Utility methods for creating common exceptions.
  */
-@Internal
 public class Exceptions {
 
     private Exceptions() {}

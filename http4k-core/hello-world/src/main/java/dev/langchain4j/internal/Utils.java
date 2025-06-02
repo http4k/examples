@@ -1,7 +1,5 @@
 package dev.langchain4j.internal;
 
-import dev.langchain4j.Internal;
-
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -11,26 +9,16 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HexFormat;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static java.net.HttpURLConnection.HTTP_OK;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Collections.unmodifiableList;
-import static java.util.Collections.unmodifiableMap;
-import static java.util.Collections.unmodifiableSet;
+import static java.util.Collections.*;
 
 /**
  * Utility methods.
  */
-@Internal
 public class Utils {
 
   private Utils() {}

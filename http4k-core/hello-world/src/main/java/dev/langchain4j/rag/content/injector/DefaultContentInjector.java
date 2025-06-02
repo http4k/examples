@@ -1,13 +1,5 @@
 package dev.langchain4j.rag.content.injector;
 
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.Utils.getOrDefault;
-import static dev.langchain4j.internal.Utils.isNotNullOrBlank;
-import static dev.langchain4j.internal.Utils.isNullOrEmpty;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotEmpty;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-import static java.util.stream.Collectors.joining;
-
 import dev.langchain4j.data.document.Metadata;
 import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.data.message.UserMessage;
@@ -15,9 +7,15 @@ import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.input.PromptTemplate;
 import dev.langchain4j.rag.content.Content;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static dev.langchain4j.internal.Utils.*;
+import static dev.langchain4j.internal.ValidationUtils.ensureNotEmpty;
+import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import static java.util.stream.Collectors.joining;
 
 /**
  * Default implementation of {@link ContentInjector} intended to be suitable for the majority of use cases.

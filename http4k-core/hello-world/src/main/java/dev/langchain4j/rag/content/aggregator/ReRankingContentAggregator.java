@@ -3,15 +3,10 @@ package dev.langchain4j.rag.content.aggregator;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.scoring.ScoringModel;
 import dev.langchain4j.rag.content.Content;
-import dev.langchain4j.rag.content.ContentMetadata;
 import dev.langchain4j.rag.query.Query;
 import dev.langchain4j.rag.query.transformer.ExpandingQueryTransformer;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 

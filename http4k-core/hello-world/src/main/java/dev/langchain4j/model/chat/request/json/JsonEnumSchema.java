@@ -1,6 +1,5 @@
 package dev.langchain4j.model.chat.request.json;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

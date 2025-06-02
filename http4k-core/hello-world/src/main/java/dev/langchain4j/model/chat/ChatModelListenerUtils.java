@@ -1,6 +1,5 @@
 package dev.langchain4j.model.chat;
 
-import dev.langchain4j.Internal;
 import dev.langchain4j.model.ModelProvider;
 import dev.langchain4j.model.chat.listener.ChatModelErrorContext;
 import dev.langchain4j.model.chat.listener.ChatModelListener;
@@ -12,7 +11,6 @@ import dev.langchain4j.model.chat.response.ChatResponse;
 import java.util.List;
 import java.util.Map;
 
-@Internal
 class ChatModelListenerUtils {
 
     private ChatModelListenerUtils() {

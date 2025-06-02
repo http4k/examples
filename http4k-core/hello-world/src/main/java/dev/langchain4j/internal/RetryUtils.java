@@ -1,6 +1,5 @@
 package dev.langchain4j.internal;
 
-import dev.langchain4j.Internal;
 import dev.langchain4j.exception.LangChain4jException;
 import dev.langchain4j.exception.NonRetriableException;
 
@@ -10,7 +9,6 @@ import java.util.concurrent.Callable;
 /**
  * Utility class for retrying actions.
  */
-@Internal
 public final class RetryUtils {
 
     private static final Random RANDOM = new Random();

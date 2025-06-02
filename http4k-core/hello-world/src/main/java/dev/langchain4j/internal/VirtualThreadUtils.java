@@ -1,14 +1,11 @@
 package dev.langchain4j.internal;
 
-import static dev.langchain4j.internal.Exceptions.runtime;
-
-import dev.langchain4j.Internal;
-import org.jetbrains.annotations.Nullable;
-
 import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
+
+import static dev.langchain4j.internal.Exceptions.runtime;
 
 /**
  * Utility class for working with virtual threads introduced in Java 21.
@@ -19,7 +16,6 @@ import java.util.function.Supplier;
  *
  * @author Konstantin Pavlov
  */
-@Internal
 public class VirtualThreadUtils {
 
     

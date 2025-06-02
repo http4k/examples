@@ -14,9 +14,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static dev.langchain4j.model.ModelProvider.OTHER;
 import static dev.langchain4j.model.chat.ChatModelListenerUtils.onRequest;
 import static dev.langchain4j.model.chat.ChatModelListenerUtils.onResponse;
-import static dev.langchain4j.model.ModelProvider.OTHER;
 
 /**
  * Represents a language model that has a chat API and can stream a response one token at a time.

@@ -1,6 +1,5 @@
 package dev.langchain4j.internal;
 
-import dev.langchain4j.Internal;
 import dev.langchain4j.agent.tool.ToolSpecification;
 import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.data.message.Content;
@@ -18,7 +17,6 @@ import static dev.langchain4j.data.message.ContentType.TEXT;
 import static dev.langchain4j.internal.Utils.isNullOrEmpty;
 import static dev.langchain4j.model.chat.request.ToolChoice.REQUIRED;
 
-@Internal
 public class ChatRequestValidationUtils {
 
     public static void validateMessages(List<ChatMessage> messages) {
