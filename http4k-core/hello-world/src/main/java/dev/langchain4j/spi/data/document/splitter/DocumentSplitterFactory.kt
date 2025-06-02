@@ -1,14 +1,13 @@
-package dev.langchain4j.spi.data.document.splitter;
+package dev.langchain4j.spi.data.document.splitter
 
-import dev.langchain4j.data.document.DocumentSplitter;
+import dev.langchain4j.data.document.DocumentSplitter
 
 /**
- * A factory for creating {@link DocumentSplitter} instances through SPI.
- * <br>
- * Available implementations: {@code RecursiveDocumentSplitterFactory}
- * in the {@code langchain4j-easy-rag} module.
+ * A factory for creating [DocumentSplitter] instances through SPI.
+ * <br></br>
+ * Available implementations: `RecursiveDocumentSplitterFactory`
+ * in the `langchain4j-easy-rag` module.
  */
-public interface DocumentSplitterFactory {
-
-    DocumentSplitter create();
+interface DocumentSplitterFactory {
+    fun create(): DocumentSplitter?
 }
