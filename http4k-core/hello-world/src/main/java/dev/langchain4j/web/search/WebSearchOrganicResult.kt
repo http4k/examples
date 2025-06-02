@@ -1,32 +1,28 @@
-package dev.langchain4j.web.search;
+package dev.langchain4j.web.search
 
-import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.data.segment.TextSegment;
-
-import java.net.URI;
-import java.util.Map;
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.Utils.isNotNullOrBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.data.document.Document
+import dev.langchain4j.data.document.Metadata
+import dev.langchain4j.data.segment.TextSegment
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.net.URI
+import java.util.Objects
 
 /**
  * Represents an organic search results are the web pages that are returned by the search engine in response to a search query.
  * This includes the title, URL, snippet and/or content, and metadata of the web page.
- * <p>
+ *
+ *
  * These results are typically ranked by relevance to the search query.
- * <p>
+ *
+ *
  */
-public class WebSearchOrganicResult {
-
-    private final String title;
-    private final URI url;
-    private final String snippet;
-    private final String content;
-    private final Map<String, String> metadata;
+class WebSearchOrganicResult {
+    private val title: String
+    private val url: URI
+    private val snippet: String?
+    private val content: String?
+    private val metadata: Map<String, String>
 
     /**
      * Constructs a WebSearchOrganicResult object with the given title and URL.
@@ -34,12 +30,12 @@ public class WebSearchOrganicResult {
      * @param title The title of the search result.
      * @param url The URL associated with the search result.
      */
-    public WebSearchOrganicResult(String title, URI url) {
-        this.title = ensureNotBlank(title, "title");
-        this.url = ensureNotNull(url, "url");
-        this.snippet = null;
-        this.content = null;
-        this.metadata = Map.of();
+    constructor(title: String?, url: URI) {
+        this.title = ValidationUtils.ensureNotBlank(title, "title")
+        this.url = ValidationUtils.ensureNotNull(url, "url")
+        this.snippet = null
+        this.content = null
+        this.metadata = java.util.Map.of()
     }
 
     /**
@@ -50,12 +46,12 @@ public class WebSearchOrganicResult {
      * @param snippet The snippet of the search result, in plain text.
      * @param content The most query related content from the scraped url.
      */
-    public WebSearchOrganicResult(String title, URI url, String snippet, String content) {
-        this.title = ensureNotBlank(title, "title");
-        this.url = ensureNotNull(url, "url");
-        this.snippet = snippet;
-        this.content = content;
-        this.metadata = Map.of();
+    constructor(title: String?, url: URI, snippet: String?, content: String?) {
+        this.title = ValidationUtils.ensureNotBlank(title, "title")
+        this.url = ValidationUtils.ensureNotNull(url, "url")
+        this.snippet = snippet
+        this.content = content
+        this.metadata = java.util.Map.of()
     }
 
     /**
@@ -67,12 +63,12 @@ public class WebSearchOrganicResult {
      * @param content The most query related content from the scraped url.
      * @param metadata  The metadata associated with the search result.
      */
-    public WebSearchOrganicResult(String title, URI url, String snippet, String content, Map<String, String> metadata) {
-        this.title = ensureNotBlank(title, "title");
-        this.url = ensureNotNull(url,"url");
-        this.snippet = snippet;
-        this.content = content;
-        this.metadata = copy(metadata);
+    constructor(title: String?, url: URI, snippet: String?, content: String?, metadata: Map<String, String>?) {
+        this.title = ValidationUtils.ensureNotBlank(title, "title")
+        this.url = ValidationUtils.ensureNotNull(url, "url")
+        this.snippet = snippet
+        this.content = content
+        this.metadata = Utils.copy(metadata)
     }
 
     /**
@@ -80,8 +76,8 @@ public class WebSearchOrganicResult {
      *
      * @return The title of the web page.
      */
-    public String title() {
-        return title;
+    fun title(): String {
+        return title
     }
 
     /**
@@ -89,8 +85,8 @@ public class WebSearchOrganicResult {
      *
      * @return The URL associated with the web page.
      */
-    public URI url() {
-        return url;
+    fun url(): URI {
+        return url
     }
 
     /**
@@ -98,8 +94,8 @@ public class WebSearchOrganicResult {
      *
      * @return The snippet associated with the web page.
      */
-    public String snippet() {
-        return snippet;
+    fun snippet(): String? {
+        return snippet
     }
 
     /**
@@ -107,8 +103,8 @@ public class WebSearchOrganicResult {
      *
      * @return The content scraped from the web page.
      */
-    public String content() {
-        return content;
+    fun content(): String? {
+        return content
     }
 
     /**
@@ -116,36 +112,33 @@ public class WebSearchOrganicResult {
      *
      * @return The result metadata associated with the search result.
      */
-    public Map<String, String> metadata() {
-        return metadata;
+    fun metadata(): Map<String, String> {
+        return metadata
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WebSearchOrganicResult that = (WebSearchOrganicResult) o;
-        return Objects.equals(title, that.title)
-                && Objects.equals(url, that.url)
-                && Objects.equals(snippet, that.snippet)
-                && Objects.equals(content, that.content)
-                && Objects.equals(metadata, that.metadata);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as WebSearchOrganicResult
+        return title == that.title
+                && url == that.url
+                && snippet == that.snippet
+                && content == that.content
+                && metadata == that.metadata
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(title, url, snippet, content, metadata);
+    override fun hashCode(): Int {
+        return Objects.hash(title, url, snippet, content, metadata)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "WebSearchOrganicResult{" +
                 "title='" + title + '\'' +
                 ", url=" + url +
                 ", snippet='" + snippet + '\'' +
                 ", content='" + content + '\'' +
                 ", metadata=" + metadata +
-                '}';
+                '}'
     }
 
     /**
@@ -153,8 +146,8 @@ public class WebSearchOrganicResult {
      *
      * @return The TextSegment representation of this WebSearchOrganicResult.
      */
-    public TextSegment toTextSegment() {
-        return TextSegment.from(copyToText(), copyToMetadata());
+    fun toTextSegment(): TextSegment {
+        return TextSegment.from(copyToText(), copyToMetadata())
     }
 
     /**
@@ -162,68 +155,76 @@ public class WebSearchOrganicResult {
      *
      * @return The Document representation of this WebSearchOrganicResult.
      */
-    public Document toDocument() {
-        return Document.from(copyToText(), copyToMetadata());
+    fun toDocument(): Document {
+        return Document.from(copyToText(), copyToMetadata())
     }
 
-    private String copyToText() {
-        StringBuilder text = new StringBuilder();
-        text.append(title);
-        text.append("\n");
-        if (isNotNullOrBlank(content)) {
-            text.append(content);
-        } else if (isNotNullOrBlank(snippet)) {
-            text.append(snippet);
+    private fun copyToText(): String {
+        val text = StringBuilder()
+        text.append(title)
+        text.append("\n")
+        if (Utils.isNotNullOrBlank(content)) {
+            text.append(content)
+        } else if (Utils.isNotNullOrBlank(snippet)) {
+            text.append(snippet)
         }
-        return text.toString();
+        return text.toString()
     }
 
-    private Metadata copyToMetadata() {
-        Metadata docMetadata = new Metadata();
-        docMetadata.put("url", url.toString());
+    private fun copyToMetadata(): Metadata {
+        val docMetadata = Metadata()
+        docMetadata.put("url", url.toString())
         if (metadata != null) {
-            for (Map.Entry<String, String> entry : metadata.entrySet()) {
-                docMetadata.put(entry.getKey(), entry.getValue());
+            for ((key, value) in metadata) {
+                docMetadata.put(key, value)
             }
         }
-        return docMetadata;
+        return docMetadata
     }
 
-    /**
-     * Creates a WebSearchOrganicResult object from the given title and URL.
-     *
-     * @param title   The title of the search result.
-     * @param url    The URL associated with the search result.
-     * @return The created WebSearchOrganicResult object.
-     */
-    public static WebSearchOrganicResult from(String title, URI url) {
-        return new WebSearchOrganicResult(title, url);
-    }
+    companion object {
+        /**
+         * Creates a WebSearchOrganicResult object from the given title and URL.
+         *
+         * @param title   The title of the search result.
+         * @param url    The URL associated with the search result.
+         * @return The created WebSearchOrganicResult object.
+         */
+        fun from(title: String?, url: URI): WebSearchOrganicResult {
+            return WebSearchOrganicResult(title, url)
+        }
 
-    /**
-     * Creates a WebSearchOrganicResult object from the given title, URL, snippet and/or content.
-     *
-     * @param title   The title of the search result.
-     * @param url    The URL associated with the search result.
-     * @param snippet The snippet of the search result, in plain text.
-     * @param content The most query related content from the scraped url.
-     * @return The created WebSearchOrganicResult object.
-     */
-    public static WebSearchOrganicResult from(String title, URI url, String snippet, String content) {
-        return new WebSearchOrganicResult(title, url, snippet, content);
-    }
+        /**
+         * Creates a WebSearchOrganicResult object from the given title, URL, snippet and/or content.
+         *
+         * @param title   The title of the search result.
+         * @param url    The URL associated with the search result.
+         * @param snippet The snippet of the search result, in plain text.
+         * @param content The most query related content from the scraped url.
+         * @return The created WebSearchOrganicResult object.
+         */
+        fun from(title: String?, url: URI, snippet: String?, content: String?): WebSearchOrganicResult {
+            return WebSearchOrganicResult(title, url, snippet, content)
+        }
 
-    /**
-     * Creates a WebSearchOrganicResult object from the given title, URL, snippet and/or content, and result metadata.
-     *
-     * @param title           The title of the search result.
-     * @param url            The URL associated with the search result.
-     * @param snippet         The snippet of the search result, in plain text.
-     * @param content The most query related content from the scraped url.
-     * @param metadata  The metadata associated with the search result.
-     * @return The created WebSearchOrganicResult object.
-     */
-    public static WebSearchOrganicResult from(String title, URI url, String snippet, String content, Map<String, String> metadata) {
-        return new WebSearchOrganicResult(title, url, snippet, content, metadata);
+        /**
+         * Creates a WebSearchOrganicResult object from the given title, URL, snippet and/or content, and result metadata.
+         *
+         * @param title           The title of the search result.
+         * @param url            The URL associated with the search result.
+         * @param snippet         The snippet of the search result, in plain text.
+         * @param content The most query related content from the scraped url.
+         * @param metadata  The metadata associated with the search result.
+         * @return The created WebSearchOrganicResult object.
+         */
+        fun from(
+            title: String?,
+            url: URI,
+            snippet: String?,
+            content: String?,
+            metadata: Map<String, String>?
+        ): WebSearchOrganicResult {
+            return WebSearchOrganicResult(title, url, snippet, content, metadata)
+        }
     }
 }

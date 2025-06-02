@@ -1,20 +1,14 @@
-package dev.langchain4j.web.search;
+package dev.langchain4j.web.search
 
-import dev.langchain4j.agent.tool.P;
-import dev.langchain4j.agent.tool.Tool;
+import dev.langchain4j.agent.tool.P
+import dev.langchain4j.agent.tool.Tool
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.stream.Collectors
 
-import java.util.stream.Collectors;
-
-import static dev.langchain4j.internal.Utils.isNullOrEmpty;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
-public class WebSearchTool {
-
-    private final WebSearchEngine searchEngine;
-
-    public WebSearchTool(WebSearchEngine searchEngine) {
-        this.searchEngine = ensureNotNull(searchEngine, "searchEngine");
-    }
+class WebSearchTool(searchEngine: WebSearchEngine) {
+    private val searchEngine: WebSearchEngine =
+        ValidationUtils.ensureNotNull(searchEngine, "searchEngine")
 
     /**
      * Runs a search query on the web search engine and returns a pretty-string representation of the search results.
@@ -23,30 +17,42 @@ public class WebSearchTool {
      * @return a pretty-string representation of the search results
      */
     @Tool("This tool can be used to perform web searches using search engines such as Google, particularly when seeking information about recent events.")
-    public String searchWeb(@P("Web search query") String query) {
-        WebSearchResults results = searchEngine.search(query);
-        return format(results);
+    fun searchWeb(@P("Web search query") query: String?): String {
+        val results = searchEngine.search(query)
+        return format(results!!)
     }
 
-    private String format(WebSearchResults results) {
-        if (isNullOrEmpty(results.results()))
-            return "No results found.";
+    private fun format(results: WebSearchResults): String {
+        if (Utils.isNullOrEmpty(results.results())) return "No results found."
 
         return results.results()
-                .stream()
-                .map(organicResult -> "Title: " + organicResult.title() + "\n"
-                        + "Source: " + organicResult.url().toString() + "\n"
-                        + (organicResult.content() != null ? "Content:" + "\n" + organicResult.content() : "Snippet:" + "\n" + organicResult.snippet()))
-                .collect(Collectors.joining("\n\n"));
+            .stream()
+            .map { organicResult: WebSearchOrganicResult? ->
+                ("""
+    Title: ${organicResult!!.title()}
+    Source: ${organicResult.url()}
+    
+    """.trimIndent()
+                        + (if (organicResult.content() != null) """
+     Content:
+     ${organicResult.content()}
+     """.trimIndent() else """
+     Snippet:
+     ${organicResult.snippet()}
+     """.trimIndent()))
+            }
+            .collect(Collectors.joining("\n\n"))
     }
 
-    /**
-     * Creates a new WebSearchTool with the specified web search engine.
-     *
-     * @param searchEngine the web search engine to use for searching the web
-     * @return a new WebSearchTool
-     */
-    public static WebSearchTool from(WebSearchEngine searchEngine) {
-        return new WebSearchTool(searchEngine);
+    companion object {
+        /**
+         * Creates a new WebSearchTool with the specified web search engine.
+         *
+         * @param searchEngine the web search engine to use for searching the web
+         * @return a new WebSearchTool
+         */
+        fun from(searchEngine: WebSearchEngine): WebSearchTool {
+            return WebSearchTool(searchEngine)
+        }
     }
 }

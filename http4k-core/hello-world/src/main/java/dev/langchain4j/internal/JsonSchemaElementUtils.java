@@ -165,13 +165,11 @@ public class JsonSchemaElementUtils {
     static boolean isCustomClass(Class<?> clazz) {
         if (clazz.getPackage() != null) {
             String packageName = clazz.getPackage().getName();
-            if (packageName.startsWith("java.")
-                    || packageName.startsWith("javax.")
-                    || packageName.startsWith("jdk.")
-                    || packageName.startsWith("sun.")
-                    || packageName.startsWith("com.sun.")) {
-                return false;
-            }
+            return !packageName.startsWith("java.")
+                && !packageName.startsWith("javax.")
+                && !packageName.startsWith("jdk.")
+                && !packageName.startsWith("sun.")
+                && !packageName.startsWith("com.sun.");
         }
 
         return true;
