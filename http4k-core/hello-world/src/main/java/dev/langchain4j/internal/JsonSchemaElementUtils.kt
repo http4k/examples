@@ -1,355 +1,336 @@
-package dev.langchain4j.internal;
+package dev.langchain4j.internal
 
-import dev.langchain4j.model.chat.request.json.*;
-import dev.langchain4j.model.output.structured.Description;
+import dev.langchain4j.internal.Utils.generateUUIDFrom
+import dev.langchain4j.model.chat.request.json.JsonAnyOfSchema
+import dev.langchain4j.model.chat.request.json.JsonArraySchema
+import dev.langchain4j.model.chat.request.json.JsonBooleanSchema
+import dev.langchain4j.model.chat.request.json.JsonEnumSchema
+import dev.langchain4j.model.chat.request.json.JsonIntegerSchema
+import dev.langchain4j.model.chat.request.json.JsonNullSchema
+import dev.langchain4j.model.chat.request.json.JsonNumberSchema
+import dev.langchain4j.model.chat.request.json.JsonObjectSchema
+import dev.langchain4j.model.chat.request.json.JsonReferenceSchema
+import dev.langchain4j.model.chat.request.json.JsonSchemaElement
+import dev.langchain4j.model.chat.request.json.JsonStringSchema
+import dev.langchain4j.model.output.structured.Description
+import java.lang.reflect.Field
+import java.lang.reflect.Modifier
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
+import java.math.BigDecimal
+import java.math.BigInteger
+import java.util.Arrays
+import java.util.Optional
+import java.util.UUID
+import java.util.stream.Collectors
 
-import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.*;
-import java.util.stream.Collectors;
+object JsonSchemaElementUtils {
+    private const val DEFAULT_UUID_DESCRIPTION = "String in a UUID format"
 
-import static dev.langchain4j.internal.Utils.generateUUIDFrom;
-import static java.lang.reflect.Modifier.isStatic;
-import static java.util.Arrays.stream;
-
-public class JsonSchemaElementUtils {
-
-    private static final String DEFAULT_UUID_DESCRIPTION = "String in a UUID format";
-
-    public static JsonSchemaElement jsonSchemaElementFrom(Class<?> clazz) {
-        return jsonSchemaElementFrom(clazz, clazz, null, false, new LinkedHashMap<>());
-    }
-
-    public static JsonSchemaElement jsonSchemaElementFrom(Class<?> clazz,
-                                                          Type type,
-                                                          String fieldDescription,
-                                                          boolean areSubFieldsRequiredByDefault,
-                                                          Map<Class<?>, VisitedClassMetadata> visited) {
+    fun jsonSchemaElementFrom(
+        clazz: Class<*>,
+        type: Type?,
+        fieldDescription: String?,
+        areSubFieldsRequiredByDefault: Boolean,
+        visited: MutableMap<Class<*>?, VisitedClassMetadata>
+    ): JsonSchemaElement {
         if (isJsonString(clazz)) {
             return JsonStringSchema.builder()
-                    .description(Optional.ofNullable(fieldDescription).orElse(descriptionFrom(clazz)))
-                    .build();
+                .description(Optional.ofNullable(fieldDescription).orElse(descriptionFrom(clazz)))
+                .build()
         }
 
         if (isJsonInteger(clazz)) {
-            return JsonIntegerSchema.builder().description(fieldDescription).build();
+            return JsonIntegerSchema.builder().description(fieldDescription).build()
         }
 
         if (isJsonNumber(clazz)) {
-            return JsonNumberSchema.builder().description(fieldDescription).build();
+            return JsonNumberSchema.builder().description(fieldDescription).build()
         }
 
         if (isJsonBoolean(clazz)) {
-            return JsonBooleanSchema.builder().description(fieldDescription).build();
+            return JsonBooleanSchema.builder().description(fieldDescription).build()
         }
 
-        if (clazz.isEnum()) {
+        if (clazz.isEnum) {
             return JsonEnumSchema.builder()
-                    .enumValues(stream(clazz.getEnumConstants())
-                            .map(Object::toString)
-                            .collect(Collectors.toList()))
-                    .description(Optional.ofNullable(fieldDescription).orElse(descriptionFrom(clazz)))
-                    .build();
+                .enumValues(
+                    Arrays.stream(clazz.enumConstants)
+                        .map { obj: Any -> obj.toString() }
+                        .collect(Collectors.toList()))
+                .description(Optional.ofNullable(fieldDescription).orElse(descriptionFrom(clazz)))
+                .build()
         }
 
-        if (clazz.isArray()) {
+        if (clazz.isArray) {
             return JsonArraySchema.builder()
-                    .items(jsonSchemaElementFrom(clazz.getComponentType(), null, null, areSubFieldsRequiredByDefault, visited))
-                    .description(fieldDescription)
-                    .build();
+                .items(jsonSchemaElementFrom(clazz.componentType, null, null, areSubFieldsRequiredByDefault, visited))
+                .description(fieldDescription)
+                .build()
         }
 
-        if (Collection.class.isAssignableFrom(clazz)) {
+        if (MutableCollection::class.java.isAssignableFrom(clazz)) {
             return JsonArraySchema.builder()
-                    .items(jsonSchemaElementFrom(getActualType(type), null, null, areSubFieldsRequiredByDefault, visited))
-                    .description(fieldDescription)
-                    .build();
+                .items(jsonSchemaElementFrom(getActualType(type)!!, null, null, areSubFieldsRequiredByDefault, visited))
+                .description(fieldDescription)
+                .build()
         }
 
-        return jsonObjectOrReferenceSchemaFrom(clazz, fieldDescription, areSubFieldsRequiredByDefault, visited, false);
+        return jsonObjectOrReferenceSchemaFrom(clazz, fieldDescription, areSubFieldsRequiredByDefault, visited, false)
     }
 
-    public static JsonSchemaElement jsonObjectOrReferenceSchemaFrom(
-            Class<?> type,
-            String description,
-            boolean areSubFieldsRequiredByDefault,
-            Map<Class<?>, VisitedClassMetadata> visited,
-            boolean setDefinitions) {
+    fun jsonObjectOrReferenceSchemaFrom(
+        type: Class<*>,
+        description: String?,
+        areSubFieldsRequiredByDefault: Boolean,
+        visited: MutableMap<Class<*>?, VisitedClassMetadata>,
+        setDefinitions: Boolean
+    ): JsonSchemaElement {
         if (visited.containsKey(type) && isCustomClass(type)) {
-            VisitedClassMetadata visitedClassMetadata = visited.get(type);
-            JsonSchemaElement jsonSchemaElement = visitedClassMetadata.jsonSchemaElement;
-            if (jsonSchemaElement instanceof JsonReferenceSchema) {
-                visitedClassMetadata.recursionDetected = true;
+            val visitedClassMetadata = visited[type]
+            val jsonSchemaElement = visitedClassMetadata!!.jsonSchemaElement
+            if (jsonSchemaElement is JsonReferenceSchema) {
+                visitedClassMetadata.recursionDetected = true
             }
-            return jsonSchemaElement;
+            return jsonSchemaElement
         }
 
-        String reference = generateUUIDFrom(type.getName());
-        JsonReferenceSchema jsonReferenceSchema =
-                JsonReferenceSchema.builder().reference(reference).build();
-        visited.put(type, new VisitedClassMetadata(jsonReferenceSchema, reference, false));
+        val reference = generateUUIDFrom(type.name)
+        val jsonReferenceSchema =
+            JsonReferenceSchema.builder().reference(reference).build()
+        visited[type] = VisitedClassMetadata(jsonReferenceSchema, reference, false)
 
-        Map<String, JsonSchemaElement> properties = new LinkedHashMap<>();
-        List<String> required = new ArrayList<>();
-        for (Field field : type.getDeclaredFields()) {
-            String fieldName = field.getName();
-            if (isStatic(field.getModifiers()) || fieldName.equals("__$hits$__") || fieldName.startsWith("this$")) {
-                continue;
+        val properties: MutableMap<String, JsonSchemaElement> = LinkedHashMap()
+        val required: MutableList<String> = ArrayList()
+        for (field in type.declaredFields) {
+            val fieldName = field.name
+            if (Modifier.isStatic(field.modifiers) || fieldName == "__\$hits$" || fieldName.startsWith("this$")) {
+                continue
             }
             if (isRequired(field, areSubFieldsRequiredByDefault)) {
-                required.add(fieldName);
+                required.add(fieldName)
             }
-            String fieldDescription = descriptionFrom(field);
-            JsonSchemaElement jsonSchemaElement = jsonSchemaElementFrom(field.getType(), field.getGenericType(),
-                    fieldDescription, areSubFieldsRequiredByDefault, visited);
-            properties.put(fieldName, jsonSchemaElement);
+            val fieldDescription = descriptionFrom(field)
+            val jsonSchemaElement = jsonSchemaElementFrom(
+                field.type, field.genericType,
+                fieldDescription, areSubFieldsRequiredByDefault, visited
+            )
+            properties[fieldName] = jsonSchemaElement
         }
 
-        JsonObjectSchema.Builder builder = JsonObjectSchema.builder()
-                .description(Optional.ofNullable(description).orElse(descriptionFrom(type)))
-                .addProperties(properties)
-                .required(required);
+        val builder = JsonObjectSchema.builder()
+            .description(Optional.ofNullable(description).orElse(descriptionFrom(type)))
+            .addProperties(properties)
+            .required(required)
 
-        visited.get(type).jsonSchemaElement = builder.build();
+        visited[type]!!.jsonSchemaElement = builder.build()
 
         if (setDefinitions) {
-            Map<String, JsonSchemaElement> definitions = new LinkedHashMap<>();
-            visited.forEach((clazz, visitedClassMetadata) -> {
-                if (visitedClassMetadata.recursionDetected) {
-                    definitions.put(visitedClassMetadata.reference, visitedClassMetadata.jsonSchemaElement);
-                }
-            });
+            val definitions: MutableMap<String, JsonSchemaElement> = LinkedHashMap()
             if (!definitions.isEmpty()) {
-                builder.definitions(definitions);
+                builder.definitions(definitions)
             }
         }
 
-        return builder.build();
+        return builder.build()
     }
 
-    private static boolean isRequired(Field field, boolean defaultValue) {
-        return defaultValue;
+    private fun isRequired(field: Field, defaultValue: Boolean): Boolean {
+        return defaultValue
     }
 
-    private static String descriptionFrom(Field field) {
-        return descriptionFrom(field.getAnnotation(Description.class));
+    private fun descriptionFrom(field: Field): String? {
+        return descriptionFrom(
+            field.getAnnotation(
+                Description::class.java
+            )
+        )
     }
 
-    private static String descriptionFrom(Class<?> type) {
-        if (type == UUID.class) {
-            return DEFAULT_UUID_DESCRIPTION;
+    private fun descriptionFrom(type: Class<*>): String? {
+        if (type == UUID::class.java) {
+            return DEFAULT_UUID_DESCRIPTION
         }
-        return descriptionFrom(type.getAnnotation(Description.class));
+        return descriptionFrom(
+            type.getAnnotation(
+                Description::class.java
+            )
+        )
     }
 
-    private static String descriptionFrom(Description description) {
+    private fun descriptionFrom(description: Description?): String? {
         if (description == null) {
-            return null;
+            return null
         }
-        return String.join(" ", description.value());
+        return java.lang.String.join(" ", *description.value)
     }
 
-    private static Class<?> getActualType(Type type) {
-        if (type instanceof final ParameterizedType parameterizedType) {
-            Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-            if (actualTypeArguments.length == 1) {
-                return (Class<?>) actualTypeArguments[0];
+    private fun getActualType(type: Type?): Class<*>? {
+        if (type is ParameterizedType) {
+            val actualTypeArguments = type.actualTypeArguments
+            if (actualTypeArguments.size == 1) {
+                return actualTypeArguments[0] as Class<*>
             }
         }
-        return null;
+        return null
     }
 
-    static boolean isCustomClass(Class<?> clazz) {
+    fun isCustomClass(clazz: Class<*>): Boolean {
         if (clazz.getPackage() != null) {
-            String packageName = clazz.getPackage().getName();
-            return !packageName.startsWith("java.")
-                && !packageName.startsWith("javax.")
-                && !packageName.startsWith("jdk.")
-                && !packageName.startsWith("sun.")
-                && !packageName.startsWith("com.sun.");
+            val packageName = clazz.getPackage().name
+            return !packageName.startsWith("java.") && !packageName.startsWith("javax.") && !packageName.startsWith("jdk.") && !packageName.startsWith(
+                "sun."
+            ) && !packageName.startsWith("com.sun.")
         }
 
-        return true;
+        return true
     }
 
-    public static Map<String, Map<String, Object>> toMap(Map<String, JsonSchemaElement> properties) {
-        return toMap(properties, false);
+    @JvmOverloads
+    fun toMap(properties: Map<String?, JsonSchemaElement?>, strict: Boolean = false): Map<String, Map<String, Any?>> {
+        val map: MutableMap<String, Map<String, Any?>> = LinkedHashMap()
+        properties.forEach { (property: String?, value: JsonSchemaElement?) ->
+            map[property!!] = toMap(value!!, strict)
+        }
+        return map
     }
 
-    public static Map<String, Map<String, Object>> toMap(Map<String, JsonSchemaElement> properties, boolean strict) {
-        Map<String, Map<String, Object>> map = new LinkedHashMap<>();
-        properties.forEach((property, value) -> map.put(property, toMap(value, strict)));
-        return map;
-    }
+    @JvmOverloads
+    fun toMap(
+        jsonSchemaElement: JsonSchemaElement,
+        strict: Boolean = false,
+        required: Boolean = true
+    ): Map<String, Any?> {
+        if (jsonSchemaElement is JsonObjectSchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            map["type"] = type("object", strict, required)
 
-    public static Map<String, Object> toMap(JsonSchemaElement jsonSchemaElement) {
-        return toMap(jsonSchemaElement, false);
-    }
-
-    public static Map<String, Object> toMap(JsonSchemaElement jsonSchemaElement, boolean strict) {
-        return toMap(jsonSchemaElement, strict, true);
-    }
-
-    public static Map<String, Object> toMap(JsonSchemaElement jsonSchemaElement, boolean strict, boolean required) {
-        if (jsonSchemaElement instanceof JsonObjectSchema jsonObjectSchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("type", type("object", strict, required));
-
-            if (jsonObjectSchema.description() != null) {
-                map.put("description", jsonObjectSchema.description());
+            if (jsonSchemaElement.description() != null) {
+                map["description"] = jsonSchemaElement.description()
             }
 
-            Map<String, Map<String, Object>> properties = new LinkedHashMap<>();
-            jsonObjectSchema.properties().forEach((property, value) ->
-                    properties.put(property, toMap(value, strict, jsonObjectSchema.required().contains(property))));
-            map.put("properties", properties);
+            val properties: MutableMap<String, Map<String, Any?>> = LinkedHashMap()
+            map["properties"] = properties
 
             if (strict) {
                 // When using Structured Outputs with strict=true, all fields must be required.
                 // See https://platform.openai.com/docs/guides/structured-outputs/supported-schemas?api-mode=chat#all-fields-must-be-required
-                map.put("required", jsonObjectSchema.properties().keySet().stream().toList());
+                map["required"] = jsonSchemaElement.properties().keys.stream().toList()
             } else {
-                if (jsonObjectSchema.required() != null) {
-                    map.put("required", jsonObjectSchema.required());
+                if (jsonSchemaElement.required() != null) {
+                    map["required"] = jsonSchemaElement.required()
                 }
             }
 
             if (strict) {
-                map.put("additionalProperties", false);
+                map["additionalProperties"] = false
             }
 
-            if (!jsonObjectSchema.definitions().isEmpty()) {
-                map.put("$defs", toMap(jsonObjectSchema.definitions(), strict));
+            return map
+        } else if (jsonSchemaElement is JsonArraySchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            map["type"] = type("array", strict, required)
+            if (jsonSchemaElement.description() != null) {
+                map["description"] = jsonSchemaElement.description()
             }
-
-            return map;
-        } else if (jsonSchemaElement instanceof JsonArraySchema jsonArraySchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("type", type("array", strict, required));
-            if (jsonArraySchema.description() != null) {
-                map.put("description", jsonArraySchema.description());
+            map["items"] = toMap(jsonSchemaElement.items(), strict)
+            return map
+        } else if (jsonSchemaElement is JsonEnumSchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            map["type"] = type("string", strict, required)
+            if (jsonSchemaElement.description() != null) {
+                map["description"] = jsonSchemaElement.description()
             }
-            map.put("items", toMap(jsonArraySchema.items(), strict));
-            return map;
-        } else if (jsonSchemaElement instanceof JsonEnumSchema jsonEnumSchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("type", type("string", strict, required));
-            if (jsonEnumSchema.description() != null) {
-                map.put("description", jsonEnumSchema.description());
+            map["enum"] = jsonSchemaElement.enumValues()
+            return map
+        } else if (jsonSchemaElement is JsonStringSchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            map["type"] = type("string", strict, required)
+            if (jsonSchemaElement.description() != null) {
+                map["description"] = jsonSchemaElement.description()
             }
-            map.put("enum", jsonEnumSchema.enumValues());
-            return map;
-        } else if (jsonSchemaElement instanceof JsonStringSchema jsonStringSchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("type", type("string", strict, required));
-            if (jsonStringSchema.description() != null) {
-                map.put("description", jsonStringSchema.description());
+            return map
+        } else if (jsonSchemaElement is JsonIntegerSchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            map["type"] = type("integer", strict, required)
+            if (jsonSchemaElement.description() != null) {
+                map["description"] = jsonSchemaElement.description()
             }
-            return map;
-        } else if (jsonSchemaElement instanceof JsonIntegerSchema jsonIntegerSchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("type", type("integer", strict, required));
-            if (jsonIntegerSchema.description() != null) {
-                map.put("description", jsonIntegerSchema.description());
+            return map
+        } else if (jsonSchemaElement is JsonNumberSchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            map["type"] = type("number", strict, required)
+            if (jsonSchemaElement.description() != null) {
+                map["description"] = jsonSchemaElement.description()
             }
-            return map;
-        } else if (jsonSchemaElement instanceof JsonNumberSchema jsonNumberSchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("type", type("number", strict, required));
-            if (jsonNumberSchema.description() != null) {
-                map.put("description", jsonNumberSchema.description());
+            return map
+        } else if (jsonSchemaElement is JsonBooleanSchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            map["type"] = type("boolean", strict, required)
+            if (jsonSchemaElement.description() != null) {
+                map["description"] = jsonSchemaElement.description()
             }
-            return map;
-        } else if (jsonSchemaElement instanceof JsonBooleanSchema jsonBooleanSchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            map.put("type", type("boolean", strict, required));
-            if (jsonBooleanSchema.description() != null) {
-                map.put("description", jsonBooleanSchema.description());
-            }
-            return map;
-        } else if (jsonSchemaElement instanceof JsonReferenceSchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            String reference = ((JsonReferenceSchema) jsonSchemaElement).reference();
+            return map
+        } else if (jsonSchemaElement is JsonReferenceSchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            val reference = jsonSchemaElement.reference()
             if (reference != null) {
-                map.put("$ref", "#/$defs/" + reference);
+                map["\$ref"] = "#/\$defs/$reference"
             }
-            return map;
-        } else if (jsonSchemaElement instanceof JsonAnyOfSchema jsonAnyOfSchema) {
-            Map<String, Object> map = new LinkedHashMap<>();
-            if (jsonAnyOfSchema.description() != null) {
-                map.put("description", jsonAnyOfSchema.description());
+            return map
+        } else if (jsonSchemaElement is JsonAnyOfSchema) {
+            val map: MutableMap<String, Any?> = LinkedHashMap()
+            if (jsonSchemaElement.description() != null) {
+                map["description"] = jsonSchemaElement.description()
             }
-            List<Map<String, Object>> anyOf = jsonAnyOfSchema.anyOf().stream()
-                    .map(element -> toMap(element, strict))
-                    .collect(Collectors.toList());
-            map.put("anyOf", anyOf);
-            return map;
-        } else if (jsonSchemaElement instanceof JsonNullSchema) {
-            return Map.of("type", "null");
+            val anyOf = jsonSchemaElement.anyOf().stream()
+                .map { element: JsonSchemaElement -> toMap(element, strict) }
+                .collect(Collectors.toList())
+            map["anyOf"] = anyOf
+            return map
+        } else if (jsonSchemaElement is JsonNullSchema) {
+            return java.util.Map.of<String, Any?>("type", "null")
         } else {
-            throw new IllegalArgumentException("Unknown type: " + jsonSchemaElement.getClass());
+            throw IllegalArgumentException("Unknown type: " + jsonSchemaElement.javaClass)
         }
     }
 
-    private static Object type(String type, boolean strict, boolean required) {
-        if (strict && !required) {
+    private fun type(type: String, strict: Boolean, required: Boolean): Any {
+        return if (strict && !required) {
             // Emulating an optional parameter by using a union type with null.
             // See https://platform.openai.com/docs/guides/structured-outputs/supported-schemas?api-mode=chat#all-fields-must-be-required
-            return new String[]{type, "null"};
+            arrayOf(type, "null")
         } else {
-            return type;
+            type
         }
     }
 
-    static boolean isJsonInteger(Class<?> type) {
-        return type == byte.class
-                || type == Byte.class
-                || type == short.class
-                || type == Short.class
-                || type == int.class
-                || type == Integer.class
-                || type == long.class
-                || type == Long.class
-                || type == BigInteger.class;
+    fun isJsonInteger(type: Class<*>): Boolean {
+        return type == Byte::class.javaPrimitiveType || type == Byte::class.java || type == Short::class.javaPrimitiveType || type == Short::class.java || type == Int::class.javaPrimitiveType || type == Int::class.java || type == Long::class.javaPrimitiveType || type == Long::class.java || type == BigInteger::class.java
     }
 
-    static boolean isJsonNumber(Class<?> type) {
-        return type == float.class
-                || type == Float.class
-                || type == double.class
-                || type == Double.class
-                || type == BigDecimal.class;
+    fun isJsonNumber(type: Class<*>): Boolean {
+        return type == Float::class.javaPrimitiveType || type == Float::class.java || type == Double::class.javaPrimitiveType || type == Double::class.java || type == BigDecimal::class.java
     }
 
-    static boolean isJsonBoolean(Class<?> type) {
-        return type == boolean.class || type == Boolean.class;
+    fun isJsonBoolean(type: Class<*>): Boolean {
+        return type == Boolean::class.javaPrimitiveType || type == Boolean::class.java
     }
 
-    static boolean isJsonString(Class<?> type) {
-        return type == String.class
-                || type == char.class
-                || type == Character.class
-                || CharSequence.class.isAssignableFrom(type)
-                || type == UUID.class;
+    fun isJsonString(type: Class<*>): Boolean {
+        return type == String::class.java || type == Char::class.javaPrimitiveType || type == Char::class.java || CharSequence::class.java.isAssignableFrom(
+            type
+        )
+                || type == UUID::class.java
     }
 
-    static boolean isJsonArray(Class<?> type) {
-        return type.isArray() || Iterable.class.isAssignableFrom(type);
+    fun isJsonArray(type: Class<*>): Boolean {
+        return type.isArray || Iterable::class.java.isAssignableFrom(type)
     }
 
-    public static class VisitedClassMetadata {
-
-        public JsonSchemaElement jsonSchemaElement;
-        public String reference;
-        public boolean recursionDetected;
-
-        public VisitedClassMetadata(JsonSchemaElement jsonSchemaElement, String reference, boolean recursionDetected) {
-            this.jsonSchemaElement = jsonSchemaElement;
-            this.reference = reference;
-            this.recursionDetected = recursionDetected;
-        }
-    }
+    class VisitedClassMetadata(
+        var jsonSchemaElement: JsonSchemaElement,
+        var reference: String,
+        var recursionDetected: Boolean
+    )
 }

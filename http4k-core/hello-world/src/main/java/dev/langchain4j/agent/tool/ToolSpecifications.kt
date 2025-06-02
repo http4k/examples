@@ -142,7 +142,7 @@ object ToolSpecifications {
             parameter.parameterizedType,
             description,
             true,
-            visited
+            visited.toMutableMap()
         )
     }
 }
