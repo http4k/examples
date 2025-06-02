@@ -10,7 +10,8 @@ object ChatMessageSerializer {
         for (factory in ServiceHelper.loadFactories(
             ChatMessageJsonCodecFactory::class.java
         )) {
-            return factory.create()
+            TODO()
+//            return factory.create()
         }
         return object : ChatMessageJsonCodec {
             override fun messageFromJson(json: String?): ChatMessage? {

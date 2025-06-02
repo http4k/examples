@@ -1,14 +1,13 @@
-package dev.langchain4j.spi.model.embedding;
+package dev.langchain4j.spi.model.embedding
 
-import dev.langchain4j.model.embedding.EmbeddingModel;
+import dev.langchain4j.model.embedding.EmbeddingModel
 
 /**
- * A factory for creating {@link EmbeddingModel} instances through SPI.
- * <br>
- * For the "Easy RAG", import {@code langchain4j-easy-rag} module,
- * which contains a {@code EmbeddingModelFactory} implementation.
+ * A factory for creating [EmbeddingModel] instances through SPI.
+ * <br></br>
+ * For the "Easy RAG", import `langchain4j-easy-rag` module,
+ * which contains a `EmbeddingModelFactory` implementation.
  */
-public interface EmbeddingModelFactory {
-
-    EmbeddingModel create();
+interface EmbeddingModelFactory {
+    fun create(): EmbeddingModel?
 }
