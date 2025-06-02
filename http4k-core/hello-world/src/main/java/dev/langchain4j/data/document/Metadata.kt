@@ -1,7 +1,6 @@
 package dev.langchain4j.data.document
 
 import dev.langchain4j.data.segment.TextSegment
-import dev.langchain4j.internal.Exceptions
 import java.util.Objects
 import java.util.UUID
 
@@ -58,10 +57,12 @@ class Metadata {
             return value
         }
 
-        throw Exceptions.runtime(
-            "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
+        throw RuntimeException(
+            String.format(
+                "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
                     + "It cannot be returned as a String.",
-            key, value, value!!.javaClass.name
+                key, value, value!!.javaClass.name
+            )
         )
     }
 
@@ -85,10 +86,12 @@ class Metadata {
             return UUID.fromString(value)
         }
 
-        throw Exceptions.runtime(
-            "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
+        throw RuntimeException(
+            String.format(
+                "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
                     + "It cannot be returned as a UUID.",
-            key, value, value!!.javaClass.name
+                key, value, value!!.javaClass.name
+            )
         )
     }
 
@@ -120,10 +123,12 @@ class Metadata {
             return value.toInt()
         }
 
-        throw Exceptions.runtime(
-            "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
+        throw RuntimeException(
+            String.format(
+                "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
                     + "It cannot be returned as an Integer.",
-            key, value, value!!.javaClass.name
+                key, value, value!!.javaClass.name
+            )
         )
     }
 
@@ -155,10 +160,12 @@ class Metadata {
             return value.toLong()
         }
 
-        throw Exceptions.runtime(
-            "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
+        throw RuntimeException(
+            String.format(
+                "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
                     + "It cannot be returned as a Long.",
-            key, value, value!!.javaClass.name
+                key, value, value!!.javaClass.name
+            )
         )
     }
 
@@ -190,10 +197,12 @@ class Metadata {
             return value.toFloat()
         }
 
-        throw Exceptions.runtime(
-            "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
+        throw RuntimeException(
+            String.format(
+                "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
                     + "It cannot be returned as a Float.",
-            key, value, value!!.javaClass.name
+                key, value, value!!.javaClass.name
+            )
         )
     }
 
@@ -225,10 +234,12 @@ class Metadata {
             return value.toDouble()
         }
 
-        throw Exceptions.runtime(
-            "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
+        throw RuntimeException(
+            String.format(
+                "Metadata entry with the key '%s' has a value of '%s' and type '%s'. "
                     + "It cannot be returned as a Double.",
-            key, value, value!!.javaClass.name
+                key, value, value!!.javaClass.name
+            )
         )
     }
 
@@ -387,7 +398,7 @@ class Metadata {
         val commonKeys = HashSet(thisMap.keys)
         commonKeys.retainAll(anotherMap.keys)
         if (!commonKeys.isEmpty()) {
-            throw Exceptions.illegalArgument("Metadata keys are not unique. Common keys: %s", commonKeys)
+            throw IllegalArgumentException(String.format("Metadata keys are not unique. Common keys: %s", commonKeys))
         }
         val mergedMap = HashMap(thisMap)
         mergedMap.putAll(anotherMap)
@@ -422,10 +433,12 @@ class Metadata {
                     value!!
                 )
                 if (!SUPPORTED_VALUE_TYPES.contains(value.javaClass)) {
-                    throw Exceptions.illegalArgument(
-                        "The metadata key '%s' has the value '%s', which is of the unsupported type '%s'. "
-                            + "Currently, the supported types are: %s",
-                        key, value, value.javaClass.name, SUPPORTED_VALUE_TYPES
+                    throw IllegalArgumentException(
+                        String.format(
+                            "The metadata key '%s' has the value '%s', which is of the unsupported type '%s'. "
+                                + "Currently, the supported types are: %s",
+                            key, value, value.javaClass.name, SUPPORTED_VALUE_TYPES
+                        )
                     )
                 }
             }

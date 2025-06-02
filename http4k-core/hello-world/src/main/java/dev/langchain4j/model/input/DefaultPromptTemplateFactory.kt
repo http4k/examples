@@ -1,6 +1,5 @@
 package dev.langchain4j.model.input
 
-import dev.langchain4j.internal.Exceptions
 import dev.langchain4j.spi.prompt.PromptTemplateFactory
 import java.util.regex.Pattern
 
@@ -34,7 +33,7 @@ internal class DefaultPromptTemplateFactory : PromptTemplateFactory {
         private fun ensureAllVariablesProvided(providedVariables: Map<String, Any>) {
             for (variable in allVariables) {
                 if (!providedVariables.containsKey(variable)) {
-                    throw Exceptions.illegalArgument("Value for the variable '%s' is missing", variable)
+                    throw IllegalArgumentException(String.format("Value for the variable '%s' is missing", variable))
                 }
             }
         }
@@ -62,7 +61,7 @@ internal class DefaultPromptTemplateFactory : PromptTemplateFactory {
 
             private fun replaceAll(template: String, variable: String, value: Any): String {
                 if (value?.toString() == null) {
-                    throw Exceptions.illegalArgument("Value for the variable '%s' is null", variable)
+                    throw IllegalArgumentException(String.format("Value for the variable '%s' is null", variable))
                 }
                 return template.replace(inDoubleCurlyBrackets(variable), value.toString())
             }

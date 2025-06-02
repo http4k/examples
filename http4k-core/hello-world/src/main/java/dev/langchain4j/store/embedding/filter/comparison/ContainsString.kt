@@ -1,7 +1,6 @@
 package dev.langchain4j.store.embedding.filter.comparison
 
 import dev.langchain4j.data.document.Metadata
-import dev.langchain4j.internal.Exceptions
 import dev.langchain4j.store.embedding.filter.Filter
 import java.util.Objects
 
@@ -36,10 +35,12 @@ class ContainsString(key: String, comparisonValue: String) : Filter {
             return actualValue.contains(comparisonValue)
         }
 
-        throw Exceptions.illegalArgument(
-            "Type mismatch: actual value of metadata key \"%s\" (%s) has type %s, "
+        throw IllegalArgumentException(
+            String.format(
+                "Type mismatch: actual value of metadata key \"%s\" (%s) has type %s, "
                     + "while it is expected to be a string",
-            key, actualValue, actualValue!!.javaClass.name
+                key, actualValue, actualValue!!.javaClass.name
+            )
         )
     }
 

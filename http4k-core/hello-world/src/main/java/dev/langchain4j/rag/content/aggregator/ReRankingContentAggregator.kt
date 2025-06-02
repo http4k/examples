@@ -1,7 +1,6 @@
 package dev.langchain4j.rag.content.aggregator
 
 import dev.langchain4j.data.segment.TextSegment
-import dev.langchain4j.internal.Exceptions
 import dev.langchain4j.internal.Utils
 import dev.langchain4j.model.scoring.ScoringModel
 import dev.langchain4j.rag.content.Content
@@ -146,11 +145,13 @@ class ReRankingContentAggregator @JvmOverloads constructor(
         val DEFAULT_QUERY_SELECTOR: Function<Map<Query, Collection<List<Content?>?>>, Query> =
             Function { queryToContents: Map<Query, Collection<List<Content?>?>> ->
                 if (queryToContents.size > 1) {
-                    throw Exceptions.illegalArgument(
-                        "The 'queryToContents' contains %s queries, making the re-ranking ambiguous. " +
+                    throw IllegalArgumentException(
+                        String.format(
+                            "The 'queryToContents' contains %s queries, making the re-ranking ambiguous. " +
                                 "Because there are multiple queries, it is unclear which one should be " +
                                 "used for re-ranking. Please provide a 'querySelector' in the constructor/builder.",
-                        queryToContents.size
+                            queryToContents.size
+                        )
                     )
                 }
                 queryToContents.keys.iterator().next()

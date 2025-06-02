@@ -1,6 +1,5 @@
 package dev.langchain4j.data.message
 
-import dev.langchain4j.internal.Exceptions
 import dev.langchain4j.internal.Utils
 import java.util.Arrays
 import java.util.Objects
@@ -106,7 +105,7 @@ class UserMessage : ChatMessage {
         if (hasSingleText()) {
             return (contents[0] as TextContent).text()
         } else {
-            throw Exceptions.runtime("Expecting single text content, but got: $contents")
+            throw RuntimeException(String.format("Expecting single text content, but got: $contents"))
         }
     }
 

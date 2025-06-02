@@ -1,7 +1,6 @@
 package dev.langchain4j.store.embedding
 
 import dev.langchain4j.data.embedding.Embedding
-import dev.langchain4j.internal.Exceptions
 import kotlin.math.max
 import kotlin.math.sqrt
 
@@ -47,9 +46,11 @@ object CosineSimilarity {
         val vectorB = embeddingB.vector()
 
         if (vectorA.size != vectorB.size) {
-            throw Exceptions.illegalArgument(
-                "Length of vector a (%s) must be equal to the length of vector b (%s)",
-                vectorA.size, vectorB.size
+            throw IllegalArgumentException(
+                String.format(
+                    "Length of vector a (%s) must be equal to the length of vector b (%s)",
+                    vectorA.size, vectorB.size
+                )
             )
         }
 
