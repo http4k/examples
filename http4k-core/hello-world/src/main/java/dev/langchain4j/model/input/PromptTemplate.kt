@@ -19,7 +19,7 @@ import java.util.Collections
 class PromptTemplate internal constructor(template: String?, clock: Clock) {
     private val templateString: String =
         ValidationUtils.ensureNotBlank(template, "template")
-    private val template: PromptTemplateFactory.Template
+    private val template: PromptTemplateFactory.Template = TODO()
     private val clock: Clock
 
     /**
@@ -39,7 +39,6 @@ class PromptTemplate internal constructor(template: String?, clock: Clock) {
      * @param clock    the clock to use for the special variables.
      */
     init {
-        this.template = FACTORY.create { template }
         this.clock = ValidationUtils.ensureNotNull(clock, "clock")
     }
 
@@ -68,7 +67,8 @@ class PromptTemplate internal constructor(template: String?, clock: Clock) {
      */
     fun apply(variables: Map<String, Any>): Prompt {
         ValidationUtils.ensureNotNull(variables, "variables")
-        return Prompt.Companion.from(template.render(injectDateTimeVariables(variables)))
+        TODO()
+//        return Prompt.Companion.from(template.render(injectDateTimeVariables(variables)))
     }
 
     /**

@@ -6,8 +6,9 @@ import dev.langchain4j.spi.prompt.PromptTemplateFactory
 import java.util.regex.Pattern
 
 internal class DefaultPromptTemplateFactory : PromptTemplateFactory {
-    override fun create(input: PromptTemplateFactory.Input): DefaultTemplate {
-        return DefaultTemplate(input.template)
+    override fun create(input: PromptTemplateFactory.Input?): DefaultTemplate {
+        TODO()
+//        return DefaultTemplate(input!.template!!)
     }
 
     internal class DefaultTemplate(template: String) : PromptTemplateFactory.Template {
@@ -19,15 +20,16 @@ internal class DefaultPromptTemplateFactory : PromptTemplateFactory {
             this.allVariables = extractVariables(template)
         }
 
-        override fun render(variables: Map<String, Any>): String {
-            ensureAllVariablesProvided(variables)
-
-            var result = template
-            for ((key, value) in variables) {
-                result = replaceAll(result, key, value)
-            }
-
-            return result
+        override fun render(variables: Map<String?, Any?>?): String {
+            TODO()
+//            ensureAllVariablesProvided(variables!!)
+//
+//            var result = template
+//            for ((key, value) in variables) {
+//                result = replaceAll(result, key, value)
+//            }
+//
+//            return result
         }
 
         private fun ensureAllVariablesProvided(providedVariables: Map<String, Any>) {

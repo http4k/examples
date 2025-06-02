@@ -17,7 +17,8 @@ object StructuredPromptProcessor {
         )) {
             return factory
         }
-        return StructuredPromptFactory { null }
+        TODO()
+//        return StructuredPromptFactory { null }
     }
 
     /**
@@ -27,6 +28,7 @@ object StructuredPromptProcessor {
      * @return the prompt.
      */
     fun toPrompt(structuredPrompt: Any?): Prompt {
-        return FACTORY.toPrompt(structuredPrompt)
+        TODO()
+//        return FACTORY.toPrompt(structuredPrompt)
     }
 }

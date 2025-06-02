@@ -1,40 +1,37 @@
-package dev.langchain4j.spi.prompt;
-
-import java.util.Map;
+package dev.langchain4j.spi.prompt
 
 /**
  * A factory for creating prompt templates.
  */
-public interface PromptTemplateFactory {
-
+interface PromptTemplateFactory {
     /**
      * Interface for input for the factory.
      */
-        interface Input {
-
+    interface Input {
         /**
          * Get the template string.
          * @return the template string.
          */
-        String getTemplate();
+        val template: String?
 
-        /**
-         * Get the name of the template.
-         * @return the name of the template.
-         */
-        default String getName() { return "template"; }
+        val name: String
+            /**
+             * Get the name of the template.
+             * @return the name of the template.
+             */
+            get() = "template"
     }
 
     /**
      * Interface for a prompt template.
      */
-        interface Template {
+    interface Template {
         /**
          * Render the template.
          * @param variables the variables to use.
          * @return the rendered template.
          */
-        String render(Map<String, Object> variables);
+        fun render(variables: Map<String?, Any?>?): String?
     }
 
     /**
@@ -42,5 +39,5 @@ public interface PromptTemplateFactory {
      * @param input the input to the factory.
      * @return the prompt template.
      */
-    Template create(Input input);
+    fun create(input: Input?): Template?
 }
