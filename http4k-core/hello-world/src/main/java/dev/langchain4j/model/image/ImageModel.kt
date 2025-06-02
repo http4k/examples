@@ -1,25 +1,24 @@
-package dev.langchain4j.model.image;
+package dev.langchain4j.model.image
 
-import dev.langchain4j.data.image.Image;
-import dev.langchain4j.model.output.Response;
-
-import java.util.List;
+import dev.langchain4j.data.image.Image
+import dev.langchain4j.model.output.Response
 
 /**
  * Text to Image generator model.
  */
-public interface ImageModel {
+interface ImageModel {
     /**
      * Given a prompt, generate an image.
      * @param prompt The prompt to generate an image from.
      * @return The generated image Response.
      */
-    Response<Image> generate(String prompt);
+    fun generate(prompt: String?): Response<Image?>?
 
     /**
      * Given a prompt, generate n images.
      *
-     * <p>Not supported by all models; as explicit support is needed to generate <b>different</b>
+     *
+     * Not supported by all models; as explicit support is needed to generate **different**
      * images from the same prompt.
      *
      * @param prompt The prompt to generate images from.
@@ -27,8 +26,8 @@ public interface ImageModel {
      * @return The generated images Response.
      * @throws IllegalArgumentException if the operation is not supported.
      */
-    default Response<List<Image>> generate(String prompt, int n) {
-        throw new IllegalArgumentException("Operation is not supported");
+    fun generate(prompt: String?, n: Int): Response<List<Image>> {
+        throw IllegalArgumentException("Operation is not supported")
     }
 
     /**
@@ -38,8 +37,8 @@ public interface ImageModel {
      * @param prompt The prompt to edit the image.
      * @return The generated image Response.
      */
-    default Response<Image> edit(Image image, String prompt) {
-        throw new IllegalArgumentException("Operation is not supported");
+    fun edit(image: Image?, prompt: String?): Response<Image> {
+        throw IllegalArgumentException("Operation is not supported")
     }
 
     /**
@@ -51,7 +50,7 @@ public interface ImageModel {
      * @param prompt The prompt to edit the image.
      * @return The generated image Response.
      */
-    default Response<Image> edit(Image image, Image mask, String prompt) {
-        throw new IllegalArgumentException("Operation is not supported");
+    fun edit(image: Image?, mask: Image?, prompt: String?): Response<Image> {
+        throw IllegalArgumentException("Operation is not supported")
     }
 }
