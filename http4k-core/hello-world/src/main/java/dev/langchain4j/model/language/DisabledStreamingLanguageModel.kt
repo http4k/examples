@@ -1,23 +1,22 @@
-package dev.langchain4j.model.language;
+package dev.langchain4j.model.language
 
-import dev.langchain4j.model.ModelDisabledException;
-import dev.langchain4j.model.StreamingResponseHandler;
-import dev.langchain4j.model.input.Prompt;
+import dev.langchain4j.model.ModelDisabledException
+import dev.langchain4j.model.StreamingResponseHandler
+import dev.langchain4j.model.input.Prompt
 
 /**
- * A {@link StreamingLanguageModel} which throws a {@link ModelDisabledException} for all of its methods
- * <p>
- *     This could be used in tests, or in libraries that extend this one to conditionally enable or disable functionality.
- * </p>
+ * A [StreamingLanguageModel] which throws a [ModelDisabledException] for all of its methods
+ *
+ *
+ * This could be used in tests, or in libraries that extend this one to conditionally enable or disable functionality.
+ *
  */
-public class DisabledStreamingLanguageModel implements StreamingLanguageModel {
-    @Override
-    public void generate(String prompt, StreamingResponseHandler<String> handler) {
-        throw new ModelDisabledException("StreamingLanguageModel is disabled");
+class DisabledStreamingLanguageModel : StreamingLanguageModel {
+    override fun generate(prompt: String?, handler: StreamingResponseHandler<String?>?) {
+        throw ModelDisabledException("StreamingLanguageModel is disabled")
     }
 
-    @Override
-    public void generate(Prompt prompt, StreamingResponseHandler<String> handler) {
-        throw new ModelDisabledException("StreamingLanguageModel is disabled");
+    override fun generate(prompt: Prompt, handler: StreamingResponseHandler<String?>?) {
+        throw ModelDisabledException("StreamingLanguageModel is disabled")
     }
 }

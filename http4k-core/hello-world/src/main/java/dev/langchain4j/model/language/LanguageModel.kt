@@ -1,15 +1,21 @@
-package dev.langchain4j.model.language;
+package dev.langchain4j.model.language
 
-import dev.langchain4j.model.chat.ChatModel;
-import dev.langchain4j.model.input.Prompt;
-import dev.langchain4j.model.output.Response;
+import dev.langchain4j.model.input.Prompt
+import dev.langchain4j.model.output.Response
 
 /**
  * Represents a language model that has a simple text interface (as opposed to a chat interface).
- * It is recommended to use the {@link ChatModel} instead,
+ * It is recommended to use the [ChatModel] instead,
  * as it offers more features.
  */
-public interface LanguageModel {
+interface LanguageModel {
+    /**
+     * Generate a response to the given prompt.
+     *
+     * @param prompt the prompt.
+     * @return the response.
+     */
+    fun generate(prompt: String?): Response<String>
 
     /**
      * Generate a response to the given prompt.
@@ -17,15 +23,7 @@ public interface LanguageModel {
      * @param prompt the prompt.
      * @return the response.
      */
-    Response<String> generate(String prompt);
-
-    /**
-     * Generate a response to the given prompt.
-     *
-     * @param prompt the prompt.
-     * @return the response.
-     */
-    default Response<String> generate(Prompt prompt) {
-        return generate(prompt.text());
+    fun generate(prompt: Prompt): Response<String> {
+        return generate(prompt.text())
     }
 }
