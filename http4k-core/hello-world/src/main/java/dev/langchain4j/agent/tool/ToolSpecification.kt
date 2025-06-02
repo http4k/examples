@@ -1,31 +1,30 @@
-package dev.langchain4j.agent.tool;
+package dev.langchain4j.agent.tool
 
-import dev.langchain4j.model.chat.request.json.JsonObjectSchema;
-
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.quoted;
+import dev.langchain4j.agent.tool.ToolSpecification
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.model.chat.request.json.JsonObjectSchema
+import java.util.Objects
 
 /**
  * Describes a tool that language model can execute.
- * <p>
- * Can be generated automatically from methods annotated with {@link Tool} using {@link ToolSpecifications} helper.
+ *
+ *
+ * Can be generated automatically from methods annotated with [Tool] using [ToolSpecifications] helper.
  */
-public class ToolSpecification {
-
-    private final String name;
-    private final String description;
-    private final JsonObjectSchema parameters;
+class ToolSpecification private constructor(builder: Builder) {
+    private val name: String?
+    private val description: String?
+    private val parameters: JsonObjectSchema?
 
     /**
-     * Creates a {@link ToolSpecification} from a {@link Builder}.
+     * Creates a [ToolSpecification] from a [Builder].
      *
      * @param builder the builder.
      */
-    private ToolSpecification(Builder builder) {
-        this.name = builder.name;
-        this.description = builder.description;
-        this.parameters = builder.parameters;
+    init {
+        this.name = builder.name
+        this.description = builder.description
+        this.parameters = builder.parameters
     }
 
     /**
@@ -33,8 +32,8 @@ public class ToolSpecification {
      *
      * @return the name of the tool.
      */
-    public String name() {
-        return name;
+    fun name(): String? {
+        return name
     }
 
     /**
@@ -42,112 +41,108 @@ public class ToolSpecification {
      *
      * @return the description of the tool.
      */
-    public String description() {
-        return description;
+    fun description(): String? {
+        return description
     }
 
     /**
      * Returns the parameters of the tool.
      */
-    public JsonObjectSchema parameters() {
-        return parameters;
+    fun parameters(): JsonObjectSchema? {
+        return parameters
     }
 
-    @Override
-    public boolean equals(Object another) {
-        if (this == another) return true;
-        return another instanceof ToolSpecification ts
-                && equalTo(ts);
+    override fun equals(another: Any?): Boolean {
+        if (this === another) return true
+        return another is ToolSpecification
+                && equalTo(another)
     }
 
-    private boolean equalTo(ToolSpecification another) {
-        return Objects.equals(name, another.name)
-                && Objects.equals(description, another.description)
-                && Objects.equals(parameters, another.parameters);
+    private fun equalTo(another: ToolSpecification): Boolean {
+        return name == another.name
+                && description == another.description
+                && parameters == another.parameters
     }
 
-    @Override
-    public int hashCode() {
-        int h = 5381;
-        h += (h << 5) + Objects.hashCode(name);
-        h += (h << 5) + Objects.hashCode(description);
-        h += (h << 5) + Objects.hashCode(parameters);
-        return h;
+    override fun hashCode(): Int {
+        var h = 5381
+        h += (h shl 5) + Objects.hashCode(name)
+        h += (h shl 5) + Objects.hashCode(description)
+        h += (h shl 5) + Objects.hashCode(parameters)
+        return h
     }
 
-    @Override
-    public String toString() {
-        return "ToolSpecification {"
-                + " name = " + quoted(name)
-                + ", description = " + quoted(description)
+    override fun toString(): String {
+        return ("ToolSpecification {"
+                + " name = " + Utils.quoted(name)
+                + ", description = " + Utils.quoted(description)
                 + ", parameters = " + parameters
-                + " }";
+                + " }")
     }
 
     /**
-     * Creates builder to build {@link ToolSpecification}.
-     *
-     * @return created builder
+     * `ToolSpecification` builder static inner class.
      */
-    public static Builder builder() {
-        return new Builder();
+    class Builder
+    /**
+     * Creates a [Builder].
+     */
+    {
+        var name: String? = null
+        var description: String? = null
+        var parameters: JsonObjectSchema? = null
+
+        /**
+         * Sets the `name`.
+         *
+         * @param name the `name`
+         * @return `this`
+         */
+        fun name(name: String?): Builder {
+            this.name = name
+            return this
+        }
+
+        /**
+         * Sets the `description`.
+         *
+         * @param description the `description`
+         * @return `this`
+         */
+        fun description(description: String?): Builder {
+            this.description = description
+            return this
+        }
+
+        /**
+         * Sets the `parameters`.
+         *
+         * @param parameters the `parameters`
+         * @return `this`
+         */
+        fun parameters(parameters: JsonObjectSchema?): Builder {
+            this.parameters = parameters
+            return this
+        }
+
+        /**
+         * Returns a `ToolSpecification` built from the parameters previously set.
+         *
+         * @return a `ToolSpecification` built with parameters of this `ToolSpecification.Builder`
+         */
+        fun build(): ToolSpecification {
+            return ToolSpecification(this)
+        }
     }
 
-    /**
-     * {@code ToolSpecification} builder static inner class.
-     */
-    public static final class Builder {
-
-        private String name;
-        private String description;
-        private JsonObjectSchema parameters;
-
+    companion object {
         /**
-         * Creates a {@link Builder}.
-         */
-        private Builder() {
-        }
-
-        /**
-         * Sets the {@code name}.
+         * Creates builder to build [ToolSpecification].
          *
-         * @param name the {@code name}
-         * @return {@code this}
+         * @return created builder
          */
-        public Builder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        /**
-         * Sets the {@code description}.
-         *
-         * @param description the {@code description}
-         * @return {@code this}
-         */
-        public Builder description(String description) {
-            this.description = description;
-            return this;
-        }
-
-        /**
-         * Sets the {@code parameters}.
-         *
-         * @param parameters the {@code parameters}
-         * @return {@code this}
-         */
-        public Builder parameters(JsonObjectSchema parameters) {
-            this.parameters = parameters;
-            return this;
-        }
-
-        /**
-         * Returns a {@code ToolSpecification} built from the parameters previously set.
-         *
-         * @return a {@code ToolSpecification} built with parameters of this {@code ToolSpecification.Builder}
-         */
-        public ToolSpecification build() {
-            return new ToolSpecification(this);
+        fun builder(): Builder {
+            return Builder()
         }
     }
 }

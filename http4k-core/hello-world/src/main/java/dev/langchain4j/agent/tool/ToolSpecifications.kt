@@ -1,145 +1,148 @@
-package dev.langchain4j.agent.tool;
+package dev.langchain4j.agent.tool
 
-import dev.langchain4j.internal.JsonSchemaElementUtils;
-import dev.langchain4j.internal.JsonSchemaElementUtils.VisitedClassMetadata;
-import dev.langchain4j.model.chat.request.json.JsonObjectSchema;
-import dev.langchain4j.model.chat.request.json.JsonSchemaElement;
-
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.*;
-
-import static dev.langchain4j.internal.Utils.isNullOrBlank;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
+import dev.langchain4j.internal.JsonSchemaElementUtils
+import dev.langchain4j.internal.JsonSchemaElementUtils.VisitedClassMetadata
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.model.chat.request.json.JsonObjectSchema
+import dev.langchain4j.model.chat.request.json.JsonSchemaElement
+import java.lang.reflect.Method
+import java.lang.reflect.Parameter
+import java.util.Arrays
+import java.util.Optional
+import java.util.function.Function
+import java.util.stream.Collectors
 
 /**
- * Utility methods for {@link ToolSpecification}s.
+ * Utility methods for [ToolSpecification]s.
  */
-public class ToolSpecifications {
-
-    private ToolSpecifications() {
-    }
-
+object ToolSpecifications {
     /**
-     * Returns {@link ToolSpecification}s for all methods annotated with @{@link Tool} within the specified class.
+     * Returns [ToolSpecification]s for all methods annotated with @[Tool] within the specified class.
      *
      * @param classWithTools the class.
-     * @return the {@link ToolSpecification}s.
+     * @return the [ToolSpecification]s.
      */
-    public static List<ToolSpecification> toolSpecificationsFrom(Class<?> classWithTools) {
-        List<ToolSpecification> toolSpecifications = stream(classWithTools.getDeclaredMethods())
-                .filter(method -> method.isAnnotationPresent(Tool.class))
-                .map(ToolSpecifications::toolSpecificationFrom)
-                .collect(toList());
-        validateSpecifications(toolSpecifications);
-        return toolSpecifications;
+    fun toolSpecificationsFrom(classWithTools: Class<*>): List<ToolSpecification> {
+        val toolSpecifications = Arrays.stream(classWithTools.declaredMethods)
+            .filter { method: Method -> method.isAnnotationPresent(Tool::class.java) }
+            .map { obj: Method? -> toolSpecificationFrom(obj!!) }
+            .collect(Collectors.toList())
+        validateSpecifications(toolSpecifications)
+        return toolSpecifications
     }
 
     /**
-     * Returns {@link ToolSpecification}s for all methods annotated with @{@link Tool}
+     * Returns [ToolSpecification]s for all methods annotated with @[Tool]
      * within the class of the specified object.
      *
      * @param objectWithTools the object.
-     * @return the {@link ToolSpecification}s.
+     * @return the [ToolSpecification]s.
      */
-    public static List<ToolSpecification> toolSpecificationsFrom(Object objectWithTools) {
-        return toolSpecificationsFrom(objectWithTools.getClass());
+    fun toolSpecificationsFrom(objectWithTools: Any): List<ToolSpecification> {
+        return toolSpecificationsFrom(objectWithTools.javaClass)
     }
 
     /**
-     * Validates all the {@link ToolSpecification}s. The validation checks for duplicate method names.
-     * Throws {@link IllegalArgumentException} if validation fails
+     * Validates all the [ToolSpecification]s. The validation checks for duplicate method names.
+     * Throws [IllegalArgumentException] if validation fails
      *
      * @param toolSpecifications list of ToolSpecification to be validated.
      */
-    public static void validateSpecifications(List<ToolSpecification> toolSpecifications) throws IllegalArgumentException {
-
+    @Throws(IllegalArgumentException::class)
+    fun validateSpecifications(toolSpecifications: List<ToolSpecification>) {
         // Checks for duplicates methods
-        Set<String> names = new HashSet<>();
-        for (ToolSpecification toolSpecification : toolSpecifications) {
-            if (!names.add(toolSpecification.name())) {
-                throw new IllegalArgumentException(String.format("Tool names must be unique. The tool '%s' appears several times", toolSpecification.name()));
+
+        val names: MutableSet<String?> = HashSet()
+        for (toolSpecification in toolSpecifications) {
+            require(names.add(toolSpecification.name())) {
+                String.format(
+                    "Tool names must be unique. The tool '%s' appears several times",
+                    toolSpecification.name()
+                )
             }
         }
     }
 
     /**
-     * Returns the {@link ToolSpecification} for the given method annotated with @{@link Tool}.
+     * Returns the [ToolSpecification] for the given method annotated with @[Tool].
      *
      * @param method the method.
-     * @return the {@link ToolSpecification}.
+     * @return the [ToolSpecification].
      */
-    public static ToolSpecification toolSpecificationFrom(Method method) {
+    fun toolSpecificationFrom(method: Method): ToolSpecification {
+        val annotation = method.getAnnotation(Tool::class.java)
 
-        Tool annotation = method.getAnnotation(Tool.class);
+        val name = if (Utils.isNullOrBlank(annotation!!.name)) method.name else annotation.name
 
-        String name = isNullOrBlank(annotation.name()) ? method.getName() : annotation.name();
-
-        String description = String.join("\n", annotation.value());
+        var description = java.lang.String.join("\n", *annotation.value)
         if (description.isEmpty()) {
-            description = null;
+            description = null
         }
 
-        JsonObjectSchema parameters = parametersFrom(method.getParameters());
+        val parameters = parametersFrom(method.parameters)
 
-        return ToolSpecification.builder()
-                .name(name)
-                .description(description)
-                .parameters(parameters)
-                .build();
+        return ToolSpecification.Companion.builder()
+            .name(name)
+            .description(description)
+            .parameters(parameters)
+            .build()
     }
 
-    private static JsonObjectSchema parametersFrom(Parameter[] parameters) {
+    private fun parametersFrom(parameters: Array<Parameter>): JsonObjectSchema? {
+        val properties: MutableMap<String, JsonSchemaElement> = LinkedHashMap()
+        val required: MutableList<String> = ArrayList()
 
-        Map<String, JsonSchemaElement> properties = new LinkedHashMap<>();
-        List<String> required = new ArrayList<>();
+        val visited: Map<Class<*>, VisitedClassMetadata> = LinkedHashMap()
 
-        Map<Class<?>, VisitedClassMetadata> visited = new LinkedHashMap<>();
-
-        for (Parameter parameter : parameters) {
-            if (parameter.isAnnotationPresent(ToolMemoryId.class)) {
-                continue;
+        for (parameter in parameters) {
+            if (parameter.isAnnotationPresent(ToolMemoryId::class.java)) {
+                continue
             }
 
-            boolean isRequired = Optional.ofNullable(parameter.getAnnotation(P.class))
-                    .map(P::required)
-                    .orElse(true);
+            val isRequired = Optional.ofNullable(
+                parameter.getAnnotation(
+                    P::class.java
+                )
+            )
+                .map(Function { obj: P -> obj.required })
+                .orElse(true)
 
-            properties.put(parameter.getName(), jsonSchemaElementFrom(parameter, visited));
+            properties[parameter.name] = jsonSchemaElementFrom(parameter, visited)
             if (isRequired) {
-                required.add(parameter.getName());
+                required.add(parameter.name)
             }
         }
 
-        Map<String, JsonSchemaElement> definitions = new LinkedHashMap<>();
-        visited.forEach((clazz, visitedClassMetadata) -> {
-            if (visitedClassMetadata.recursionDetected) {
-                definitions.put(visitedClassMetadata.reference, visitedClassMetadata.jsonSchemaElement);
-            }
-        });
+        val definitions: MutableMap<String, JsonSchemaElement> = LinkedHashMap()
+//        visited.forEach { (clazz: Class<*>?, visitedClassMetadata: VisitedClassMetadata?) ->
+//            if (visitedClassMetadata.recursionDetected) {
+//                definitions[visitedClassMetadata.reference] = visitedClassMetadata.jsonSchemaElement
+//            }
+//        }
 
         if (properties.isEmpty()) {
-            return null;
+            return null
         }
 
         return JsonObjectSchema.builder()
-                .addProperties(properties)
-                .required(required)
-                .definitions(definitions.isEmpty() ? null : definitions)
-                .build();
+            .addProperties(properties)
+            .required(required)
+            .definitions(if (definitions.isEmpty()) null else definitions)
+            .build()
     }
 
-    private static JsonSchemaElement jsonSchemaElementFrom(Parameter parameter,
-                                                           Map<Class<?>, VisitedClassMetadata> visited) {
-        P annotation = parameter.getAnnotation(P.class);
-        String description = annotation == null ? null : annotation.value();
+    private fun jsonSchemaElementFrom(
+        parameter: Parameter,
+        visited: Map<Class<*>, VisitedClassMetadata>
+    ): JsonSchemaElement {
+        val annotation = parameter.getAnnotation(P::class.java)
+        val description = annotation?.value
         return JsonSchemaElementUtils.jsonSchemaElementFrom(
-                parameter.getType(),
-                parameter.getParameterizedType(),
-                description,
-                true,
-                visited
-        );
+            parameter.type,
+            parameter.parameterizedType,
+            description,
+            true,
+            visited
+        )
     }
 }
