@@ -1,100 +1,88 @@
-package dev.langchain4j.model.input;
+package dev.langchain4j.model.input
 
-import dev.langchain4j.data.message.AiMessage;
-import dev.langchain4j.data.message.SystemMessage;
-import dev.langchain4j.data.message.UserMessage;
-
-import java.util.Objects;
-
-import static dev.langchain4j.data.message.AiMessage.aiMessage;
-import static dev.langchain4j.data.message.SystemMessage.systemMessage;
-import static dev.langchain4j.data.message.UserMessage.userMessage;
-import static dev.langchain4j.internal.Utils.quoted;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
+import dev.langchain4j.data.message.AiMessage
+import dev.langchain4j.data.message.AiMessage.Companion.aiMessage
+import dev.langchain4j.data.message.SystemMessage
+import dev.langchain4j.data.message.SystemMessage.Companion.systemMessage
+import dev.langchain4j.data.message.UserMessage
+import dev.langchain4j.data.message.UserMessage.Companion.userMessage
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Objects
 
 /**
  * Represents a prompt (an input text sent to the LLM).
  * A prompt usually contains instructions, contextual information, end-user input, etc.
  * A Prompt is typically created by applying one or multiple values to a PromptTemplate.
  */
-public class Prompt {
-
-    private final String text;
-
-    /**
-     * Create a new Prompt.
-     * @param text the text of the prompt.
-     */
-    public Prompt(String text) {
-        this.text = ensureNotBlank(text, "text");
-    }
+class Prompt(text: String?) {
+    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
 
     /**
      * The text of the prompt.
      * @return the text of the prompt.
      */
-    public String text() {
-        return text;
+    fun text(): String {
+        return text
     }
 
     /**
      * Convert this prompt to a SystemMessage.
      * @return the SystemMessage.
      */
-    public SystemMessage toSystemMessage() {
-        return systemMessage(text);
+    fun toSystemMessage(): SystemMessage {
+        return systemMessage(text)
     }
 
     /**
      * Convert this prompt to a UserMessage with specified userName.
      * @return the UserMessage.
      */
-    public UserMessage toUserMessage(String userName) {
-        return userMessage(userName, text);
+    fun toUserMessage(userName: String?): UserMessage {
+        return userMessage(userName, text)
     }
 
     /**
      * Convert this prompt to a UserMessage.
      * @return the UserMessage.
      */
-    public UserMessage toUserMessage() {
-        return userMessage(text);
+    fun toUserMessage(): UserMessage {
+        return userMessage(text)
     }
 
     /**
      * Convert this prompt to an AiMessage.
      * @return the AiMessage.
      */
-    public AiMessage toAiMessage() {
-        return aiMessage(text);
+    fun toAiMessage(): AiMessage {
+        return aiMessage(text)
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Prompt that = (Prompt) o;
-        return Objects.equals(this.text, that.text);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as Prompt
+        return this.text == that.text
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(text);
+    override fun hashCode(): Int {
+        return Objects.hash(text)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Prompt {" +
-                " text = " + quoted(text) +
-                " }";
+                " text = " + Utils.quoted(text) +
+                " }"
     }
 
-    /**
-     * Create a new Prompt.
-     * @param text the text of the prompt.
-     * @return the new Prompt.
-     */
-    public static Prompt from(String text) {
-        return new Prompt(text);
+    companion object {
+        /**
+         * Create a new Prompt.
+         * @param text the text of the prompt.
+         * @return the new Prompt.
+         */
+        fun from(text: String?): Prompt {
+            return Prompt(text)
+        }
     }
 }

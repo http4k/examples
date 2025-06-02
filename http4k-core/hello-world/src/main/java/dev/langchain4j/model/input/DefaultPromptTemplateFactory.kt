@@ -1,81 +1,74 @@
-package dev.langchain4j.model.input;
+package dev.langchain4j.model.input
 
-import dev.langchain4j.spi.prompt.PromptTemplateFactory;
+import dev.langchain4j.internal.Exceptions
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.spi.prompt.PromptTemplateFactory
+import java.util.regex.Pattern
 
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static dev.langchain4j.internal.Exceptions.illegalArgument;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-
-class DefaultPromptTemplateFactory implements PromptTemplateFactory {
-
-    @Override
-    public DefaultTemplate create(PromptTemplateFactory.Input input) {
-        return new DefaultTemplate(input.getTemplate());
+internal class DefaultPromptTemplateFactory : PromptTemplateFactory {
+    override fun create(input: PromptTemplateFactory.Input): DefaultTemplate {
+        return DefaultTemplate(input.template)
     }
 
-    static class DefaultTemplate implements Template {
+    internal class DefaultTemplate(template: String) : PromptTemplateFactory.Template {
+        private val template: String =
+            ValidationUtils.ensureNotBlank(template, "template")
+        private val allVariables: Set<String>
 
-        /**
-         * A regular expression pattern for identifying variable placeholders within double curly braces in a template string.
-         * Variables are denoted as <code>{{variable_name}}</code> or <code>{{ variable_name }}</code>,
-         * where spaces around the variable name are allowed.
-         * <p>
-         * This pattern is used to match and extract variables from a template string for further processing,
-         * such as replacing these placeholders with their corresponding values.
-         */
-        @SuppressWarnings({"RegExpRedundantEscape"})
-        private static final Pattern VARIABLE_PATTERN = Pattern.compile("\\{\\{\\s*(.+?)\\s*\\}\\}");
-
-        private final String template;
-        private final Set<String> allVariables;
-
-        public DefaultTemplate(String template) {
-            this.template = ensureNotBlank(template, "template");
-            this.allVariables = extractVariables(template);
+        init {
+            this.allVariables = extractVariables(template)
         }
 
-        private static Set<String> extractVariables(String template) {
-            Set<String> variables = new HashSet<>();
-            Matcher matcher = VARIABLE_PATTERN.matcher(template);
-            while (matcher.find()) {
-                variables.add(matcher.group(1));
-            }
-            return variables;
-        }
+        override fun render(variables: Map<String, Any>): String {
+            ensureAllVariablesProvided(variables)
 
-        public String render(Map<String, Object> variables) {
-            ensureAllVariablesProvided(variables);
-
-            String result = template;
-            for (Map.Entry<String, Object> entry : variables.entrySet()) {
-                result = replaceAll(result, entry.getKey(), entry.getValue());
+            var result = template
+            for ((key, value) in variables) {
+                result = replaceAll(result, key, value)
             }
 
-            return result;
+            return result
         }
 
-        private void ensureAllVariablesProvided(Map<String, Object> providedVariables) {
-            for (String variable : allVariables) {
+        private fun ensureAllVariablesProvided(providedVariables: Map<String, Any>) {
+            for (variable in allVariables) {
                 if (!providedVariables.containsKey(variable)) {
-                    throw illegalArgument("Value for the variable '%s' is missing", variable);
+                    throw Exceptions.illegalArgument("Value for the variable '%s' is missing", variable)
                 }
             }
         }
 
-        private static String replaceAll(String template, String variable, Object value) {
-            if (value == null || value.toString() == null) {
-                throw illegalArgument("Value for the variable '%s' is null", variable);
-            }
-            return template.replace(inDoubleCurlyBrackets(variable), value.toString());
-        }
+        companion object {
+            /**
+             * A regular expression pattern for identifying variable placeholders within double curly braces in a template string.
+             * Variables are denoted as `{{variable_name}}` or `{{ variable_name }}`,
+             * where spaces around the variable name are allowed.
+             *
+             *
+             * This pattern is used to match and extract variables from a template string for further processing,
+             * such as replacing these placeholders with their corresponding values.
+             */
+            private val VARIABLE_PATTERN: Pattern = Pattern.compile("\\{\\{\\s*(.+?)\\s*\\}\\}")
 
-        private static String inDoubleCurlyBrackets(String variable) {
-            return "{{" + variable + "}}";
+            private fun extractVariables(template: String): Set<String> {
+                val variables: MutableSet<String> = HashSet()
+                val matcher = VARIABLE_PATTERN.matcher(template)
+                while (matcher.find()) {
+                    variables.add(matcher.group(1))
+                }
+                return variables
+            }
+
+            private fun replaceAll(template: String, variable: String, value: Any): String {
+                if (value?.toString() == null) {
+                    throw Exceptions.illegalArgument("Value for the variable '%s' is null", variable)
+                }
+                return template.replace(inDoubleCurlyBrackets(variable), value.toString())
+            }
+
+            private fun inDoubleCurlyBrackets(variable: String): String {
+                return "{{$variable}}"
+            }
         }
     }
 }

@@ -1,18 +1,13 @@
-package dev.langchain4j.model.input;
+package dev.langchain4j.model.input
 
-import dev.langchain4j.spi.prompt.PromptTemplateFactory;
-
-import java.time.Clock;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.HashMap;
-import java.util.Map;
-
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-import static dev.langchain4j.spi.ServiceHelper.loadFactories;
-import static java.util.Collections.singletonMap;
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.spi.ServiceHelper
+import dev.langchain4j.spi.prompt.PromptTemplateFactory
+import java.time.Clock
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
+import java.util.Collections
 
 /**
  * Represents a template of a prompt that can be reused multiple times.
@@ -21,35 +16,21 @@ import static java.util.Collections.singletonMap;
  * Special variables {{current_date}}, {{current_time}}, and {{current_date_time}} are automatically
  * filled with LocalDate.now(), LocalTime.now(), and LocalDateTime.now() respectively.
  */
-public class PromptTemplate {
-
-    private static final PromptTemplateFactory FACTORY = factory();
-
-    private static PromptTemplateFactory factory() {
-        for (PromptTemplateFactory factory : loadFactories(PromptTemplateFactory.class)) {
-            return factory;
-        }
-        return new DefaultPromptTemplateFactory();
-    }
-
-    static final String CURRENT_DATE = "current_date";
-    static final String CURRENT_TIME = "current_time";
-    static final String CURRENT_DATE_TIME = "current_date_time";
-
-    private final String templateString;
-    private final PromptTemplateFactory.Template template;
-    private final Clock clock;
+class PromptTemplate internal constructor(template: String?, clock: Clock) {
+    private val templateString: String =
+        ValidationUtils.ensureNotBlank(template, "template")
+    private val template: PromptTemplateFactory.Template
+    private val clock: Clock
 
     /**
      * Create a new PromptTemplate.
      *
-     * <p>The {@code Clock} will be the system clock.</p>
+     *
+     * The `Clock` will be the system clock.
      *
      * @param template the template string of the prompt.
      */
-    public PromptTemplate(String template) {
-        this(template, Clock.systemDefaultZone());
-    }
+    constructor(template: String?) : this(template, Clock.systemDefaultZone())
 
     /**
      * Create a new PromptTemplate.
@@ -57,17 +38,16 @@ public class PromptTemplate {
      * @param template the template string of the prompt.
      * @param clock    the clock to use for the special variables.
      */
-    PromptTemplate(String template, Clock clock) {
-        this.templateString = ensureNotBlank(template, "template");
-        this.template = FACTORY.create(() -> template);
-        this.clock = ensureNotNull(clock, "clock");
+    init {
+        this.template = FACTORY.create { template }
+        this.clock = ValidationUtils.ensureNotNull(clock, "clock")
     }
 
     /**
      * @return A prompt template string.
      */
-    public String template() {
-        return templateString;
+    fun template(): String {
+        return templateString
     }
 
     /**
@@ -76,8 +56,8 @@ public class PromptTemplate {
      * @param value The value that will be injected in place of the {{it}} placeholder in the template.
      * @return A Prompt object where the {{it}} placeholder in the template has been replaced by the provided value.
      */
-    public Prompt apply(Object value) {
-        return apply(singletonMap("it", value));
+    fun apply(value: Any): Prompt {
+        return apply(Collections.singletonMap("it", value))
     }
 
     /**
@@ -86,9 +66,9 @@ public class PromptTemplate {
      * @param variables A map of variable names to values that will be injected in place of the corresponding placeholders in the template.
      * @return A Prompt object where the placeholders in the template have been replaced by the provided values.
      */
-    public Prompt apply(Map<String, Object> variables) {
-        ensureNotNull(variables, "variables");
-        return Prompt.from(template.render(injectDateTimeVariables(variables)));
+    fun apply(variables: Map<String, Any>): Prompt {
+        ValidationUtils.ensureNotNull(variables, "variables")
+        return Prompt.Companion.from(template.render(injectDateTimeVariables(variables)))
     }
 
     /**
@@ -97,21 +77,38 @@ public class PromptTemplate {
      * @param variables the map to inject the variables into.
      * @return a copy of the map with the variables injected.
      */
-    private Map<String, Object> injectDateTimeVariables(Map<String, Object> variables) {
-        Map<String, Object> variablesCopy = new HashMap<>(variables);
-        variablesCopy.put(CURRENT_DATE, LocalDate.now(clock));
-        variablesCopy.put(CURRENT_TIME, LocalTime.now(clock));
-        variablesCopy.put(CURRENT_DATE_TIME, LocalDateTime.now(clock));
-        return variablesCopy;
+    private fun injectDateTimeVariables(variables: Map<String, Any>): Map<String, Any> {
+        val variablesCopy: MutableMap<String, Any> = HashMap(variables)
+        variablesCopy[CURRENT_DATE] = LocalDate.now(clock)
+        variablesCopy[CURRENT_TIME] = LocalTime.now(clock)
+        variablesCopy[CURRENT_DATE_TIME] = LocalDateTime.now(clock)
+        return variablesCopy
     }
 
-    /**
-     * Create a new PromptTemplate.
-     *
-     * @param template the template string of the prompt.
-     * @return the PromptTemplate.
-     */
-    public static PromptTemplate from(String template) {
-        return new PromptTemplate(template);
+    companion object {
+        private val FACTORY = factory()
+
+        private fun factory(): PromptTemplateFactory {
+            for (factory in ServiceHelper.loadFactories(
+                PromptTemplateFactory::class.java
+            )) {
+                return factory
+            }
+            return DefaultPromptTemplateFactory()
+        }
+
+        const val CURRENT_DATE: String = "current_date"
+        const val CURRENT_TIME: String = "current_time"
+        const val CURRENT_DATE_TIME: String = "current_date_time"
+
+        /**
+         * Create a new PromptTemplate.
+         *
+         * @param template the template string of the prompt.
+         * @return the PromptTemplate.
+         */
+        fun from(template: String?): PromptTemplate {
+            return PromptTemplate(template)
+        }
     }
 }
