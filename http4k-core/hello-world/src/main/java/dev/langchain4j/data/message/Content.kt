@@ -1,21 +1,26 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
 /**
  * Abstract base interface for message content.
  *
  * @see TextContent
+ *
  * @see ImageContent
+ *
  * @see AudioContent
+ *
  * @see VideoContent
+ *
  * @see PdfFileContent
  */
-public interface Content {
+interface Content {
     /**
      * Returns the type of content.
      *
-     * <p>Can be used to cast the content to the correct type.</p>
+     *
+     * Can be used to cast the content to the correct type.
      *
      * @return The type of content.
      */
-    ContentType type();
+    fun type(): ContentType
 }

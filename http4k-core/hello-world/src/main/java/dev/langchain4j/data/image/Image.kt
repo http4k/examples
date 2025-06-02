@@ -1,167 +1,162 @@
-package dev.langchain4j.data.image;
+package dev.langchain4j.data.image
 
-import java.net.URI;
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.quoted;
+import dev.langchain4j.internal.Utils
+import java.net.URI
+import java.util.Objects
 
 /**
  * Represents an image as a URL or as a Base64-encoded string.
  */
-public final class Image {
-
-    private final URI url;
-    private final String base64Data;
-    private final String mimeType;
-    private final String revisedPrompt;
+class Image private constructor(builder: Builder) {
+    private val url: URI?
+    private val base64Data: String?
+    private val mimeType: String?
+    private val revisedPrompt: String?
 
     /**
-     * Create a new {@link Image} from the Builder.
+     * Create a new [Image] from the Builder.
      * @param builder the builder.
      */
-    private Image(Builder builder) {
-        this.url = builder.url;
-        this.base64Data = builder.base64Data;
-        this.mimeType = builder.mimeType;
-        this.revisedPrompt = builder.revisedPrompt;
-    }
-
-    /**
-     * Create a new {@link Builder}.
-     * @return the new {@link Builder}.
-     */
-    public static Builder builder() {
-        return new Builder();
+    init {
+        this.url = builder.url
+        this.base64Data = builder.base64Data
+        this.mimeType = builder.mimeType
+        this.revisedPrompt = builder.revisedPrompt
     }
 
     /**
      * Get the url of the image.
      * @return the url of the image, or null if not set.
      */
-    public URI url() {
-        return url;
+    fun url(): URI? {
+        return url
     }
 
     /**
      * Get the base64 data of the image.
      * @return the base64 data of the image, or null if not set.
      */
-    public String base64Data() {
-        return base64Data;
+    fun base64Data(): String? {
+        return base64Data
     }
 
     /**
      * Get the mime type of the image.
      * @return the mime type of the image, or null if not set.
      */
-    public String mimeType() {
-        return mimeType;
+    fun mimeType(): String? {
+        return mimeType
     }
 
     /**
      * Get the revised prompt of the image.
      * @return the revised prompt of the image, or null if not set.
      */
-    public String revisedPrompt() {
-        return revisedPrompt;
+    fun revisedPrompt(): String? {
+        return revisedPrompt
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Image that = (Image) o;
-        return Objects.equals(this.url, that.url)
-                && Objects.equals(this.base64Data, that.base64Data)
-                && Objects.equals(this.mimeType, that.mimeType)
-                && Objects.equals(this.revisedPrompt, that.revisedPrompt);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as Image
+        return this.url == that.url
+                && this.base64Data == that.base64Data
+                && this.mimeType == that.mimeType
+                && this.revisedPrompt == that.revisedPrompt
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(url, base64Data, mimeType, revisedPrompt);
+    override fun hashCode(): Int {
+        return Objects.hash(url, base64Data, mimeType, revisedPrompt)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Image {" +
-                " url = " + quoted(url) +
-                ", base64Data = " + quoted(base64Data) +
-                ", mimeType = " + quoted(mimeType) +
-                ", revisedPrompt = " + quoted(revisedPrompt) +
-                " }";
+                " url = " + Utils.quoted(url) +
+                ", base64Data = " + Utils.quoted(base64Data) +
+                ", mimeType = " + Utils.quoted(mimeType) +
+                ", revisedPrompt = " + Utils.quoted(revisedPrompt) +
+                " }"
     }
 
     /**
-     * Builder for {@link Image}.
+     * Builder for [Image].
      */
-    public static class Builder {
-
-        private URI url;
-        private String base64Data;
-        private String mimeType;
-        private String revisedPrompt;
-
-        /**
-         * Create a new {@link Builder}.
-         */
-        public Builder() {}
+    class Builder
+    /**
+     * Create a new [Builder].
+     */
+    {
+        var url: URI? = null
+        var base64Data: String? = null
+        var mimeType: String? = null
+        var revisedPrompt: String? = null
 
         /**
          * Set the url of the image.
          * @param url the url of the image.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder url(URI url) {
-            this.url = url;
-            return this;
+        fun url(url: URI?): Builder {
+            this.url = url
+            return this
         }
 
         /**
          * Set the url of the image.
          * @param url the url of the image.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder url(String url) {
-            return url(URI.create(url));
+        fun url(url: String): Builder {
+            return url(URI.create(url))
         }
 
         /**
          * Set the base64 data of the image.
          * @param base64Data the base64 data of the image.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder base64Data(String base64Data) {
-            this.base64Data = base64Data;
-            return this;
+        fun base64Data(base64Data: String?): Builder {
+            this.base64Data = base64Data
+            return this
         }
 
         /**
          * Set the mime type of the image.
          * @param mimeType the mime type of the image.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder mimeType(String mimeType) {
-            this.mimeType = mimeType;
-            return this;
+        fun mimeType(mimeType: String?): Builder {
+            this.mimeType = mimeType
+            return this
         }
 
         /**
          * Set the revised prompt of the image.
          * @param revisedPrompt the revised prompt of the image.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder revisedPrompt(String revisedPrompt) {
-            this.revisedPrompt = revisedPrompt;
-            return this;
+        fun revisedPrompt(revisedPrompt: String?): Builder {
+            this.revisedPrompt = revisedPrompt
+            return this
         }
 
         /**
-         * Build the {@link Image}.
-         * @return the {@link Image}.
+         * Build the [Image].
+         * @return the [Image].
          */
-        public Image build() {
-            return new Image(this);
+        fun build(): Image {
+            return Image(this)
+        }
+    }
+
+    companion object {
+        /**
+         * Create a new [Builder].
+         * @return the new [Builder].
+         */
+        fun builder(): Builder {
+            return Builder()
         }
     }
 }

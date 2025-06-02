@@ -1,57 +1,45 @@
-package dev.langchain4j.data.document;
+package dev.langchain4j.data.document
 
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.quoted;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Objects
 
 /**
- * A default implementation of a {@link Document}.
+ * A default implementation of a [Document].
  */
-public class DefaultDocument implements Document {
+class DefaultDocument @JvmOverloads constructor(text: String?, metadata: Metadata = Metadata()) :
+    Document {
+    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
+    private val metadata: Metadata =
+        ValidationUtils.ensureNotNull(
+            metadata,
+            "metadata"
+        )
 
-    private final String text;
-    private final Metadata metadata;
-
-    public DefaultDocument(String text, Metadata metadata) {
-        this.text = ensureNotBlank(text, "text");
-        this.metadata = ensureNotNull(metadata, "metadata");
+    override fun text(): String? {
+        return text
     }
 
-    public DefaultDocument(String text) {
-        this(text, new Metadata());
+    override fun metadata(): Metadata {
+        return metadata
     }
 
-    @Override
-    public String text() {
-        return text;
+    override fun equals(obj: Any?): Boolean {
+        if (obj === this) return true
+        if (obj == null || obj.javaClass != this.javaClass) return false
+        val that = obj as DefaultDocument
+        return this.text == that.text &&
+                this.metadata == that.metadata
     }
 
-    @Override
-    public Metadata metadata() {
-        return metadata;
+    override fun hashCode(): Int {
+        return Objects.hash(text, metadata)
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == this) return true;
-        if (obj == null || obj.getClass() != this.getClass()) return false;
-        var that = (DefaultDocument) obj;
-        return Objects.equals(this.text, that.text) &&
-                Objects.equals(this.metadata, that.metadata);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(text, metadata);
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "DefaultDocument {" +
-                " text = " + quoted(text) +
+                " text = " + Utils.quoted(text) +
                 ", metadata = " + metadata +
-                " }";
+                " }"
     }
 }

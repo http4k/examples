@@ -1,34 +1,28 @@
-package dev.langchain4j.data.message;
-
-import java.util.List;
-
-import static dev.langchain4j.data.message.ChatMessageSerializer.CODEC;
+package dev.langchain4j.data.message
 
 /**
- * A deserializer for {@link ChatMessage} objects.
+ * A deserializer for [ChatMessage] objects.
  */
-public class ChatMessageDeserializer {
-    private ChatMessageDeserializer() {}
-
+object ChatMessageDeserializer {
     /**
-     * Deserializes a JSON string into a {@link ChatMessage}.
+     * Deserializes a JSON string into a [ChatMessage].
      *
      * @param json The JSON string representing a chat message.
-     * @return A {@link ChatMessage} deserialized from the provided JSON string.
+     * @return A [ChatMessage] deserialized from the provided JSON string.
      * @see ChatMessageSerializer For details on serialization.
      */
-    public static ChatMessage messageFromJson(String json) {
-        return CODEC.messageFromJson(json);
+    fun messageFromJson(json: String?): ChatMessage? {
+        return ChatMessageSerializer.CODEC.messageFromJson(json)
     }
 
     /**
-     * Deserializes a JSON string into a list of {@link ChatMessage}.
+     * Deserializes a JSON string into a list of [ChatMessage].
      *
      * @param json The JSON string containing an array of chat messages.
-     * @return A list of {@link ChatMessage} deserialized from the provided JSON string.
+     * @return A list of [ChatMessage] deserialized from the provided JSON string.
      * @see ChatMessageSerializer For details on serialization.
      */
-    public static List<ChatMessage> messagesFromJson(String json) {
-        return CODEC.messagesFromJson(json);
+    fun messagesFromJson(json: String?): List<ChatMessage?>? {
+        return ChatMessageSerializer.CODEC.messagesFromJson(json)
     }
 }

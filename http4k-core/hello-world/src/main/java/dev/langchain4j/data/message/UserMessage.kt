@@ -1,321 +1,309 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import static dev.langchain4j.data.message.ChatMessageType.USER;
-import static dev.langchain4j.internal.Exceptions.runtime;
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.Utils.quoted;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotEmpty;
-import static java.util.Arrays.asList;
+import dev.langchain4j.internal.Exceptions
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Arrays
+import java.util.Objects
 
 /**
  * Represents a message from a user, typically an end user of the application.
- * <br>
+ * <br></br>
  * Depending on the supported modalities (text, image, audio, video, etc.) of the model,
- * user messages can contain either a single text (a {@code String}) or multiple {@link Content}s,
- * which can be either {@link TextContent}, {@link ImageContent}, {@link AudioContent},
- * {@link VideoContent}, or {@link PdfFileContent}.
- * <br>
- * Optionally, user message can contain a {@link #name} of the user.
- * Be aware that not all models support names in {@code UserMessage}.
+ * user messages can contain either a single text (a `String`) or multiple [Content]s,
+ * which can be either [TextContent], [ImageContent], [AudioContent],
+ * [VideoContent], or [PdfFileContent].
+ * <br></br>
+ * Optionally, user message can contain a [.name] of the user.
+ * Be aware that not all models support names in `UserMessage`.
  */
-public class UserMessage implements ChatMessage {
-
-    private final String name;
-    private final List<Content> contents;
+class UserMessage : ChatMessage {
+    private val name: String?
+    private val contents: List<Content>
 
     /**
-     * Creates a {@link UserMessage} from a text.
+     * Creates a [UserMessage] from a text.
      *
      * @param text the text.
      */
-    public UserMessage(String text) {
-        this(TextContent.from(text));
-    }
+    constructor(text: String?) : this(TextContent.Companion.from(text))
 
     /**
-     * Creates a {@link UserMessage} from a name and a text.
+     * Creates a [UserMessage] from a name and a text.
      *
      * @param name the name.
      * @param text the text.
      */
-    public UserMessage(String name, String text) {
-        this(name, TextContent.from(text));
-    }
+    constructor(name: String?, text: String?) : this(name, TextContent.Companion.from(text))
 
     /**
-     * Creates a {@link UserMessage} from one or multiple {@link Content}s.
-     * <br>
-     * Will have a {@code null} name.
+     * Creates a [UserMessage] from one or multiple [Content]s.
+     * <br></br>
+     * Will have a `null` name.
      *
      * @param contents the contents.
      */
-    public UserMessage(Content... contents) {
-        this(asList(contents));
-    }
+    constructor(vararg contents: Content?) : this(Arrays.asList<Content>(*contents))
 
     /**
-     * Creates a {@link UserMessage} from a name and one or multiple {@link Content}s.
+     * Creates a [UserMessage] from a name and one or multiple [Content]s.
      *
      * @param name     the name.
      * @param contents the contents.
      */
-    public UserMessage(String name, Content... contents) {
-        this(name, asList(contents));
-    }
+    constructor(name: String?, vararg contents: Content?) : this(name, Arrays.asList<Content>(*contents))
 
     /**
-     * Creates a {@link UserMessage} from a list of {@link Content}s.
-     * <br>
-     * Will have a {@code null} name.
+     * Creates a [UserMessage] from a list of [Content]s.
+     * <br></br>
+     * Will have a `null` name.
      *
      * @param contents the contents.
      */
-    public UserMessage(List<Content> contents) {
-        this.name = null;
-        this.contents = copy(ensureNotEmpty(contents, "contents"));
+    constructor(contents: List<Content>) {
+        this.name = null
+        this.contents = Utils.copy(ValidationUtils.ensureNotEmpty(contents, "contents"))
     }
 
     /**
-     * Creates a {@link UserMessage} from a name and a list of {@link Content}s.
+     * Creates a [UserMessage] from a name and a list of [Content]s.
      *
      * @param name     the name.
      * @param contents the contents.
      */
-    public UserMessage(String name, List<Content> contents) {
-        this.name = name;
-        this.contents = copy(ensureNotEmpty(contents, "contents"));
+    constructor(name: String?, contents: List<Content>?) {
+        this.name = name
+        this.contents = Utils.copy(ValidationUtils.ensureNotEmpty(contents, "contents"))
     }
 
     /**
      * The name of the user.
      *
-     * @return the name, or {@code null} if not set.
+     * @return the name, or `null` if not set.
      */
-    public String name() {
-        return name;
+    fun name(): String? {
+        return name
     }
 
     /**
-     * The {@link Content}s of the message.
+     * The [Content]s of the message.
      *
      * @return the contents.
      */
-    public List<Content> contents() {
-        return contents;
+    fun contents(): List<Content> {
+        return contents
     }
 
     /**
-     * Returns text from a single {@link TextContent}.
+     * Returns text from a single [TextContent].
      * Use this accessor only if you are certain that the message contains only a single text.
-     * If the message contains multiple {@link Content}s, or if the only {@link Content} is not a {@link TextContent},
-     * a {@link RuntimeException} is thrown.
+     * If the message contains multiple [Content]s, or if the only [Content] is not a [TextContent],
+     * a [RuntimeException] is thrown.
      *
      * @return a single text.
-     * @see #hasSingleText()
+     * @see .hasSingleText
      */
-    public String singleText() {
+    fun singleText(): String? {
         if (hasSingleText()) {
-            return ((TextContent) contents.get(0)).text();
+            return (contents[0] as TextContent).text()
         } else {
-            throw runtime("Expecting single text content, but got: " + contents);
+            throw Exceptions.runtime("Expecting single text content, but got: $contents")
         }
     }
 
     /**
-     * Whether this message contains a single {@link TextContent}.
+     * Whether this message contains a single [TextContent].
      *
-     * @return {@code true} if this message contains a single {@link TextContent}, {@code false} otherwise.
+     * @return `true` if this message contains a single [TextContent], `false` otherwise.
      */
-    public boolean hasSingleText() {
-        return contents.size() == 1 && contents.get(0) instanceof TextContent;
+    fun hasSingleText(): Boolean {
+        return contents.size == 1 && contents[0] is TextContent
     }
 
-    @Override
-    public ChatMessageType type() {
-        return USER;
+    override fun type(): ChatMessageType {
+        return ChatMessageType.USER
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserMessage that = (UserMessage) o;
-        return Objects.equals(this.name, that.name)
-                && Objects.equals(this.contents, that.contents);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as UserMessage
+        return this.name == that.name
+                && this.contents == that.contents
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, contents);
+    override fun hashCode(): Int {
+        return Objects.hash(name, contents)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "UserMessage {" +
-                " name = " + quoted(name) +
+                " name = " + Utils.quoted(name) +
                 " contents = " + contents +
-                " }";
+                " }"
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        private var name: String? = null
+        private var contents: MutableList<Content>? = null
 
-    public static class Builder {
-
-        private String name;
-        private List<Content> contents;
-
-        public Builder name(String name) {
-            this.name = name;
-            return this;
+        fun name(name: String?): Builder {
+            this.name = name
+            return this
         }
 
-        public Builder contents(List<Content> contents) {
-            this.contents = contents;
-            return this;
+        fun contents(contents: MutableList<Content>?): Builder {
+            this.contents = contents
+            return this
         }
 
-        public Builder addContent(Content content) {
+        fun addContent(content: Content): Builder {
             if (this.contents == null) {
-                this.contents = new ArrayList<>();
+                this.contents = ArrayList()
             }
-            this.contents.add(content);
-            return this;
+            contents!!.add(content)
+            return this
         }
 
-        public UserMessage build() {
-            return new UserMessage(name, contents);
+        fun build(): UserMessage {
+            return UserMessage(name, contents)
         }
     }
 
-    /**
-     * Create a {@link UserMessage} from a text.
-     *
-     * @param text the text.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage from(String text) {
-        return new UserMessage(text);
-    }
+    companion object {
+        fun builder(): Builder {
+            return Builder()
+        }
 
-    /**
-     * Create a {@link UserMessage} from a name and a text.
-     *
-     * @param name the name.
-     * @param text the text.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage from(String name, String text) {
-        return new UserMessage(name, text);
-    }
+        /**
+         * Create a [UserMessage] from a text.
+         *
+         * @param text the text.
+         * @return the [UserMessage].
+         */
+        @JvmStatic
+        fun from(text: String?): UserMessage {
+            return UserMessage(text)
+        }
 
-    /**
-     * Create a {@link UserMessage} from contents.
-     *
-     * @param contents the contents.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage from(Content... contents) {
-        return new UserMessage(contents);
-    }
+        /**
+         * Create a [UserMessage] from a name and a text.
+         *
+         * @param name the name.
+         * @param text the text.
+         * @return the [UserMessage].
+         */
+        fun from(name: String?, text: String?): UserMessage {
+            return UserMessage(name, text)
+        }
 
-    /**
-     * Create a {@link UserMessage} from a name and contents.
-     *
-     * @param name     the name.
-     * @param contents the contents.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage from(String name, Content... contents) {
-        return new UserMessage(name, contents);
-    }
+        /**
+         * Create a [UserMessage] from contents.
+         *
+         * @param contents the contents.
+         * @return the [UserMessage].
+         */
+        fun from(vararg contents: Content?): UserMessage {
+            return UserMessage(*contents)
+        }
 
-    /**
-     * Create a {@link UserMessage} from contents.
-     *
-     * @param contents the contents.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage from(List<Content> contents) {
-        return new UserMessage(contents);
-    }
+        /**
+         * Create a [UserMessage] from a name and contents.
+         *
+         * @param name     the name.
+         * @param contents the contents.
+         * @return the [UserMessage].
+         */
+        fun from(name: String?, vararg contents: Content?): UserMessage {
+            return UserMessage(name, *contents)
+        }
 
-    /**
-     * Create a {@link UserMessage} from a name and contents.
-     *
-     * @param name     the name.
-     * @param contents the contents.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage from(String name, List<Content> contents) {
-        return new UserMessage(name, contents);
-    }
+        /**
+         * Create a [UserMessage] from contents.
+         *
+         * @param contents the contents.
+         * @return the [UserMessage].
+         */
+        fun from(contents: List<Content>): UserMessage {
+            return UserMessage(contents)
+        }
 
-    /**
-     * Create a {@link UserMessage} from a text.
-     *
-     * @param text the text.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage userMessage(String text) {
-        return from(text);
-    }
+        /**
+         * Create a [UserMessage] from a name and contents.
+         *
+         * @param name     the name.
+         * @param contents the contents.
+         * @return the [UserMessage].
+         */
+        fun from(name: String?, contents: List<Content>?): UserMessage {
+            return UserMessage(name, contents)
+        }
 
-    /**
-     * Create a {@link UserMessage} from a name and a text.
-     *
-     * @param name the name.
-     * @param text the text.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage userMessage(String name, String text) {
-        return from(name, text);
-    }
+        /**
+         * Create a [UserMessage] from a text.
+         *
+         * @param text the text.
+         * @return the [UserMessage].
+         */
+        @JvmStatic
+        fun userMessage(text: String?): UserMessage {
+            return from(text)
+        }
 
-    /**
-     * Create a {@link UserMessage} from contents.
-     *
-     * @param contents the contents.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage userMessage(Content... contents) {
-        return from(contents);
-    }
+        /**
+         * Create a [UserMessage] from a name and a text.
+         *
+         * @param name the name.
+         * @param text the text.
+         * @return the [UserMessage].
+         */
+        @JvmStatic
+        fun userMessage(name: String?, text: String?): UserMessage {
+            return from(name, text)
+        }
 
-    /**
-     * Create a {@link UserMessage} from a name and contents.
-     *
-     * @param name     the name.
-     * @param contents the contents.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage userMessage(String name, Content... contents) {
-        return from(name, contents);
-    }
+        /**
+         * Create a [UserMessage] from contents.
+         *
+         * @param contents the contents.
+         * @return the [UserMessage].
+         */
+        @JvmStatic
+        fun userMessage(vararg contents: Content?): UserMessage {
+            return from(*contents)
+        }
 
-    /**
-     * Create a {@link UserMessage} from contents.
-     *
-     * @param contents the contents.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage userMessage(List<Content> contents) {
-        return from(contents);
-    }
+        /**
+         * Create a [UserMessage] from a name and contents.
+         *
+         * @param name     the name.
+         * @param contents the contents.
+         * @return the [UserMessage].
+         */
+        @JvmStatic
+        fun userMessage(name: String?, vararg contents: Content?): UserMessage {
+            return from(name, *contents)
+        }
 
-    /**
-     * Create a {@link UserMessage} from a name and contents.
-     *
-     * @param name     the name.
-     * @param contents the contents.
-     * @return the {@link UserMessage}.
-     */
-    public static UserMessage userMessage(String name, List<Content> contents) {
-        return from(name, contents);
+        /**
+         * Create a [UserMessage] from contents.
+         *
+         * @param contents the contents.
+         * @return the [UserMessage].
+         */
+        fun userMessage(contents: List<Content>): UserMessage {
+            return from(contents)
+        }
+
+        /**
+         * Create a [UserMessage] from a name and contents.
+         *
+         * @param name     the name.
+         * @param contents the contents.
+         * @return the [UserMessage].
+         */
+        fun userMessage(name: String?, contents: List<Content>?): UserMessage {
+            return from(name, contents)
+        }
     }
 }

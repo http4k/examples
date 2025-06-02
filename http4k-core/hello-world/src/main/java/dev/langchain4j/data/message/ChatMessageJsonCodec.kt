@@ -1,37 +1,34 @@
-package dev.langchain4j.data.message;
-
-import java.util.List;
+package dev.langchain4j.data.message
 
 /**
- * A codec for serializing and deserializing {@link ChatMessage} objects to and from JSON.
+ * A codec for serializing and deserializing [ChatMessage] objects to and from JSON.
  */
-public interface ChatMessageJsonCodec {
-
+interface ChatMessageJsonCodec {
     /**
-     * Deserializes a JSON string to a {@link ChatMessage} object.
+     * Deserializes a JSON string to a [ChatMessage] object.
      * @param json the JSON string.
-     * @return the deserialized {@link ChatMessage} object.
+     * @return the deserialized [ChatMessage] object.
      */
-    ChatMessage messageFromJson(String json);
+    fun messageFromJson(json: String?): ChatMessage?
 
     /**
-     * Deserializes a JSON string to a list of {@link ChatMessage} objects.
+     * Deserializes a JSON string to a list of [ChatMessage] objects.
      * @param json the JSON string.
-     * @return the deserialized list of {@link ChatMessage} objects.
+     * @return the deserialized list of [ChatMessage] objects.
      */
-    List<ChatMessage> messagesFromJson(String json);
+    fun messagesFromJson(json: String?): List<ChatMessage>
 
     /**
-     * Serializes a {@link ChatMessage} object to a JSON string.
-     * @param message the {@link ChatMessage} object.
+     * Serializes a [ChatMessage] object to a JSON string.
+     * @param message the [ChatMessage] object.
      * @return the serialized JSON string.
      */
-    String messageToJson(ChatMessage message);
+    fun messageToJson(message: ChatMessage?): String
 
     /**
-     * Serializes a list of {@link ChatMessage} objects to a JSON string.
-     * @param messages the list of {@link ChatMessage} objects.
+     * Serializes a list of [ChatMessage] objects to a JSON string.
+     * @param messages the list of [ChatMessage] objects.
      * @return the serialized JSON string.
      */
-    String messagesToJson(List<ChatMessage> messages);
+    fun messagesToJson(messages: List<ChatMessage?>?): String
 }

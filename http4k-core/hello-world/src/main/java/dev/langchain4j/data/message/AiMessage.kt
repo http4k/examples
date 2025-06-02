@@ -1,55 +1,49 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
-import dev.langchain4j.agent.tool.ToolExecutionRequest;
-
-import java.util.List;
-import java.util.Objects;
-
-import static dev.langchain4j.data.message.ChatMessageType.AI;
-import static dev.langchain4j.internal.Utils.*;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotEmpty;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-import static java.util.Arrays.asList;
+import dev.langchain4j.agent.tool.ToolExecutionRequest
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Arrays
+import java.util.Objects
 
 /**
  * Represents a response message from an AI (language model).
  * The message can contain either a textual response or a request to execute one/multiple tool(s).
- * In the case of tool execution, the response to this message should be one/multiple {@link ToolExecutionResultMessage}.
+ * In the case of tool execution, the response to this message should be one/multiple [ToolExecutionResultMessage].
  */
-public class AiMessage implements ChatMessage {
-
-    private final String text;
-    private final List<ToolExecutionRequest> toolExecutionRequests;
+class AiMessage : ChatMessage {
+    private val text: String?
+    private val toolExecutionRequests: List<ToolExecutionRequest?>
 
     /**
-     * Create a new {@link AiMessage} with the given text.
+     * Create a new [AiMessage] with the given text.
      *
      * @param text the text of the message.
      */
-    public AiMessage(String text) {
-        this.text = ensureNotNull(text, "text");
-        this.toolExecutionRequests = List.of();
+    constructor(text: String) {
+        this.text = ValidationUtils.ensureNotNull(text, "text")
+        this.toolExecutionRequests = listOf<ToolExecutionRequest>()
     }
 
     /**
-     * Create a new {@link AiMessage} with the given tool execution requests.
+     * Create a new [AiMessage] with the given tool execution requests.
      *
      * @param toolExecutionRequests the tool execution requests of the message.
      */
-    public AiMessage(List<ToolExecutionRequest> toolExecutionRequests) {
-        this.text = null;
-        this.toolExecutionRequests = ensureNotEmpty(toolExecutionRequests, "toolExecutionRequests");
+    constructor(toolExecutionRequests: List<ToolExecutionRequest?>) {
+        this.text = null
+        this.toolExecutionRequests = ValidationUtils.ensureNotEmpty(toolExecutionRequests, "toolExecutionRequests")
     }
 
     /**
-     * Create a new {@link AiMessage} with the given text and tool execution requests.
+     * Create a new [AiMessage] with the given text and tool execution requests.
      *
      * @param text                  the text of the message.
      * @param toolExecutionRequests the tool execution requests of the message.
      */
-    public AiMessage(String text, List<ToolExecutionRequest> toolExecutionRequests) {
-        this.text = text;
-        this.toolExecutionRequests = copy(toolExecutionRequests);
+    constructor(text: String?, toolExecutionRequests: List<ToolExecutionRequest?>?) {
+        this.text = text
+        this.toolExecutionRequests = Utils.copy(toolExecutionRequests)
     }
 
     /**
@@ -57,8 +51,8 @@ public class AiMessage implements ChatMessage {
      *
      * @return the text of the message.
      */
-    public String text() {
-        return text;
+    fun text(): String? {
+        return text
     }
 
     /**
@@ -66,8 +60,8 @@ public class AiMessage implements ChatMessage {
      *
      * @return the tool execution requests of the message.
      */
-    public List<ToolExecutionRequest> toolExecutionRequests() {
-        return toolExecutionRequests;
+    fun toolExecutionRequests(): List<ToolExecutionRequest?> {
+        return toolExecutionRequests
     }
 
     /**
@@ -75,140 +69,139 @@ public class AiMessage implements ChatMessage {
      *
      * @return true if the message has ToolExecutionRequests, false otherwise.
      */
-    public boolean hasToolExecutionRequests() {
-        return !isNullOrEmpty(toolExecutionRequests);
+    fun hasToolExecutionRequests(): Boolean {
+        return !Utils.isNullOrEmpty(toolExecutionRequests)
     }
 
-    @Override
-    public ChatMessageType type() {
-        return AI;
+    override fun type(): ChatMessageType {
+        return ChatMessageType.AI
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AiMessage that = (AiMessage) o;
-        return Objects.equals(this.text, that.text)
-                && Objects.equals(this.toolExecutionRequests, that.toolExecutionRequests);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as AiMessage
+        return this.text == that.text
+                && this.toolExecutionRequests == that.toolExecutionRequests
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(text, toolExecutionRequests);
+    override fun hashCode(): Int {
+        return Objects.hash(text, toolExecutionRequests)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "AiMessage {" +
-                " text = " + quoted(text) +
+                " text = " + Utils.quoted(text) +
                 " toolExecutionRequests = " + toolExecutionRequests +
-                " }";
+                " }"
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
+    class Builder {
+        private var text: String? = null
+        private var toolExecutionRequests: List<ToolExecutionRequest?>? = null
 
-    public static class Builder {
-
-        private String text;
-        private List<ToolExecutionRequest> toolExecutionRequests;
-
-        public Builder text(String text) {
-            this.text = text;
-            return this;
+        fun text(text: String?): Builder {
+            this.text = text
+            return this
         }
 
-        public Builder toolExecutionRequests(List<ToolExecutionRequest> toolExecutionRequests) {
-            this.toolExecutionRequests = toolExecutionRequests;
-            return this;
+        fun toolExecutionRequests(toolExecutionRequests: List<ToolExecutionRequest?>?): Builder {
+            this.toolExecutionRequests = toolExecutionRequests
+            return this
         }
 
-        public AiMessage build() {
-            return new AiMessage(text, toolExecutionRequests);
+        fun build(): AiMessage {
+            return AiMessage(text, toolExecutionRequests)
         }
     }
 
-    /**
-     * Create a new {@link AiMessage} with the given text.
-     *
-     * @param text the text of the message.
-     * @return the new {@link AiMessage}.
-     */
-    public static AiMessage from(String text) {
-        return new AiMessage(text);
-    }
+    companion object {
+        fun builder(): Builder {
+            return Builder()
+        }
 
-    /**
-     * Create a new {@link AiMessage} with the given tool execution requests.
-     *
-     * @param toolExecutionRequests the tool execution requests of the message.
-     * @return the new {@link AiMessage}.
-     */
-    public static AiMessage from(ToolExecutionRequest... toolExecutionRequests) {
-        return from(asList(toolExecutionRequests));
-    }
+        /**
+         * Create a new [AiMessage] with the given text.
+         *
+         * @param text the text of the message.
+         * @return the new [AiMessage].
+         */
+        fun from(text: String): AiMessage {
+            return AiMessage(text)
+        }
 
-    /**
-     * Create a new {@link AiMessage} with the given tool execution requests.
-     *
-     * @param toolExecutionRequests the tool execution requests of the message.
-     * @return the new {@link AiMessage}.
-     */
-    public static AiMessage from(List<ToolExecutionRequest> toolExecutionRequests) {
-        return new AiMessage(toolExecutionRequests);
-    }
+        /**
+         * Create a new [AiMessage] with the given tool execution requests.
+         *
+         * @param toolExecutionRequests the tool execution requests of the message.
+         * @return the new [AiMessage].
+         */
+        fun from(vararg toolExecutionRequests: ToolExecutionRequest?): AiMessage {
+            return from(Arrays.asList(*toolExecutionRequests))
+        }
 
-    /**
-     * Create a new {@link AiMessage} with the given text and tool execution requests.
-     *
-     * @param text                  the text of the message.
-     * @param toolExecutionRequests the tool execution requests of the message.
-     * @return the new {@link AiMessage}.
-     */
-    public static AiMessage from(String text, List<ToolExecutionRequest> toolExecutionRequests) {
-        return new AiMessage(text, toolExecutionRequests);
-    }
+        /**
+         * Create a new [AiMessage] with the given tool execution requests.
+         *
+         * @param toolExecutionRequests the tool execution requests of the message.
+         * @return the new [AiMessage].
+         */
+        fun from(toolExecutionRequests: List<ToolExecutionRequest?>): AiMessage {
+            return AiMessage(toolExecutionRequests)
+        }
 
-    /**
-     * Create a new {@link AiMessage} with the given text.
-     *
-     * @param text the text of the message.
-     * @return the new {@link AiMessage}.
-     */
-    public static AiMessage aiMessage(String text) {
-        return from(text);
-    }
+        /**
+         * Create a new [AiMessage] with the given text and tool execution requests.
+         *
+         * @param text                  the text of the message.
+         * @param toolExecutionRequests the tool execution requests of the message.
+         * @return the new [AiMessage].
+         */
+        fun from(text: String?, toolExecutionRequests: List<ToolExecutionRequest?>?): AiMessage {
+            return AiMessage(text, toolExecutionRequests)
+        }
 
-    /**
-     * Create a new {@link AiMessage} with the given tool execution requests.
-     *
-     * @param toolExecutionRequests the tool execution requests of the message.
-     * @return the new {@link AiMessage}.
-     */
-    public static AiMessage aiMessage(ToolExecutionRequest... toolExecutionRequests) {
-        return aiMessage(asList(toolExecutionRequests));
-    }
+        /**
+         * Create a new [AiMessage] with the given text.
+         *
+         * @param text the text of the message.
+         * @return the new [AiMessage].
+         */
+        @JvmStatic
+        fun aiMessage(text: String): AiMessage {
+            return from(text)
+        }
 
-    /**
-     * Create a new {@link AiMessage} with the given tool execution requests.
-     *
-     * @param toolExecutionRequests the tool execution requests of the message.
-     * @return the new {@link AiMessage}.
-     */
-    public static AiMessage aiMessage(List<ToolExecutionRequest> toolExecutionRequests) {
-        return from(toolExecutionRequests);
-    }
+        /**
+         * Create a new [AiMessage] with the given tool execution requests.
+         *
+         * @param toolExecutionRequests the tool execution requests of the message.
+         * @return the new [AiMessage].
+         */
+        @JvmStatic
+        fun aiMessage(vararg toolExecutionRequests: ToolExecutionRequest?): AiMessage {
+            return aiMessage(Arrays.asList(*toolExecutionRequests))
+        }
 
-    /**
-     * Create a new {@link AiMessage} with the given text and tool execution requests.
-     *
-     * @param text                  the text of the message.
-     * @param toolExecutionRequests the tool execution requests of the message.
-     * @return the new {@link AiMessage}.
-     */
-    public static AiMessage aiMessage(String text, List<ToolExecutionRequest> toolExecutionRequests) {
-        return from(text, toolExecutionRequests);
+        /**
+         * Create a new [AiMessage] with the given tool execution requests.
+         *
+         * @param toolExecutionRequests the tool execution requests of the message.
+         * @return the new [AiMessage].
+         */
+        fun aiMessage(toolExecutionRequests: List<ToolExecutionRequest?>): AiMessage {
+            return from(toolExecutionRequests)
+        }
+
+        /**
+         * Create a new [AiMessage] with the given text and tool execution requests.
+         *
+         * @param text                  the text of the message.
+         * @param toolExecutionRequests the tool execution requests of the message.
+         * @return the new [AiMessage].
+         */
+        fun aiMessage(text: String?, toolExecutionRequests: List<ToolExecutionRequest?>?): AiMessage {
+            return from(text, toolExecutionRequests)
+        }
     }
 }

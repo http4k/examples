@@ -1,41 +1,34 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
-import dev.langchain4j.spi.data.message.ChatMessageJsonCodecFactory;
+import dev.langchain4j.spi.ServiceHelper
+import dev.langchain4j.spi.data.message.ChatMessageJsonCodecFactory
 
-import java.util.List;
+object ChatMessageSerializer {
+    val CODEC: ChatMessageJsonCodec = loadCodec()
 
-import static dev.langchain4j.spi.ServiceHelper.loadFactories;
-
-public class ChatMessageSerializer {
-
-    static final ChatMessageJsonCodec CODEC = loadCodec();
-
-    private static ChatMessageJsonCodec loadCodec() {
-        for (ChatMessageJsonCodecFactory factory : loadFactories(ChatMessageJsonCodecFactory.class)) {
-            return factory.create();
+    private fun loadCodec(): ChatMessageJsonCodec {
+        for (factory in ServiceHelper.loadFactories(
+            ChatMessageJsonCodecFactory::class.java
+        )) {
+            return factory.create()
         }
-        return new ChatMessageJsonCodec() {
-
-            @Override
-            public ChatMessage messageFromJson(String json) {
-                return null;
+        return object : ChatMessageJsonCodec {
+            override fun messageFromJson(json: String?): ChatMessage? {
+                return null
             }
 
-            @Override
-            public List<ChatMessage> messagesFromJson(String json) {
-                return List.of();
+            override fun messagesFromJson(json: String?): List<ChatMessage> {
+                return listOf()
             }
 
-            @Override
-            public String messageToJson(ChatMessage message) {
-                return "";
+            override fun messageToJson(message: ChatMessage?): String {
+                return ""
             }
 
-            @Override
-            public String messagesToJson(List<ChatMessage> messages) {
-                return "";
+            override fun messagesToJson(messages: List<ChatMessage?>?): String {
+                return ""
             }
-        };
+        }
     }
 
     /**
@@ -45,8 +38,8 @@ public class ChatMessageSerializer {
      * @return A JSON string with the contents of the message.
      * @see ChatMessageDeserializer For details on deserialization.
      */
-    public static String messageToJson(ChatMessage message) {
-        return CODEC.messageToJson(message);
+    fun messageToJson(message: ChatMessage?): String? {
+        return CODEC.messageToJson(message)
     }
 
     /**
@@ -56,7 +49,7 @@ public class ChatMessageSerializer {
      * @return A JSON string representing provided chat messages.
      * @see ChatMessageDeserializer For details on deserialization.
      */
-    public static String messagesToJson(List<ChatMessage> messages) {
-        return CODEC.messagesToJson(messages);
+    fun messagesToJson(messages: List<ChatMessage?>?): String? {
+        return CODEC.messagesToJson(messages)
     }
 }

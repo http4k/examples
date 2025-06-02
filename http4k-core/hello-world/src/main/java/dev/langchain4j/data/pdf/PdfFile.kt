@@ -1,35 +1,24 @@
-package dev.langchain4j.data.pdf;
+package dev.langchain4j.data.pdf
 
-import java.net.URI;
-import java.util.Objects;
+import dev.langchain4j.data.pdf.PdfFile
+import dev.langchain4j.internal.Utils
+import java.net.URI
+import java.util.Objects
 
-import static dev.langchain4j.internal.Utils.getOrDefault;
-import static dev.langchain4j.internal.Utils.quoted;
-
-public class PdfFile {
-
-    private final URI url;
-    private final String base64Data;
-    private final String mimeType;
+class PdfFile private constructor(builder: Builder) {
+    private val url: URI?
+    private val base64Data: String?
+    private val mimeType: String
 
     /**
-     * Create a new {@link PdfFile} from the Builder.
+     * Create a new [PdfFile] from the Builder.
      *
      * @param builder the builder.
      */
-    private PdfFile(Builder builder) {
-        this.url = builder.url;
-        this.base64Data = builder.base64Data;
-        this.mimeType = getOrDefault(builder.mimeType, "application/pdf");
-    }
-
-    /**
-     * Create a new {@link Builder}.
-     *
-     * @return the new {@link Builder}.
-     */
-    public static Builder builder() {
-        return new Builder();
+    init {
+        this.url = builder.url
+        this.base64Data = builder.base64Data
+        this.mimeType = Utils.getOrDefault(builder.mimeType, "application/pdf")
     }
 
     /**
@@ -37,8 +26,8 @@ public class PdfFile {
      *
      * @return the url of the PDF, or null if not set.
      */
-    public URI url() {
-        return url;
+    fun url(): URI? {
+        return url
     }
 
     /**
@@ -46,8 +35,8 @@ public class PdfFile {
      *
      * @return the base64 data of the rich format document, or null if not set.
      */
-    public String base64Data() {
-        return base64Data;
+    fun base64Data(): String? {
+        return base64Data
     }
 
     /**
@@ -55,99 +44,104 @@ public class PdfFile {
      *
      * @return the mime type of the rich format document.
      */
-    public String mimeType() {
-        return mimeType;
+    fun mimeType(): String {
+        return mimeType
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PdfFile that = (PdfFile) o;
-        return Objects.equals(this.url, that.url)
-                && Objects.equals(this.base64Data, that.base64Data)
-                && Objects.equals(this.mimeType, that.mimeType);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as PdfFile
+        return this.url == that.url
+                && this.base64Data == that.base64Data
+                && this.mimeType == that.mimeType
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(url, base64Data, mimeType);
+    override fun hashCode(): Int {
+        return Objects.hash(url, base64Data, mimeType)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "PdfFile {" +
-                " url = " + quoted(url) +
-                ", base64Data = " + quoted(base64Data) +
-                ", mimeType = " + quoted(mimeType) +
-                " }";
+                " url = " + Utils.quoted(url) +
+                ", base64Data = " + Utils.quoted(base64Data) +
+                ", mimeType = " + Utils.quoted(mimeType) +
+                " }"
     }
 
     /**
-     * Builder for {@link PdfFile}.
+     * Builder for [PdfFile].
      */
-    public static class Builder {
-
-        private URI url;
-        private String base64Data;
-        private String mimeType;
+    class Builder
+    /**
+     * Create a new [Builder].
+     */
+    {
+        var url: URI? = null
+        var base64Data: String? = null
+        var mimeType: String? = null
 
         /**
-         * Create a new {@link Builder}.
+         * Set the url of the PDF document.
+         *
+         * @param url the url of the PDF document.
+         * @return `this`
          */
-        public Builder() {
+        fun url(url: URI?): Builder {
+            this.url = url
+            return this
         }
 
         /**
          * Set the url of the PDF document.
          *
          * @param url the url of the PDF document.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder url(URI url) {
-            this.url = url;
-            return this;
-        }
-
-        /**
-         * Set the url of the PDF document.
-         *
-         * @param url the url of the PDF document.
-         * @return {@code this}
-         */
-        public Builder url(String url) {
-            return url(URI.create(url));
+        fun url(url: String): Builder {
+            return url(URI.create(url))
         }
 
         /**
          * Set the base64 data of the PDF document.
          *
          * @param base64Data the base64 data of the PDF document.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder base64Data(String base64Data) {
-            this.base64Data = base64Data;
-            return this;
+        fun base64Data(base64Data: String?): Builder {
+            this.base64Data = base64Data
+            return this
         }
 
         /**
          * Set the mime type of the PDF document.
          *
          * @param mimeType the mime type of the PDF document.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder mimeType(String mimeType) {
-            this.mimeType = mimeType;
-            return this;
+        fun mimeType(mimeType: String?): Builder {
+            this.mimeType = mimeType
+            return this
         }
 
         /**
-         * Build the {@link PdfFile}.
+         * Build the [PdfFile].
          *
-         * @return the {@link PdfFile}.
+         * @return the [PdfFile].
          */
-        public PdfFile build() {
-            return new PdfFile(this);
+        fun build(): PdfFile {
+            return PdfFile(this)
+        }
+    }
+
+    companion object {
+        /**
+         * Create a new [Builder].
+         *
+         * @return the new [Builder].
+         */
+        fun builder(): Builder {
+            return Builder()
         }
     }
 }

@@ -91,7 +91,8 @@ class EmbeddingStoreIngestor(
      * @return result including information related to ingestion process.
      */
     fun ingest(vararg documents: Document?): IngestionResult {
-        return ingest(Arrays.asList(*documents))
+        return TODO()
+//        return ingest(Arrays.asList(*documents))
     }
 
     /**
@@ -103,9 +104,6 @@ class EmbeddingStoreIngestor(
      */
     fun ingest(documents: List<Document>): IngestionResult {
         var documents = documents
-        if (documentTransformer != null) {
-            documents = documentTransformer.transformAll(documents)
-        }
         var segments: List<TextSegment?>?
         segments = if (documentSplitter != null) {
             documentSplitter.splitAll(documents)
@@ -115,12 +113,12 @@ class EmbeddingStoreIngestor(
                 .collect(Collectors.toList())
         }
         if (textSegmentTransformer != null) {
-            segments = textSegmentTransformer.transformAll(segments)
+//            segments = textSegmentTransformer.transformAll(segments)
         }
 
         val embeddingsResponse = embeddingModel.embedAll(segments)
 
-        embeddingStore.addAll(embeddingsResponse.content(), segments)
+//        embeddingStore.addAll(embeddingsResponse.content(), segments)
 
         return IngestionResult(embeddingsResponse.tokenUsage())
     }

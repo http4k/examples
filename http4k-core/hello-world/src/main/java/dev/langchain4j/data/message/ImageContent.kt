@@ -1,23 +1,19 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
-import dev.langchain4j.data.image.Image;
-
-import java.net.URI;
-import java.util.Objects;
-
-import static dev.langchain4j.data.message.ContentType.IMAGE;
-import static dev.langchain4j.data.message.ImageContent.DetailLevel.LOW;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.data.image.Image
+import dev.langchain4j.internal.ValidationUtils
+import java.net.URI
+import java.util.Objects
 
 /**
  * Represents an image with a DetailLevel.
  */
-public class ImageContent implements Content {
+class ImageContent @JvmOverloads constructor(image: Image, detailLevel: DetailLevel = DetailLevel.LOW) :
+    Content {
     /**
-     * The detail level of an {@code Image}.
+     * The detail level of an `Image`.
      */
-    public enum DetailLevel {
+    enum class DetailLevel {
         /**
          * Low detail.
          */
@@ -34,235 +30,216 @@ public class ImageContent implements Content {
         AUTO
     }
 
-    private final Image image;
-    private final DetailLevel detailLevel;
+    private val image: Image =
+        ValidationUtils.ensureNotNull(image, "image")
+    private val detailLevel: DetailLevel = ValidationUtils.ensureNotNull(detailLevel, "detailLevel")
 
     /**
-     * Create a new {@link ImageContent} from the given url.
+     * Create a new [ImageContent] from the given url.
      *
-     * <p>The image will be created with {@code DetailLevel.LOW} detail.</p>
+     *
+     * The image will be created with `DetailLevel.LOW` detail.
      *
      * @param url the url of the image.
      */
-    public ImageContent(URI url) {
-        this(url, LOW);
-    }
+    constructor(url: String) : this(URI.create(url))
 
     /**
-     * Create a new {@link ImageContent} from the given url.
-     *
-     * <p>The image will be created with {@code DetailLevel.LOW} detail.</p>
-     *
-     * @param url the url of the image.
-     */
-    public ImageContent(String url) {
-        this(URI.create(url));
-    }
-
-    /**
-     * Create a new {@link ImageContent} from the given url and detail level.
+     * Create a new [ImageContent] from the given url and detail level.
      *
      * @param url the url of the image.
      * @param detailLevel the detail level of the image.
      */
-    public ImageContent(URI url, DetailLevel detailLevel) {
-        this(Image.builder()
-                .url(ensureNotNull(url, "url"))
-                .build(), detailLevel);
-    }
+    /**
+     * Create a new [ImageContent] from the given url.
+     *
+     *
+     * The image will be created with `DetailLevel.LOW` detail.
+     *
+     * @param url the url of the image.
+     */
+    @JvmOverloads
+    constructor(url: URI, detailLevel: DetailLevel = DetailLevel.LOW) : this(
+        Image.Companion.builder()
+            .url(ValidationUtils.ensureNotNull<URI>(url, "url"))
+            .build(), detailLevel
+    )
 
     /**
-     * Create a new {@link ImageContent} from the given url and detail level.
+     * Create a new [ImageContent] from the given url and detail level.
      *
      * @param url the url of the image.
      * @param detailLevel the detail level of the image.
      */
-    public ImageContent(String url, DetailLevel detailLevel) {
-        this(URI.create(url), detailLevel);
-    }
+    constructor(url: String, detailLevel: DetailLevel) : this(URI.create(url), detailLevel)
 
     /**
-     * Create a new {@link ImageContent} from the given base64 data and mime type.
-     *
-     * <p>The image will be created with {@code DetailLevel.LOW} detail.</p>
-     *
-     * @param base64Data the base64 data of the image.
-     * @param mimeType the mime type of the image.
-     */
-    public ImageContent(String base64Data, String mimeType) {
-        this(base64Data, mimeType, LOW);
-    }
-
-    /**
-     * Create a new {@link ImageContent} from the given base64 data and mime type.
+     * Create a new [ImageContent] from the given base64 data and mime type.
      *
      * @param base64Data the base64 data of the image.
      * @param mimeType the mime type of the image.
      * @param detailLevel the detail level of the image.
      */
-    public ImageContent(String base64Data, String mimeType, DetailLevel detailLevel) {
-        this(Image.builder()
-                .base64Data(ensureNotBlank(base64Data, "base64Data"))
-                .mimeType(ensureNotBlank(mimeType, "mimeType"))
-                .build(), detailLevel);
-    }
-
     /**
-     * Create a new {@link ImageContent} from the given image.
+     * Create a new [ImageContent] from the given base64 data and mime type.
      *
-     * <p>The image will be created with {@code DetailLevel.LOW} detail.</p>
      *
-     * @param image the image.
+     * The image will be created with `DetailLevel.LOW` detail.
+     *
+     * @param base64Data the base64 data of the image.
+     * @param mimeType the mime type of the image.
      */
-    public ImageContent(Image image) {
-        this(image, LOW);
-    }
+    @JvmOverloads
+    constructor(base64Data: String?, mimeType: String?, detailLevel: DetailLevel = DetailLevel.LOW) : this(
+        Image.Companion.builder()
+            .base64Data(ValidationUtils.ensureNotBlank(base64Data, "base64Data"))
+            .mimeType(ValidationUtils.ensureNotBlank(mimeType, "mimeType"))
+            .build(), detailLevel
+    )
 
     /**
-     * Create a new {@link ImageContent} from the given image.
+     * Create a new [ImageContent] from the given image.
      *
      * @param image the image.
      * @param detailLevel the detail level of the image.
      */
-    public ImageContent(Image image, DetailLevel detailLevel) {
-        this.image = ensureNotNull(image, "image");
-        this.detailLevel = ensureNotNull(detailLevel, "detailLevel");
+
+    /**
+     * Get the `Image`.
+     * @return the `Image`.
+     */
+    fun image(): Image {
+        return image
     }
 
     /**
-     * Get the {@code Image}.
-     * @return the {@code Image}.
+     * Get the `DetailLevel`.
+     * @return the `DetailLevel`.
      */
-    public Image image() {
-        return image;
+    fun detailLevel(): DetailLevel {
+        return detailLevel
     }
 
-    /**
-     * Get the {@code DetailLevel}.
-     * @return the {@code DetailLevel}.
-     */
-    public DetailLevel detailLevel() {
-        return detailLevel;
+    override fun type(): ContentType {
+        return ContentType.IMAGE
     }
 
-    @Override
-    public ContentType type() {
-        return IMAGE;
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as ImageContent
+        return this.image == that.image
+                && this.detailLevel == that.detailLevel
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ImageContent that = (ImageContent) o;
-        return Objects.equals(this.image, that.image)
-                && Objects.equals(this.detailLevel, that.detailLevel);
+    override fun hashCode(): Int {
+        return Objects.hash(image, detailLevel)
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(image, detailLevel);
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "ImageContent {" +
                 " image = " + image +
                 " detailLevel = " + detailLevel +
-                " }";
+                " }"
     }
 
-    /**
-     * Create a new {@link ImageContent} from the given url.
-     *
-     * <p>The image will be created with {@code DetailLevel.LOW} detail.</p>
-     *
-     * @param url the url of the image.
-     * @return the new {@link ImageContent}.
-     */
-    public static ImageContent from(URI url) {
-        return new ImageContent(url);
-    }
+    companion object {
+        /**
+         * Create a new [ImageContent] from the given url.
+         *
+         *
+         * The image will be created with `DetailLevel.LOW` detail.
+         *
+         * @param url the url of the image.
+         * @return the new [ImageContent].
+         */
+        fun from(url: URI): ImageContent {
+            return ImageContent(url)
+        }
 
-    /**
-     * Create a new {@link ImageContent} from the given url.
-     *
-     * <p>The image will be created with {@code DetailLevel.LOW} detail.</p>
-     *
-     * @param url the url of the image.
-     * @return the new {@link ImageContent}.
-     */
-    public static ImageContent from(String url) {
-        return new ImageContent(url);
-    }
+        /**
+         * Create a new [ImageContent] from the given url.
+         *
+         *
+         * The image will be created with `DetailLevel.LOW` detail.
+         *
+         * @param url the url of the image.
+         * @return the new [ImageContent].
+         */
+        fun from(url: String): ImageContent {
+            return ImageContent(url)
+        }
 
-    /**
-     * Create a new {@link ImageContent} from the given url and detail level.
-     *
-     * @param url the url of the image.
-     * @param detailLevel the detail level of the image.
-     * @return the new {@link ImageContent}.
-     */
-    public static ImageContent from(URI url, DetailLevel detailLevel) {
-        return new ImageContent(url, detailLevel);
-    }
+        /**
+         * Create a new [ImageContent] from the given url and detail level.
+         *
+         * @param url the url of the image.
+         * @param detailLevel the detail level of the image.
+         * @return the new [ImageContent].
+         */
+        fun from(url: URI, detailLevel: DetailLevel): ImageContent {
+            return ImageContent(url, detailLevel)
+        }
 
-    /**
-     * Create a new {@link ImageContent} from the given url and detail level.
-     *
-     * @param url the url of the image.
-     * @param detailLevel the detail level of the image.
-     * @return the new {@link ImageContent}.
-     */
-    public static ImageContent from(String url, DetailLevel detailLevel) {
-        return new ImageContent(url, detailLevel);
-    }
+        /**
+         * Create a new [ImageContent] from the given url and detail level.
+         *
+         * @param url the url of the image.
+         * @param detailLevel the detail level of the image.
+         * @return the new [ImageContent].
+         */
+        fun from(url: String, detailLevel: DetailLevel): ImageContent {
+            return ImageContent(url, detailLevel)
+        }
 
-    /**
-     * Create a new {@link ImageContent} from the given base64 data and mime type.
-     *
-     * <p>The image will be created with {@code DetailLevel.LOW} detail.</p>
-     *
-     * @param base64Data the base64 data of the image.
-     * @param mimeType the mime type of the image.
-     * @return the new {@link ImageContent}.
-     */
-    public static ImageContent from(String base64Data, String mimeType) {
-        return new ImageContent(base64Data, mimeType);
-    }
+        /**
+         * Create a new [ImageContent] from the given base64 data and mime type.
+         *
+         *
+         * The image will be created with `DetailLevel.LOW` detail.
+         *
+         * @param base64Data the base64 data of the image.
+         * @param mimeType the mime type of the image.
+         * @return the new [ImageContent].
+         */
+        fun from(base64Data: String?, mimeType: String?): ImageContent {
+            return ImageContent(base64Data, mimeType)
+        }
 
-    /**
-     * Create a new {@link ImageContent} from the given base64 data and mime type.
-     *
-     * @param base64Data the base64 data of the image.
-     * @param mimeType the mime type of the image.
-     * @param detailLevel the detail level of the image.
-     * @return the new {@link ImageContent}.
-     */
-    public static ImageContent from(String base64Data, String mimeType, DetailLevel detailLevel) {
-        return new ImageContent(base64Data, mimeType, detailLevel);
-    }
+        /**
+         * Create a new [ImageContent] from the given base64 data and mime type.
+         *
+         * @param base64Data the base64 data of the image.
+         * @param mimeType the mime type of the image.
+         * @param detailLevel the detail level of the image.
+         * @return the new [ImageContent].
+         */
+        fun from(base64Data: String?, mimeType: String?, detailLevel: DetailLevel): ImageContent {
+            return ImageContent(base64Data, mimeType, detailLevel)
+        }
 
-    /**
-     * Create a new {@link ImageContent} from the given image.
-     *
-     * <p>The image will be created with {@code DetailLevel.LOW} detail.</p>
-     *
-     * @param image the image.
-     * @return the new {@link ImageContent}.
-     */
-    public static ImageContent from(Image image) {
-        return new ImageContent(image);
-    }
+        /**
+         * Create a new [ImageContent] from the given image.
+         *
+         *
+         * The image will be created with `DetailLevel.LOW` detail.
+         *
+         * @param image the image.
+         * @return the new [ImageContent].
+         */
+        fun from(image: Image): ImageContent {
+            return ImageContent(image)
+        }
 
-    /**
-     * Create a new {@link ImageContent} from the given image.
-     *
-     * @param image the image.
-     * @param detailLevel the detail level of the image.
-     * @return the new {@link ImageContent}.
-     */
-    public static ImageContent from(Image image, DetailLevel detailLevel) {
-        return new ImageContent(image, detailLevel);
+        /**
+         * Create a new [ImageContent] from the given image.
+         *
+         * @param image the image.
+         * @param detailLevel the detail level of the image.
+         * @return the new [ImageContent].
+         */
+        fun from(image: Image, detailLevel: DetailLevel): ImageContent {
+            return ImageContent(image, detailLevel)
+        }
     }
 }

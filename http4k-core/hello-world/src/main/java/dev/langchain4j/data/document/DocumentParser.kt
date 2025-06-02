@@ -1,23 +1,23 @@
-package dev.langchain4j.data.document;
+package dev.langchain4j.data.document
 
-import java.io.InputStream;
+import java.io.InputStream
 
 /**
- * Defines the interface for parsing an {@link InputStream} into a {@link Document}.
+ * Defines the interface for parsing an [InputStream] into a [Document].
  * Different document types require specialized parsing logic.
  */
-public interface DocumentParser {
-
+interface DocumentParser {
     /**
-     * Parses a given {@link InputStream} into a {@link Document}.
+     * Parses a given [InputStream] into a [Document].
      * The specific implementation of this method will depend on the type of the document being parsed.
-     * <p>
-     * Note: This method does not close the provided {@link InputStream} - it is the
+     *
+     *
+     * Note: This method does not close the provided [InputStream] - it is the
      * caller's responsibility to manage the lifecycle of the stream.
      *
-     * @param inputStream The {@link InputStream} that contains the content of the {@link Document}.
-     * @return The parsed {@link Document}.
-     * @throws BlankDocumentException when the parsed {@link Document} is blank/empty.
+     * @param inputStream The [InputStream] that contains the content of the [Document].
+     * @return The parsed [Document].
+     * @throws BlankDocumentException when the parsed [Document] is blank/empty.
      */
-    Document parse(InputStream inputStream);
+    fun parse(inputStream: InputStream?): Document?
 }

@@ -1,10 +1,8 @@
-package dev.langchain4j.data.embedding;
+package dev.langchain4j.data.embedding
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.internal.ValidationUtils
+import kotlin.math.abs
+import kotlin.math.sqrt
 
 /**
  * Represents a dense vector embedding of a text.
@@ -13,52 +11,44 @@ import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
  * The embeddings are typically created by embedding models.
  * @see dev.langchain4j.model.embedding.EmbeddingModel
  */
-public class Embedding {
-
-    private final float[] vector;
-
-    /**
-     * Creates a new Embedding.
-     * @param vector the vector, takes ownership of the array.
-     */
-    public Embedding(float[] vector) {
-        this.vector = ensureNotNull(vector, "vector");
-    }
+class Embedding(vector: FloatArray) {
+    private val vector: FloatArray =
+        ValidationUtils.ensureNotNull(vector, "vector")
 
     /**
      * Returns the vector.
      * @return the vector.
      */
-    public float[] vector() {
-        return vector;
+    fun vector(): FloatArray {
+        return vector
     }
 
     /**
      * Returns a copy of the vector as a list.
      * @return the vector as a list.
      */
-    public List<Float> vectorAsList() {
-        List<Float> list = new ArrayList<>(vector.length);
-        for (float f : vector) {
-            list.add(f);
+    fun vectorAsList(): List<Float> {
+        val list: MutableList<Float> = ArrayList(vector.size)
+        for (f in vector) {
+            list.add(f)
         }
-        return list;
+        return list
     }
 
     /**
      * Normalize vector
      */
-    public void normalize() {
-        double norm = 0.0;
-        for (float f : vector) {
-            norm += f * f;
+    fun normalize() {
+        var norm = 0.0
+        for (f in vector) {
+            norm += (f * f).toDouble()
         }
-        norm = Math.sqrt(norm);
-        if (Math.abs(norm) < 1e-10) {
-            return;
+        norm = sqrt(norm)
+        if (abs(norm) < 1e-10) {
+            return
         }
-        for (int i = 0; i < vector.length; i++) {
-            vector[i] /= (float) norm;
+        for (i in vector.indices) {
+            vector[i] /= norm.toFloat()
         }
     }
 
@@ -66,49 +56,48 @@ public class Embedding {
      * Returns the dimension of the vector.
      * @return the dimension of the vector.
      */
-    public int dimension() {
-        return vector.length;
+    fun dimension(): Int {
+        return vector.size
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Embedding that = (Embedding) o;
-        return Arrays.equals(this.vector, that.vector);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as Embedding
+        return vector.contentEquals(that.vector)
     }
 
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(vector);
+    override fun hashCode(): Int {
+        return vector.contentHashCode()
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Embedding {" +
-                " vector = " + Arrays.toString(vector) +
-                " }";
+                " vector = " + vector.contentToString() +
+                " }"
     }
 
-    /**
-     * Creates a new Embedding from the given vector.
-     * @param vector the vector, takes ownership of the array.
-     * @return the new Embedding.
-     */
-    public static Embedding from(float[] vector) {
-        return new Embedding(vector);
-    }
-
-    /**
-     * Creates a new Embedding from the given vector.
-     * @param vector the vector.
-     * @return the new Embedding.
-     */
-    public static Embedding from(List<Float> vector) {
-        float[] array = new float[vector.size()];
-        for (int i = 0; i < vector.size(); i++) {
-            array[i] = vector.get(i);
+    companion object {
+        /**
+         * Creates a new Embedding from the given vector.
+         * @param vector the vector, takes ownership of the array.
+         * @return the new Embedding.
+         */
+        fun from(vector: FloatArray): Embedding {
+            return Embedding(vector)
         }
-        return new Embedding(array);
+
+        /**
+         * Creates a new Embedding from the given vector.
+         * @param vector the vector.
+         * @return the new Embedding.
+         */
+        fun from(vector: List<Float>): Embedding {
+            val array = FloatArray(vector.size)
+            for (i in vector.indices) {
+                array[i] = vector[i]
+            }
+            return Embedding(array)
+        }
     }
 }

@@ -1,131 +1,122 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
-import dev.langchain4j.data.video.Video;
+import dev.langchain4j.data.video.Video
+import dev.langchain4j.internal.ValidationUtils
+import java.net.URI
+import java.util.Objects
 
-import java.net.URI;
-import java.util.Objects;
+class VideoContent : Content {
+    private val video: Video
 
-import static dev.langchain4j.data.message.ContentType.VIDEO;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
-public class VideoContent implements Content {
-
-    private final Video video;
-
-    @Override
-    public ContentType type() {
-        return VIDEO;
+    override fun type(): ContentType {
+        return ContentType.VIDEO
     }
 
     /**
-     * Create a new {@link VideoContent} from the given url.
+     * Create a new [VideoContent] from the given url.
      *
      * @param url the url of the Video.
      */
-    public VideoContent(URI url) {
-        this.video = Video.builder()
-                .url(ensureNotNull(url, "url"))
-                .build();
+    constructor(url: URI) {
+        this.video = Video.Companion.builder()
+            .url(ValidationUtils.ensureNotNull<URI>(url, "url"))
+            .build()
     }
 
     /**
-     * Create a new {@link VideoContent} from the given url.
+     * Create a new [VideoContent] from the given url.
      *
      * @param url the url of the video.
      */
-    public VideoContent(String url) {
-        this(URI.create(url));
-    }
+    constructor(url: String) : this(URI.create(url))
 
     /**
-     * Create a new {@link VideoContent} from the given base64 data and mime type.
+     * Create a new [VideoContent] from the given base64 data and mime type.
      *
      * @param base64Data the base64 data of the video.
      * @param mimeType   the mime type of the video.
      */
-    public VideoContent(String base64Data, String mimeType) {
-        this.video = Video.builder()
-                .base64Data(ensureNotBlank(base64Data, "base64data"))
-                .mimeType(ensureNotBlank(mimeType, "mimeType")).build();
+    constructor(base64Data: String?, mimeType: String?) {
+        this.video = Video.Companion.builder()
+            .base64Data(ValidationUtils.ensureNotBlank(base64Data, "base64data"))
+            .mimeType(ValidationUtils.ensureNotBlank(mimeType, "mimeType")).build()
     }
 
     /**
-     * Create a new {@link VideoContent} from the given video.
+     * Create a new [VideoContent] from the given video.
      *
      * @param video the video.
      */
-    public VideoContent(Video video) {
-        this.video = video;
+    constructor(video: Video) {
+        this.video = video
     }
 
     /**
-     * Get the {@code Video}.
+     * Get the `Video`.
      *
-     * @return the {@code Video}.
+     * @return the `Video`.
      */
-    public Video video() {
-        return video;
+    fun video(): Video {
+        return video
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        VideoContent that = (VideoContent) o;
-        return Objects.equals(this.video, that.video);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as VideoContent
+        return this.video == that.video
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(video);
+    override fun hashCode(): Int {
+        return Objects.hash(video)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "VideoContent {" +
                 " video = " + video +
-                " }";
+                " }"
     }
 
-    /**
-     * Create a new {@link VideoContent} from the given url.
-     *
-     * @param url the url of the video.
-     * @return the new {@link VideoContent}.
-     */
-    public static VideoContent from(URI url) {
-        return new VideoContent(url);
-    }
+    companion object {
+        /**
+         * Create a new [VideoContent] from the given url.
+         *
+         * @param url the url of the video.
+         * @return the new [VideoContent].
+         */
+        fun from(url: URI): VideoContent {
+            return VideoContent(url)
+        }
 
-    /**
-     * Create a new {@link VideoContent} from the given url.
-     *
-     * @param url the url of the video.
-     * @return the new {@link VideoContent}.
-     */
-    public static VideoContent from(String url) {
-        return new VideoContent(url);
-    }
+        /**
+         * Create a new [VideoContent] from the given url.
+         *
+         * @param url the url of the video.
+         * @return the new [VideoContent].
+         */
+        fun from(url: String): VideoContent {
+            return VideoContent(url)
+        }
 
-    /**
-     * Create a new {@link VideoContent} from the given base64 data and mime type.
-     *
-     * @param base64Data the base64 data of the video.
-     * @param mimeType   the mime type of the video.
-     * @return the new {@link VideoContent}.
-     */
-    public static VideoContent from(String base64Data, String mimeType) {
-        return new VideoContent(base64Data, mimeType);
-    }
+        /**
+         * Create a new [VideoContent] from the given base64 data and mime type.
+         *
+         * @param base64Data the base64 data of the video.
+         * @param mimeType   the mime type of the video.
+         * @return the new [VideoContent].
+         */
+        fun from(base64Data: String?, mimeType: String?): VideoContent {
+            return VideoContent(base64Data, mimeType)
+        }
 
-    /**
-     * Create a new {@link VideoContent} from the given video.
-     *
-     * @param video the video.
-     * @return the new {@link VideoContent}.
-     */
-    public static VideoContent from(Video video) {
-        return new VideoContent(video);
+        /**
+         * Create a new [VideoContent] from the given video.
+         *
+         * @param video the video.
+         * @return the new [VideoContent].
+         */
+        fun from(video: Video): VideoContent {
+            return VideoContent(video)
+        }
     }
 }

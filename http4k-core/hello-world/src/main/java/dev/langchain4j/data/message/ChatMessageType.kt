@@ -1,46 +1,42 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
+
+import dev.langchain4j.data.message.AiMessage
 
 /**
  * The type of content, e.g. text or image.
- * Maps to implementations of {@link ChatMessage}.
+ * Maps to implementations of [ChatMessage].
  */
-public enum ChatMessageType {
+enum class ChatMessageType(private val messageClass: Class<out ChatMessage>) {
     /**
      * A message from the system, typically defined by a developer.
      */
-    SYSTEM(SystemMessage.class),
+    SYSTEM(SystemMessage::class.java),
 
     /**
      * A message from the user.
      */
-    USER(UserMessage.class),
+    USER(UserMessage::class.java),
 
     /**
      * A message from the AI.
      */
-    AI(AiMessage.class),
+    AI(AiMessage::class.java),
 
     /**
      * A message from a tool.
      */
-    TOOL_EXECUTION_RESULT(ToolExecutionResultMessage.class),
+    TOOL_EXECUTION_RESULT(ToolExecutionResultMessage::class.java),
 
     /**
      * A custom message.
      */
-    CUSTOM(CustomMessage.class);
-
-    private final Class<? extends ChatMessage> messageClass;
-
-    ChatMessageType(Class<? extends ChatMessage> messageClass) {
-        this.messageClass = messageClass;
-    }
+    CUSTOM(CustomMessage::class.java);
 
     /**
      * Returns the class of the message type.
      * @return the class of the message type.
      */
-    public Class<? extends ChatMessage> messageClass() {
-        return messageClass;
+    fun messageClass(): Class<out ChatMessage> {
+        return messageClass
     }
 }

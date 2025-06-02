@@ -1,24 +1,24 @@
-package dev.langchain4j.data.message;
-
-import dev.langchain4j.model.chat.ChatModel;
-import dev.langchain4j.model.chat.StreamingChatModel;
+package dev.langchain4j.data.message
 
 /**
  * Represents a chat message.
- * Used together with {@link ChatModel} and {@link StreamingChatModel}.
+ * Used together with [ChatModel] and [StreamingChatModel].
  *
  * @see SystemMessage
+ *
  * @see UserMessage
+ *
  * @see AiMessage
+ *
  * @see ToolExecutionResultMessage
+ *
  * @see CustomMessage
  */
-public interface ChatMessage {
-
+interface ChatMessage {
     /**
      * The type of the message.
      *
      * @return the type of the message
      */
-    ChatMessageType type();
+    fun type(): ChatMessageType
 }

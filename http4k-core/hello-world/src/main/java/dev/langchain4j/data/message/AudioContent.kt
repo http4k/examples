@@ -1,131 +1,122 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
-import dev.langchain4j.data.audio.Audio;
+import dev.langchain4j.data.audio.Audio
+import dev.langchain4j.internal.ValidationUtils
+import java.net.URI
+import java.util.Objects
 
-import java.net.URI;
-import java.util.Objects;
+class AudioContent : Content {
+    private val audio: Audio
 
-import static dev.langchain4j.data.message.ContentType.AUDIO;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
-public class AudioContent implements Content {
-
-    private final Audio audio;
-
-    @Override
-    public ContentType type() {
-        return AUDIO;
+    override fun type(): ContentType {
+        return ContentType.AUDIO
     }
 
     /**
-     * Create a new {@link AudioContent} from the given url.
+     * Create a new [AudioContent] from the given url.
      *
      * @param url the url of the Audio.
      */
-    public AudioContent(URI url) {
-        this.audio = Audio.builder()
-                .url(ensureNotNull(url, "url"))
-                .build();
+    constructor(url: URI) {
+        this.audio = Audio.Companion.builder()
+            .url(ValidationUtils.ensureNotNull<URI>(url, "url"))
+            .build()
     }
 
     /**
-     * Create a new {@link AudioContent} from the given url.
+     * Create a new [AudioContent] from the given url.
      *
      * @param url the url of the Audio.
      */
-    public AudioContent(String url) {
-        this(URI.create(url));
-    }
+    constructor(url: String) : this(URI.create(url))
 
     /**
-     * Create a new {@link AudioContent} from the given base64 data and mime type.
+     * Create a new [AudioContent] from the given base64 data and mime type.
      *
      * @param base64Data the base64 data of the Audio.
      * @param mimeType   the mime type of the Audio.
      */
-    public AudioContent(String base64Data, String mimeType) {
-        this.audio = Audio.builder()
-                .base64Data(ensureNotBlank(base64Data, "base64data"))
-                .mimeType(ensureNotBlank(mimeType, "mimeType")).build();
+    constructor(base64Data: String?, mimeType: String?) {
+        this.audio = Audio.Companion.builder()
+            .base64Data(ValidationUtils.ensureNotBlank(base64Data, "base64data"))
+            .mimeType(ValidationUtils.ensureNotBlank(mimeType, "mimeType")).build()
     }
 
     /**
-     * Create a new {@link AudioContent} from the given Audio.
+     * Create a new [AudioContent] from the given Audio.
      *
      * @param audio the audio.
      */
-    public AudioContent(Audio audio) {
-        this.audio = audio;
+    constructor(audio: Audio) {
+        this.audio = audio
     }
 
     /**
-     * Get the {@code Audio}.
+     * Get the `Audio`.
      *
-     * @return the {@code Audio}.
+     * @return the `Audio`.
      */
-    public Audio audio() {
-        return audio;
+    fun audio(): Audio {
+        return audio
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AudioContent that = (AudioContent) o;
-        return Objects.equals(this.audio, that.audio);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as AudioContent
+        return this.audio == that.audio
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(audio);
+    override fun hashCode(): Int {
+        return Objects.hash(audio)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "AudioContent {" +
                 " audio = " + audio +
-                " }";
+                " }"
     }
 
-    /**
-     * Create a new {@link AudioContent} from the given url.
-     *
-     * @param url the url of the Audio.
-     * @return the new {@link AudioContent}.
-     */
-    public static AudioContent from(URI url) {
-        return new AudioContent(url);
-    }
+    companion object {
+        /**
+         * Create a new [AudioContent] from the given url.
+         *
+         * @param url the url of the Audio.
+         * @return the new [AudioContent].
+         */
+        fun from(url: URI): AudioContent {
+            return AudioContent(url)
+        }
 
-    /**
-     * Create a new {@link AudioContent} from the given url.
-     *
-     * @param url the url of the Audio.
-     * @return the new {@link AudioContent}.
-     */
-    public static AudioContent from(String url) {
-        return new AudioContent(url);
-    }
+        /**
+         * Create a new [AudioContent] from the given url.
+         *
+         * @param url the url of the Audio.
+         * @return the new [AudioContent].
+         */
+        fun from(url: String): AudioContent {
+            return AudioContent(url)
+        }
 
-    /**
-     * Create a new {@link AudioContent} from the given base64 data and mime type.
-     *
-     * @param base64Data the base64 data of the Audio.
-     * @param mimeType   the mime type of the Audio.
-     * @return the new {@link AudioContent}.
-     */
-    public static AudioContent from(String base64Data, String mimeType) {
-        return new AudioContent(base64Data, mimeType);
-    }
+        /**
+         * Create a new [AudioContent] from the given base64 data and mime type.
+         *
+         * @param base64Data the base64 data of the Audio.
+         * @param mimeType   the mime type of the Audio.
+         * @return the new [AudioContent].
+         */
+        fun from(base64Data: String?, mimeType: String?): AudioContent {
+            return AudioContent(base64Data, mimeType)
+        }
 
-    /**
-     * Create a new {@link AudioContent} from the given Audio.
-     *
-     * @param audio the Audio.
-     * @return the new {@link AudioContent}.
-     */
-    public static AudioContent from(Audio audio) {
-        return new AudioContent(audio);
+        /**
+         * Create a new [AudioContent] from the given Audio.
+         *
+         * @param audio the Audio.
+         * @return the new [AudioContent].
+         */
+        fun from(audio: Audio): AudioContent {
+            return AudioContent(audio)
+        }
     }
 }

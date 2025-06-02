@@ -1,75 +1,63 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
-import java.util.Objects;
-
-import static dev.langchain4j.data.message.ChatMessageType.SYSTEM;
-import static dev.langchain4j.internal.Utils.quoted;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Objects
 
 /**
  * Represents a system message, typically defined by a developer.
  * This type of message usually provides instructions regarding the AI's actions, such as its behavior or response style.
  */
-public class SystemMessage implements ChatMessage {
-
-    private final String text;
-
-    /**
-     * Creates a new system message.
-     * @param text the message text.
-     */
-    public SystemMessage(String text) {
-        this.text = ensureNotBlank(text, "text");
-    }
+class SystemMessage(text: String?) : ChatMessage {
+    private val text: String = ValidationUtils.ensureNotBlank(text, "text")
 
     /**
      * Returns the message text.
      * @return the message text.
      */
-    public String text() {
-        return text;
+    fun text(): String {
+        return text
     }
 
-    @Override
-    public ChatMessageType type() {
-        return SYSTEM;
+    override fun type(): ChatMessageType {
+        return ChatMessageType.SYSTEM
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        SystemMessage that = (SystemMessage) o;
-        return Objects.equals(this.text, that.text);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as SystemMessage
+        return this.text == that.text
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(text);
+    override fun hashCode(): Int {
+        return Objects.hash(text)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "SystemMessage {" +
-                " text = " + quoted(text) +
-                " }";
+                " text = " + Utils.quoted(text) +
+                " }"
     }
 
-    /**
-     * Creates a new system message.
-     * @param text the message text.
-     * @return the system message.
-     */
-    public static SystemMessage from(String text) {
-        return new SystemMessage(text);
-    }
+    companion object {
+        /**
+         * Creates a new system message.
+         * @param text the message text.
+         * @return the system message.
+         */
+        fun from(text: String?): SystemMessage {
+            return SystemMessage(text)
+        }
 
-    /**
-     * Creates a new system message.
-     * @param text the message text.
-     * @return the system message.
-     */
-    public static SystemMessage systemMessage(String text) {
-        return from(text);
+        /**
+         * Creates a new system message.
+         * @param text the message text.
+         * @return the system message.
+         */
+        @JvmStatic
+        fun systemMessage(text: String?): SystemMessage {
+            return from(text)
+        }
     }
 }

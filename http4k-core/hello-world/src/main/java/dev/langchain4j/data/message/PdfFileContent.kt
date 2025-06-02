@@ -1,132 +1,123 @@
-package dev.langchain4j.data.message;
+package dev.langchain4j.data.message
 
-import dev.langchain4j.data.pdf.PdfFile;
+import dev.langchain4j.data.pdf.PdfFile
+import dev.langchain4j.internal.ValidationUtils
+import java.net.URI
+import java.util.Objects
 
-import java.net.URI;
-import java.util.Objects;
+class PdfFileContent : Content {
+    private val pdfFile: PdfFile
 
-import static dev.langchain4j.data.message.ContentType.PDF;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
-public class PdfFileContent implements Content {
-
-    private final PdfFile pdfFile;
-
-    @Override
-    public ContentType type() {
-        return PDF;
+    override fun type(): ContentType {
+        return ContentType.PDF
     }
 
     /**
-     * Create a new {@link PdfFileContent} from the given url.
+     * Create a new [PdfFileContent] from the given url.
      *
      * @param url the url of the PDF.
      */
-    public PdfFileContent(URI url) {
-        this.pdfFile = PdfFile.builder()
-                .url(ensureNotNull(url, "url"))
-                .build();
+    constructor(url: URI) {
+        this.pdfFile = PdfFile.Companion.builder()
+            .url(ValidationUtils.ensureNotNull<URI>(url, "url"))
+            .build()
     }
 
     /**
-     * Create a new {@link PdfFileContent} from the given url.
+     * Create a new [PdfFileContent] from the given url.
      *
      * @param url the url of the PDF.
      */
-    public PdfFileContent(String url) {
-        this(URI.create(url));
-    }
+    constructor(url: String) : this(URI.create(url))
 
     /**
-     * Create a new {@link PdfFileContent} from the given base64 data and mime type.
+     * Create a new [PdfFileContent] from the given base64 data and mime type.
      *
      * @param base64Data the base64 data of the PDF.
      * @param mimeType   the mime type of the PDF.
      */
-    public PdfFileContent(String base64Data, String mimeType) {
-        this.pdfFile = PdfFile.builder()
-                .base64Data(ensureNotBlank(base64Data, "base64data"))
-                .mimeType(mimeType)
-                .build();
+    constructor(base64Data: String?, mimeType: String?) {
+        this.pdfFile = PdfFile.Companion.builder()
+            .base64Data(ValidationUtils.ensureNotBlank(base64Data, "base64data"))
+            .mimeType(mimeType)
+            .build()
     }
 
     /**
-     * Create a new {@link PdfFileContent} from the given PDF file.
+     * Create a new [PdfFileContent] from the given PDF file.
      *
      * @param pdfFile the PDF.
      */
-    public PdfFileContent(PdfFile pdfFile) {
-        this.pdfFile = pdfFile;
+    constructor(pdfFile: PdfFile) {
+        this.pdfFile = pdfFile
     }
 
     /**
-     * Get the {@code PdfFile}.
+     * Get the `PdfFile`.
      *
-     * @return the {@code PdfFile}.
+     * @return the `PdfFile`.
      */
-    public PdfFile pdfFile() {
-        return pdfFile;
+    fun pdfFile(): PdfFile {
+        return pdfFile
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PdfFileContent that = (PdfFileContent) o;
-        return Objects.equals(this.pdfFile, that.pdfFile);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as PdfFileContent
+        return this.pdfFile == that.pdfFile
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(pdfFile);
+    override fun hashCode(): Int {
+        return Objects.hash(pdfFile)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "PdfFileContent {" +
                 " pdfFile = " + pdfFile +
-                " }";
+                " }"
     }
 
-    /**
-     * Create a new {@link PdfFileContent} from the given url.
-     *
-     * @param url the url of the PDF.
-     * @return the new {@link PdfFileContent}.
-     */
-    public static PdfFileContent from(URI url) {
-        return new PdfFileContent(url);
-    }
+    companion object {
+        /**
+         * Create a new [PdfFileContent] from the given url.
+         *
+         * @param url the url of the PDF.
+         * @return the new [PdfFileContent].
+         */
+        fun from(url: URI): PdfFileContent {
+            return PdfFileContent(url)
+        }
 
-    /**
-     * Create a new {@link PdfFileContent} from the given url.
-     *
-     * @param url the url of the PDF.
-     * @return the new {@link PdfFileContent}.
-     */
-    public static PdfFileContent from(String url) {
-        return new PdfFileContent(url);
-    }
+        /**
+         * Create a new [PdfFileContent] from the given url.
+         *
+         * @param url the url of the PDF.
+         * @return the new [PdfFileContent].
+         */
+        fun from(url: String): PdfFileContent {
+            return PdfFileContent(url)
+        }
 
-    /**
-     * Create a new {@link PdfFileContent} from the given base64 data and mime type.
-     *
-     * @param base64Data the base64 data of the PDF.
-     * @param mimeType   the mime type of the PDF.
-     * @return the new {@link PdfFileContent}.
-     */
-    public static PdfFileContent from(String base64Data, String mimeType) {
-        return new PdfFileContent(base64Data, mimeType);
-    }
+        /**
+         * Create a new [PdfFileContent] from the given base64 data and mime type.
+         *
+         * @param base64Data the base64 data of the PDF.
+         * @param mimeType   the mime type of the PDF.
+         * @return the new [PdfFileContent].
+         */
+        fun from(base64Data: String?, mimeType: String?): PdfFileContent {
+            return PdfFileContent(base64Data, mimeType)
+        }
 
-    /**
-     * Create a new {@link PdfFileContent} from the given PDF.
-     *
-     * @param pdfFile the PDF.
-     * @return the new {@link PdfFileContent}.
-     */
-    public static PdfFileContent from(PdfFile pdfFile) {
-        return new PdfFileContent(pdfFile);
+        /**
+         * Create a new [PdfFileContent] from the given PDF.
+         *
+         * @param pdfFile the PDF.
+         * @return the new [PdfFileContent].
+         */
+        fun from(pdfFile: PdfFile): PdfFileContent {
+            return PdfFileContent(pdfFile)
+        }
     }
 }
