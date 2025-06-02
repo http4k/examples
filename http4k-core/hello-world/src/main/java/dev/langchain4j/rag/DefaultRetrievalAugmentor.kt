@@ -1,7 +1,6 @@
 package dev.langchain4j.rag
 
 import dev.langchain4j.data.message.UserMessage
-import dev.langchain4j.internal.Utils
 import dev.langchain4j.rag.content.Content
 import dev.langchain4j.rag.content.aggregator.ContentAggregator
 import dev.langchain4j.rag.content.aggregator.DefaultContentAggregator
@@ -108,19 +107,11 @@ class DefaultRetrievalAugmentor(
     private val executor: Executor?
 
     init {
-        this.queryTransformer = Utils.getOrDefault(
-            queryTransformer
-        ) { DefaultQueryTransformer() }
+        this.queryTransformer = DefaultQueryTransformer()
         this.queryRouter = queryRouter!!
-        this.contentAggregator = Utils.getOrDefault(
-            contentAggregator
-        ) { DefaultContentAggregator() }
-        this.contentInjector = Utils.getOrDefault(
-            contentInjector
-        ) { DefaultContentInjector() }
-        this.executor = Utils.getOrDefault(
-            executor
-        ) { createDefaultExecutor() }
+        this.contentAggregator = DefaultContentAggregator()
+        this.contentInjector = DefaultContentInjector()
+        this.executor = createDefaultExecutor()
     }
 
     override fun augment(augmentationRequest: AugmentationRequest): AugmentationResult {

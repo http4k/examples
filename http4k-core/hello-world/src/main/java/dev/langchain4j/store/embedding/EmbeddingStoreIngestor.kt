@@ -6,7 +6,6 @@ import dev.langchain4j.data.document.DocumentTransformer
 import dev.langchain4j.data.embedding.Embedding
 import dev.langchain4j.data.segment.TextSegment
 import dev.langchain4j.data.segment.TextSegmentTransformer
-import dev.langchain4j.internal.Utils
 import dev.langchain4j.model.embedding.EmbeddingModel
 import dev.langchain4j.spi.ServiceHelper
 import dev.langchain4j.spi.data.document.splitter.DocumentSplitterFactory
@@ -63,9 +62,7 @@ class EmbeddingStoreIngestor(
      * @param embeddingStore         The [EmbeddingStore] to use. Mandatory.
      */
     init {
-        this.documentSplitter = Utils.getOrDefault(
-            documentSplitter
-        ) { loadDocumentSplitter() }
+        this.documentSplitter = loadDocumentSplitter()
         this.embeddingModel = embeddingModel!!
         this.embeddingStore = embeddingStore!!!!
     }

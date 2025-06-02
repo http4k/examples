@@ -107,9 +107,7 @@ class EmbeddingStoreContentRetriever private constructor(
     init {
         this.displayName = Utils.getOrDefault(displayName, DEFAULT_DISPLAY_NAME)
         this.embeddingStore = embeddingStore!!
-        this.embeddingModel = Utils.getOrDefault(
-            embeddingModel
-        ) { loadEmbeddingModel() }!!
+        this.embeddingModel = loadEmbeddingModel()!!
         this.maxResultsProvider = Utils.getOrDefault(dynamicMaxResults, DEFAULT_MAX_RESULTS)
         this.minScoreProvider = Utils.getOrDefault(dynamicMinScore, DEFAULT_MIN_SCORE)
         this.filterProvider = Utils.getOrDefault(dynamicFilter, DEFAULT_FILTER)
