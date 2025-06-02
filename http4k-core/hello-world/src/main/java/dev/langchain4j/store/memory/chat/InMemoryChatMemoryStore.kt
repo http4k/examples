@@ -1,38 +1,30 @@
-package dev.langchain4j.store.memory.chat;
+package dev.langchain4j.store.memory.chat
 
-import dev.langchain4j.data.message.ChatMessage;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import dev.langchain4j.data.message.ChatMessage
+import java.util.concurrent.ConcurrentHashMap
 
 /**
- * Implementation of {@link ChatMemoryStore} that stores state of {@link dev.langchain4j.memory.ChatMemory} (chat messages) in-memory.
- * <p>
+ * Implementation of [ChatMemoryStore] that stores state of [dev.langchain4j.memory.ChatMemory] (chat messages) in-memory.
+ *
+ *
  * This storage mechanism is transient and does not persist data across application restarts.
  */
-public class InMemoryChatMemoryStore implements ChatMemoryStore {
+class InMemoryChatMemoryStore
+/**
+ * Constructs a new [InMemoryChatMemoryStore].
+ */
+    : ChatMemoryStore {
+    private val messagesByMemoryId: MutableMap<Any, List<ChatMessage>> = ConcurrentHashMap()
 
-    private final Map<Object, List<ChatMessage>> messagesByMemoryId = new ConcurrentHashMap<>();
-
-    /**
-     * Constructs a new {@link InMemoryChatMemoryStore}.
-     */
-    public InMemoryChatMemoryStore() {}
-
-    @Override
-    public List<ChatMessage> getMessages(Object memoryId) {
-        return messagesByMemoryId.computeIfAbsent(memoryId, ignored -> new ArrayList<>());
+    override fun getMessages(memoryId: Any): List<ChatMessage> {
+        return messagesByMemoryId.computeIfAbsent(memoryId) { ignored: Any? -> ArrayList() }
     }
 
-    @Override
-    public void updateMessages(Object memoryId, List<ChatMessage> messages) {
-        messagesByMemoryId.put(memoryId, messages);
+    override fun updateMessages(memoryId: Any, messages: List<ChatMessage>) {
+        messagesByMemoryId[memoryId] = messages
     }
 
-    @Override
-    public void deleteMessages(Object memoryId) {
-        messagesByMemoryId.remove(memoryId);
+    override fun deleteMessages(memoryId: Any) {
+        messagesByMemoryId.remove(memoryId)
     }
 }

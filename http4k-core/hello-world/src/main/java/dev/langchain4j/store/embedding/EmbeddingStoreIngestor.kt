@@ -1,283 +1,201 @@
-package dev.langchain4j.store.embedding;
+package dev.langchain4j.store.embedding
 
-import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentSplitter;
-import dev.langchain4j.data.document.DocumentTransformer;
-import dev.langchain4j.data.embedding.Embedding;
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.data.segment.TextSegmentTransformer;
-import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.model.output.Response;
-import dev.langchain4j.spi.data.document.splitter.DocumentSplitterFactory;
-import dev.langchain4j.spi.model.embedding.EmbeddingModelFactory;
-
-import java.util.Collection;
-import java.util.List;
-
-import static dev.langchain4j.internal.Utils.getOrDefault;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-import static dev.langchain4j.spi.ServiceHelper.loadFactories;
-import static java.util.Arrays.asList;
-import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toList;
+import dev.langchain4j.data.document.Document
+import dev.langchain4j.data.document.DocumentSplitter
+import dev.langchain4j.data.document.DocumentTransformer
+import dev.langchain4j.data.embedding.Embedding
+import dev.langchain4j.data.segment.TextSegment
+import dev.langchain4j.data.segment.TextSegmentTransformer
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.model.embedding.EmbeddingModel
+import dev.langchain4j.spi.ServiceHelper
+import dev.langchain4j.spi.data.document.splitter.DocumentSplitterFactory
+import dev.langchain4j.spi.model.embedding.EmbeddingModelFactory
+import dev.langchain4j.store.embedding.EmbeddingStore
+import java.util.Arrays
+import java.util.stream.Collectors
 
 /**
- * The {@code EmbeddingStoreIngestor} represents an ingestion pipeline and is responsible
- * for ingesting {@link Document}s into an {@link EmbeddingStore}.
- * <br>
- * <br>
- * In the simplest configuration, {@code EmbeddingStoreIngestor} embeds provided documents
- * using a provided {@link EmbeddingModel} and stores them, along with their {@link Embedding}s
- * in an {@code EmbeddingStore}.
- * <br>
- * <br>
- * Optionally, the {@code EmbeddingStoreIngestor} can transform documents using a provided {@link DocumentTransformer}.
+ * The `EmbeddingStoreIngestor` represents an ingestion pipeline and is responsible
+ * for ingesting [Document]s into an [EmbeddingStore].
+ * <br></br>
+ * <br></br>
+ * In the simplest configuration, `EmbeddingStoreIngestor` embeds provided documents
+ * using a provided [EmbeddingModel] and stores them, along with their [Embedding]s
+ * in an `EmbeddingStore`.
+ * <br></br>
+ * <br></br>
+ * Optionally, the `EmbeddingStoreIngestor` can transform documents using a provided [DocumentTransformer].
  * This can be useful if you want to clean, enrich, or format documents before embedding them.
- * <br>
- * <br>
- * Optionally, the {@code EmbeddingStoreIngestor} can split documents into {@link TextSegment}s
- * using a provided {@link DocumentSplitter}.
+ * <br></br>
+ * <br></br>
+ * Optionally, the `EmbeddingStoreIngestor` can split documents into [TextSegment]s
+ * using a provided [DocumentSplitter].
  * This can be useful if documents are big, and you want to split them into smaller segments to improve the quality
  * of similarity searches and reduce the size and cost of a prompt sent to the LLM.
- * <br>
- * <br>
- * Optionally, the {@code EmbeddingStoreIngestor} can transform {@code TextSegment}s using a {@link TextSegmentTransformer}.
- * This can be useful if you want to clean, enrich, or format {@code TextSegment}s before embedding them.
- * <br>
- * Including a document title or a short summary in each {@code TextSegment} is a common technique
+ * <br></br>
+ * <br></br>
+ * Optionally, the `EmbeddingStoreIngestor` can transform `TextSegment`s using a [TextSegmentTransformer].
+ * This can be useful if you want to clean, enrich, or format `TextSegment`s before embedding them.
+ * <br></br>
+ * Including a document title or a short summary in each `TextSegment` is a common technique
  * to improve the quality of similarity searches.
  */
-public class EmbeddingStoreIngestor {
-
-    private final DocumentTransformer documentTransformer;
-    private final DocumentSplitter documentSplitter;
-    private final TextSegmentTransformer textSegmentTransformer;
-    private final EmbeddingModel embeddingModel;
-    private final EmbeddingStore<TextSegment> embeddingStore;
+class EmbeddingStoreIngestor(
+    private val documentTransformer: DocumentTransformer?,
+    documentSplitter: DocumentSplitter?,
+    private val textSegmentTransformer: TextSegmentTransformer?,
+    embeddingModel: EmbeddingModel?,
+    embeddingStore: EmbeddingStore<TextSegment>?
+) {
+    private val documentSplitter: DocumentSplitter?
+    private val embeddingModel: EmbeddingModel
+    private val embeddingStore: EmbeddingStore<TextSegment>
 
     /**
-     * Creates an instance of an {@code EmbeddingStoreIngestor}.
+     * Creates an instance of an `EmbeddingStoreIngestor`.
      *
-     * @param documentTransformer    The {@link DocumentTransformer} to use. Optional.
-     * @param documentSplitter       The {@link DocumentSplitter} to use. Optional.
-     *                               If none is specified, it tries to load one through SPI (see {@link DocumentSplitterFactory}).
-     * @param textSegmentTransformer The {@link TextSegmentTransformer} to use. Optional.
-     * @param embeddingModel         The {@link EmbeddingModel} to use. Mandatory.
-     *                               If none is specified, it tries to load one through SPI (see {@link EmbeddingModelFactory}).
-     * @param embeddingStore         The {@link EmbeddingStore} to use. Mandatory.
+     * @param documentTransformer    The [DocumentTransformer] to use. Optional.
+     * @param documentSplitter       The [DocumentSplitter] to use. Optional.
+     * If none is specified, it tries to load one through SPI (see [DocumentSplitterFactory]).
+     * @param textSegmentTransformer The [TextSegmentTransformer] to use. Optional.
+     * @param embeddingModel         The [EmbeddingModel] to use. Mandatory.
+     * If none is specified, it tries to load one through SPI (see [EmbeddingModelFactory]).
+     * @param embeddingStore         The [EmbeddingStore] to use. Mandatory.
      */
-    public EmbeddingStoreIngestor(DocumentTransformer documentTransformer,
-                                  DocumentSplitter documentSplitter,
-                                  TextSegmentTransformer textSegmentTransformer,
-                                  EmbeddingModel embeddingModel,
-                                  EmbeddingStore<TextSegment> embeddingStore) {
-        this.documentTransformer = documentTransformer;
-        this.documentSplitter = getOrDefault(documentSplitter, EmbeddingStoreIngestor::loadDocumentSplitter);
-        this.textSegmentTransformer = textSegmentTransformer;
-        this.embeddingModel = ensureNotNull(
-                getOrDefault(embeddingModel, EmbeddingStoreIngestor::loadEmbeddingModel),
-                "embeddingModel"
-        );
-        this.embeddingStore = ensureNotNull(embeddingStore, "embeddingStore");
-    }
-
-    private static DocumentSplitter loadDocumentSplitter() {
-        Collection<DocumentSplitterFactory> factories = loadFactories(DocumentSplitterFactory.class);
-        if (factories.size() > 1) {
-            throw new RuntimeException("Conflict: multiple document splitters have been found in the classpath. " +
-                    "Please explicitly specify the one you wish to use.");
-        }
-
-        for (DocumentSplitterFactory factory : factories) {
-            DocumentSplitter documentSplitter = factory.create();
-            return documentSplitter;
-        }
-
-        return null;
-    }
-
-    private static EmbeddingModel loadEmbeddingModel() {
-        Collection<EmbeddingModelFactory> factories = loadFactories(EmbeddingModelFactory.class);
-        if (factories.size() > 1) {
-            throw new RuntimeException("Conflict: multiple embedding models have been found in the classpath. " +
-                    "Please explicitly specify the one you wish to use.");
-        }
-
-        for (EmbeddingModelFactory factory : factories) {
-            EmbeddingModel embeddingModel = factory.create();
-            return embeddingModel;
-        }
-
-        return null;
+    init {
+        this.documentSplitter = Utils.getOrDefault(
+            documentSplitter
+        ) { loadDocumentSplitter() }
+        this.embeddingModel = embeddingModel!!
+        this.embeddingStore = ValidationUtils.ensureNotNull(embeddingStore!!, "embeddingStore")
     }
 
     /**
-     * Ingests a specified {@link Document} into a specified {@link EmbeddingStore}.
-     * <br>
-     * Uses {@link DocumentSplitter} and {@link EmbeddingModel} found through SPIs
-     * (see {@link DocumentSplitterFactory} and {@link EmbeddingModelFactory}).
-     * <br>
-     * For the "Easy RAG", import {@code langchain4j-easy-rag} module,
-     * which contains a {@code DocumentSplitterFactory} and {@code EmbeddingModelFactory} implementations.
-     *
-     * @return result including information related to ingestion process.
-     */
-    public static IngestionResult ingest(Document document, EmbeddingStore<TextSegment> embeddingStore) {
-        return builder().embeddingStore(embeddingStore).build().ingest(document);
-    }
-
-    /**
-     * Ingests specified {@link Document}s into a specified {@link EmbeddingStore}.
-     * <br>
-     * Uses {@link DocumentSplitter} and {@link EmbeddingModel} found through SPIs
-     * (see {@link DocumentSplitterFactory} and {@link EmbeddingModelFactory}).
-     * <br>
-     * For the "Easy RAG", import {@code langchain4j-easy-rag} module,
-     * which contains a {@code DocumentSplitterFactory} and {@code EmbeddingModelFactory} implementations.
-     *
-     * @return result including information related to ingestion process.
-     */
-    public static IngestionResult ingest(List<Document> documents, EmbeddingStore<TextSegment> embeddingStore) {
-        return builder().embeddingStore(embeddingStore).build().ingest(documents);
-    }
-
-    /**
-     * Ingests a specified document into an {@link EmbeddingStore} that was specified
-     * during the creation of this {@code EmbeddingStoreIngestor}.
+     * Ingests a specified document into an [EmbeddingStore] that was specified
+     * during the creation of this `EmbeddingStoreIngestor`.
      *
      * @param document the document to ingest.
      * @return result including information related to ingestion process.
      */
-    public IngestionResult ingest(Document document) {
-        return ingest(singletonList(document));
+    fun ingest(document: Document): IngestionResult {
+        return ingest(listOf(document))
     }
 
     /**
-     * Ingests specified documents into an {@link EmbeddingStore} that was specified
-     * during the creation of this {@code EmbeddingStoreIngestor}.
+     * Ingests specified documents into an [EmbeddingStore] that was specified
+     * during the creation of this `EmbeddingStoreIngestor`.
      *
      * @param documents the documents to ingest.
      * @return result including information related to ingestion process.
      */
-    public IngestionResult ingest(Document... documents) {
-        return ingest(asList(documents));
+    fun ingest(vararg documents: Document?): IngestionResult {
+        return ingest(Arrays.asList(*documents))
     }
 
     /**
-     * Ingests specified documents into an {@link EmbeddingStore} that was specified
-     * during the creation of this {@code EmbeddingStoreIngestor}.
+     * Ingests specified documents into an [EmbeddingStore] that was specified
+     * during the creation of this `EmbeddingStoreIngestor`.
      *
      * @param documents the documents to ingest.
      * @return result including information related to ingestion process.
      */
-    public IngestionResult ingest(List<Document> documents) {
-
-
+    fun ingest(documents: List<Document>): IngestionResult {
+        var documents = documents
         if (documentTransformer != null) {
-            documents = documentTransformer.transformAll(documents);
+            documents = documentTransformer.transformAll(documents)
         }
-        List<TextSegment> segments;
-        if (documentSplitter != null) {
-            segments = documentSplitter.splitAll(documents);
+        var segments: List<TextSegment?>?
+        segments = if (documentSplitter != null) {
+            documentSplitter.splitAll(documents)
         } else {
-            segments = documents.stream()
-                    .map(Document::toTextSegment)
-                    .collect(toList());
+            documents.stream()
+                .map { obj: Document -> obj.toTextSegment() }
+                .collect(Collectors.toList())
         }
         if (textSegmentTransformer != null) {
-            segments = textSegmentTransformer.transformAll(segments);
+            segments = textSegmentTransformer.transformAll(segments)
         }
 
-        Response<List<Embedding>> embeddingsResponse = embeddingModel.embedAll(segments);
+        val embeddingsResponse = embeddingModel.embedAll(segments)
 
-        embeddingStore.addAll(embeddingsResponse.content(), segments);
+        embeddingStore.addAll(embeddingsResponse.content(), segments)
 
-        return new IngestionResult(embeddingsResponse.tokenUsage());
-    }
-
-    /**
-     * Creates a new EmbeddingStoreIngestor builder.
-     *
-     * @return the builder.
-     */
-    public static Builder builder() {
-        return new Builder();
+        return IngestionResult(embeddingsResponse.tokenUsage())
     }
 
     /**
      * EmbeddingStoreIngestor builder.
      */
-    public static class Builder {
-
-        private DocumentTransformer documentTransformer;
-        private DocumentSplitter documentSplitter;
-        private TextSegmentTransformer textSegmentTransformer;
-        private EmbeddingModel embeddingModel;
-        private EmbeddingStore<TextSegment> embeddingStore;
-
-        /**
-         * Creates a new EmbeddingStoreIngestor builder.
-         */
-        public Builder() {
-        }
+    class Builder
+    /**
+     * Creates a new EmbeddingStoreIngestor builder.
+     */
+    {
+        private var documentTransformer: DocumentTransformer? = null
+        private var documentSplitter: DocumentSplitter? = null
+        private var textSegmentTransformer: TextSegmentTransformer? = null
+        private var embeddingModel: EmbeddingModel? = null
+        private var embeddingStore: EmbeddingStore<TextSegment>? = null
 
         /**
          * Sets the document transformer. Optional.
          *
          * @param documentTransformer the document transformer.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder documentTransformer(DocumentTransformer documentTransformer) {
-            this.documentTransformer = documentTransformer;
-            return this;
+        fun documentTransformer(documentTransformer: DocumentTransformer?): Builder {
+            this.documentTransformer = documentTransformer
+            return this
         }
 
         /**
          * Sets the document splitter. Optional.
-         * If none is specified, it tries to load one through SPI (see {@link DocumentSplitterFactory}).
-         * <br>
-         * {@code DocumentSplitters.recursive()} from main ({@code langchain4j}) module is a good starting point.
+         * If none is specified, it tries to load one through SPI (see [DocumentSplitterFactory]).
+         * <br></br>
+         * `DocumentSplitters.recursive()` from main (`langchain4j`) module is a good starting point.
          *
          * @param documentSplitter the document splitter.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder documentSplitter(DocumentSplitter documentSplitter) {
-            this.documentSplitter = documentSplitter;
-            return this;
+        fun documentSplitter(documentSplitter: DocumentSplitter?): Builder {
+            this.documentSplitter = documentSplitter
+            return this
         }
 
         /**
          * Sets the text segment transformer. Optional.
          *
          * @param textSegmentTransformer the text segment transformer.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder textSegmentTransformer(TextSegmentTransformer textSegmentTransformer) {
-            this.textSegmentTransformer = textSegmentTransformer;
-            return this;
+        fun textSegmentTransformer(textSegmentTransformer: TextSegmentTransformer?): Builder {
+            this.textSegmentTransformer = textSegmentTransformer
+            return this
         }
 
         /**
          * Sets the embedding model. Mandatory.
-         * If none is specified, it tries to load one through SPI (see {@link EmbeddingModelFactory}).
+         * If none is specified, it tries to load one through SPI (see [EmbeddingModelFactory]).
          *
          * @param embeddingModel the embedding model.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder embeddingModel(EmbeddingModel embeddingModel) {
-            this.embeddingModel = embeddingModel;
-            return this;
+        fun embeddingModel(embeddingModel: EmbeddingModel?): Builder {
+            this.embeddingModel = embeddingModel
+            return this
         }
 
         /**
          * Sets the embedding store. Mandatory.
          *
          * @param embeddingStore the embedding store.
-         * @return {@code this}
+         * @return `this`
          */
-        public Builder embeddingStore(EmbeddingStore<TextSegment> embeddingStore) {
-            this.embeddingStore = embeddingStore;
-            return this;
+        fun embeddingStore(embeddingStore: EmbeddingStore<TextSegment>?): Builder {
+            this.embeddingStore = embeddingStore
+            return this
         }
 
         /**
@@ -285,14 +203,93 @@ public class EmbeddingStoreIngestor {
          *
          * @return the EmbeddingStoreIngestor.
          */
-        public EmbeddingStoreIngestor build() {
-            return new EmbeddingStoreIngestor(
-                    documentTransformer,
-                    documentSplitter,
-                    textSegmentTransformer,
-                    embeddingModel,
-                    embeddingStore
-            );
+        fun build(): EmbeddingStoreIngestor {
+            return EmbeddingStoreIngestor(
+                documentTransformer,
+                documentSplitter,
+                textSegmentTransformer,
+                embeddingModel,
+                embeddingStore
+            )
+        }
+    }
+
+    companion object {
+        private fun loadDocumentSplitter(): DocumentSplitter? {
+            val factories = ServiceHelper.loadFactories(
+                DocumentSplitterFactory::class.java
+            )
+            if (factories.size > 1) {
+                throw RuntimeException(
+                    "Conflict: multiple document splitters have been found in the classpath. " +
+                            "Please explicitly specify the one you wish to use."
+                )
+            }
+
+            for (factory in factories) {
+                val documentSplitter = factory.create()
+                return documentSplitter
+            }
+
+            return null
+        }
+
+        private fun loadEmbeddingModel(): EmbeddingModel? {
+            val factories = ServiceHelper.loadFactories(
+                EmbeddingModelFactory::class.java
+            )
+            if (factories.size > 1) {
+                throw RuntimeException(
+                    "Conflict: multiple embedding models have been found in the classpath. " +
+                            "Please explicitly specify the one you wish to use."
+                )
+            }
+
+            for (factory in factories) {
+                val embeddingModel = factory.create()
+                return embeddingModel
+            }
+
+            return null
+        }
+
+        /**
+         * Ingests a specified [Document] into a specified [EmbeddingStore].
+         * <br></br>
+         * Uses [DocumentSplitter] and [EmbeddingModel] found through SPIs
+         * (see [DocumentSplitterFactory] and [EmbeddingModelFactory]).
+         * <br></br>
+         * For the "Easy RAG", import `langchain4j-easy-rag` module,
+         * which contains a `DocumentSplitterFactory` and `EmbeddingModelFactory` implementations.
+         *
+         * @return result including information related to ingestion process.
+         */
+        fun ingest(document: Document, embeddingStore: EmbeddingStore<TextSegment>?): IngestionResult {
+            return builder().embeddingStore(embeddingStore).build().ingest(document)
+        }
+
+        /**
+         * Ingests specified [Document]s into a specified [EmbeddingStore].
+         * <br></br>
+         * Uses [DocumentSplitter] and [EmbeddingModel] found through SPIs
+         * (see [DocumentSplitterFactory] and [EmbeddingModelFactory]).
+         * <br></br>
+         * For the "Easy RAG", import `langchain4j-easy-rag` module,
+         * which contains a `DocumentSplitterFactory` and `EmbeddingModelFactory` implementations.
+         *
+         * @return result including information related to ingestion process.
+         */
+        fun ingest(documents: List<Document>, embeddingStore: EmbeddingStore<TextSegment>?): IngestionResult {
+            return builder().embeddingStore(embeddingStore).build().ingest(documents)
+        }
+
+        /**
+         * Creates a new EmbeddingStoreIngestor builder.
+         *
+         * @return the builder.
+         */
+        fun builder(): Builder {
+            return Builder()
         }
     }
 }

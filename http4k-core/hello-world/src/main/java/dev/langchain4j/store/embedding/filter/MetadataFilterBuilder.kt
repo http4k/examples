@@ -1,266 +1,254 @@
-package dev.langchain4j.store.embedding.filter;
+package dev.langchain4j.store.embedding.filter
 
-import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.store.embedding.filter.comparison.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static java.util.Arrays.asList;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.store.embedding.filter.comparison.ContainsString
+import dev.langchain4j.store.embedding.filter.comparison.IsEqualTo
+import dev.langchain4j.store.embedding.filter.comparison.IsGreaterThan
+import dev.langchain4j.store.embedding.filter.comparison.IsGreaterThanOrEqualTo
+import dev.langchain4j.store.embedding.filter.comparison.IsIn
+import dev.langchain4j.store.embedding.filter.comparison.IsLessThan
+import dev.langchain4j.store.embedding.filter.comparison.IsLessThanOrEqualTo
+import dev.langchain4j.store.embedding.filter.comparison.IsNotEqualTo
+import dev.langchain4j.store.embedding.filter.comparison.IsNotIn
+import java.util.Arrays
+import java.util.UUID
+import java.util.stream.Collectors
 
 /**
- * A helper class for building a {@link Filter} for {@link Metadata} key.
+ * A helper class for building a [Filter] for [Metadata] key.
  */
-public class MetadataFilterBuilder {
-
-    private final String key;
-
-    public MetadataFilterBuilder(String key) {
-        this.key = ensureNotBlank(key, "key");
-    }
-
-    public static MetadataFilterBuilder metadataKey(String key) {
-        return new MetadataFilterBuilder(key);
-    }
+class MetadataFilterBuilder(key: String?) {
+    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
 
     // containsString
-
-    public Filter containsString(String value) {
-        return new ContainsString(key, value);
+    fun containsString(value: String): Filter {
+        return ContainsString(key, value)
     }
 
     // isEqualTo
-
-    public Filter isEqualTo(String value) {
-        return new IsEqualTo(key, value);
+    fun isEqualTo(value: String): Filter {
+        return IsEqualTo(key, value)
     }
 
-    public Filter isEqualTo(UUID value) {
-        return new IsEqualTo(key, value);
+    fun isEqualTo(value: UUID): Filter {
+        return IsEqualTo(key, value)
     }
 
-    public Filter isEqualTo(int value) {
-        return new IsEqualTo(key, value);
+    fun isEqualTo(value: Int): Filter {
+        return IsEqualTo(key, value)
     }
 
-    public Filter isEqualTo(long value) {
-        return new IsEqualTo(key, value);
+    fun isEqualTo(value: Long): Filter {
+        return IsEqualTo(key, value)
     }
 
-    public Filter isEqualTo(float value) {
-        return new IsEqualTo(key, value);
+    fun isEqualTo(value: Float): Filter {
+        return IsEqualTo(key, value)
     }
 
-    public Filter isEqualTo(double value) {
-        return new IsEqualTo(key, value);
+    fun isEqualTo(value: Double): Filter {
+        return IsEqualTo(key, value)
     }
 
     // isNotEqualTo
-
-    public Filter isNotEqualTo(String value) {
-        return new IsNotEqualTo(key, value);
+    fun isNotEqualTo(value: String): Filter {
+        return IsNotEqualTo(key, value)
     }
 
-    public Filter isNotEqualTo(UUID value) {
-        return new IsNotEqualTo(key, value);
+    fun isNotEqualTo(value: UUID): Filter {
+        return IsNotEqualTo(key, value)
     }
 
-    public Filter isNotEqualTo(int value) {
-        return new IsNotEqualTo(key, value);
+    fun isNotEqualTo(value: Int): Filter {
+        return IsNotEqualTo(key, value)
     }
 
-    public Filter isNotEqualTo(long value) {
-        return new IsNotEqualTo(key, value);
+    fun isNotEqualTo(value: Long): Filter {
+        return IsNotEqualTo(key, value)
     }
 
-    public Filter isNotEqualTo(float value) {
-        return new IsNotEqualTo(key, value);
+    fun isNotEqualTo(value: Float): Filter {
+        return IsNotEqualTo(key, value)
     }
 
-    public Filter isNotEqualTo(double value) {
-        return new IsNotEqualTo(key, value);
+    fun isNotEqualTo(value: Double): Filter {
+        return IsNotEqualTo(key, value)
     }
 
     // isGreaterThan
-
-    public Filter isGreaterThan(String value) {
-        return new IsGreaterThan(key, value);
+    fun isGreaterThan(value: String): Filter {
+        return IsGreaterThan(key, value)
     }
 
-    public Filter isGreaterThan(int value) {
-        return new IsGreaterThan(key, value);
+    fun isGreaterThan(value: Int): Filter {
+        return IsGreaterThan(key, value)
     }
 
-    public Filter isGreaterThan(long value) {
-        return new IsGreaterThan(key, value);
+    fun isGreaterThan(value: Long): Filter {
+        return IsGreaterThan(key, value)
     }
 
-    public Filter isGreaterThan(float value) {
-        return new IsGreaterThan(key, value);
+    fun isGreaterThan(value: Float): Filter {
+        return IsGreaterThan(key, value)
     }
 
-    public Filter isGreaterThan(double value) {
-        return new IsGreaterThan(key, value);
+    fun isGreaterThan(value: Double): Filter {
+        return IsGreaterThan(key, value)
     }
 
     // isGreaterThanOrEqualTo
-
-    public Filter isGreaterThanOrEqualTo(String value) {
-        return new IsGreaterThanOrEqualTo(key, value);
+    fun isGreaterThanOrEqualTo(value: String): Filter {
+        return IsGreaterThanOrEqualTo(key, value)
     }
 
-    public Filter isGreaterThanOrEqualTo(int value) {
-        return new IsGreaterThanOrEqualTo(key, value);
+    fun isGreaterThanOrEqualTo(value: Int): Filter {
+        return IsGreaterThanOrEqualTo(key, value)
     }
 
-    public Filter isGreaterThanOrEqualTo(long value) {
-        return new IsGreaterThanOrEqualTo(key, value);
+    fun isGreaterThanOrEqualTo(value: Long): Filter {
+        return IsGreaterThanOrEqualTo(key, value)
     }
 
-    public Filter isGreaterThanOrEqualTo(float value) {
-        return new IsGreaterThanOrEqualTo(key, value);
+    fun isGreaterThanOrEqualTo(value: Float): Filter {
+        return IsGreaterThanOrEqualTo(key, value)
     }
 
-    public Filter isGreaterThanOrEqualTo(double value) {
-        return new IsGreaterThanOrEqualTo(key, value);
+    fun isGreaterThanOrEqualTo(value: Double): Filter {
+        return IsGreaterThanOrEqualTo(key, value)
     }
 
     // isLessThan
-
-    public Filter isLessThan(String value) {
-        return new IsLessThan(key, value);
+    fun isLessThan(value: String): Filter {
+        return IsLessThan(key, value)
     }
 
-    public Filter isLessThan(int value) {
-        return new IsLessThan(key, value);
+    fun isLessThan(value: Int): Filter {
+        return IsLessThan(key, value)
     }
 
-    public Filter isLessThan(long value) {
-        return new IsLessThan(key, value);
+    fun isLessThan(value: Long): Filter {
+        return IsLessThan(key, value)
     }
 
-    public Filter isLessThan(float value) {
-        return new IsLessThan(key, value);
+    fun isLessThan(value: Float): Filter {
+        return IsLessThan(key, value)
     }
 
-    public Filter isLessThan(double value) {
-        return new IsLessThan(key, value);
+    fun isLessThan(value: Double): Filter {
+        return IsLessThan(key, value)
     }
 
     // isLessThanOrEqualTo
-
-    public Filter isLessThanOrEqualTo(String value) {
-        return new IsLessThanOrEqualTo(key, value);
+    fun isLessThanOrEqualTo(value: String): Filter {
+        return IsLessThanOrEqualTo(key, value)
     }
 
-    public Filter isLessThanOrEqualTo(int value) {
-        return new IsLessThanOrEqualTo(key, value);
+    fun isLessThanOrEqualTo(value: Int): Filter {
+        return IsLessThanOrEqualTo(key, value)
     }
 
-    public Filter isLessThanOrEqualTo(long value) {
-        return new IsLessThanOrEqualTo(key, value);
+    fun isLessThanOrEqualTo(value: Long): Filter {
+        return IsLessThanOrEqualTo(key, value)
     }
 
-    public Filter isLessThanOrEqualTo(float value) {
-        return new IsLessThanOrEqualTo(key, value);
+    fun isLessThanOrEqualTo(value: Float): Filter {
+        return IsLessThanOrEqualTo(key, value)
     }
 
-    public Filter isLessThanOrEqualTo(double value) {
-        return new IsLessThanOrEqualTo(key, value);
+    fun isLessThanOrEqualTo(value: Double): Filter {
+        return IsLessThanOrEqualTo(key, value)
     }
 
     // isBetween
-
-    public Filter isBetween(String fromValue, String toValue) {
-        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));
+    fun isBetween(fromValue: String, toValue: String): Filter {
+        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue))
     }
 
-    public Filter isBetween(int fromValue, int toValue) {
-        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));
+    fun isBetween(fromValue: Int, toValue: Int): Filter {
+        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue))
     }
 
-    public Filter isBetween(long fromValue, long toValue) {
-        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));
+    fun isBetween(fromValue: Long, toValue: Long): Filter {
+        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue))
     }
 
-    public Filter isBetween(float fromValue, float toValue) {
-        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));
+    fun isBetween(fromValue: Float, toValue: Float): Filter {
+        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue))
     }
 
-    public Filter isBetween(double fromValue, double toValue) {
-        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue));
+    fun isBetween(fromValue: Double, toValue: Double): Filter {
+        return isGreaterThanOrEqualTo(fromValue).and(isLessThanOrEqualTo(toValue))
     }
 
     // isIn
-
-    public Filter isIn(String... values) {
-        return new IsIn(key, asList(values));
+    fun isIn(vararg values: String?): Filter {
+        return IsIn(key, Arrays.asList(*values))
     }
 
-    public Filter isIn(UUID... values) {
-        return new IsIn(key, asList(values));
+    fun isIn(vararg values: UUID?): Filter {
+        return IsIn(key, Arrays.asList(*values))
     }
 
-    public Filter isIn(int... values) {
-        return new IsIn(key, stream(values).boxed().collect(toList()));
+    fun isIn(vararg values: Int): Filter {
+        return IsIn(key, Arrays.stream(values).boxed().collect(Collectors.toList()))
     }
 
-    public Filter isIn(long... values) {
-        return new IsIn(key, stream(values).boxed().collect(toList()));
+    fun isIn(vararg values: Long): Filter {
+        return IsIn(key, Arrays.stream(values).boxed().collect(Collectors.toList()))
     }
 
-    public Filter isIn(float... values) {
-        List<Float> valuesList = new ArrayList<>();
-        for (float value : values) {
-            valuesList.add(value);
+    fun isIn(vararg values: Float): Filter {
+        val valuesList: MutableList<Float> = ArrayList()
+        for (value in values) {
+            valuesList.add(value)
         }
-        return new IsIn(key, valuesList);
+        return IsIn(key, valuesList)
     }
 
-    public Filter isIn(double... values) {
-        return new IsIn(key, stream(values).boxed().collect(toList()));
+    fun isIn(vararg values: Double): Filter {
+        return IsIn(key, Arrays.stream(values).boxed().collect(Collectors.toList()))
     }
 
-    public Filter isIn(Collection<?> values) {
-        return new IsIn(key, values);
+    fun isIn(values: Collection<*>): Filter {
+        return IsIn(key, values)
     }
 
     // isNotIn
-
-    public Filter isNotIn(String... values) {
-        return new IsNotIn(key, asList(values));
+    fun isNotIn(vararg values: String?): Filter {
+        return IsNotIn(key, Arrays.asList(*values))
     }
 
-    public Filter isNotIn(UUID... values) {
-        return new IsNotIn(key, asList(values));
+    fun isNotIn(vararg values: UUID?): Filter {
+        return IsNotIn(key, Arrays.asList(*values))
     }
 
-    public Filter isNotIn(int... values) {
-        return new IsNotIn(key, stream(values).boxed().collect(toList()));
+    fun isNotIn(vararg values: Int): Filter {
+        return IsNotIn(key, Arrays.stream(values).boxed().collect(Collectors.toList()))
     }
 
-    public Filter isNotIn(long... values) {
-        return new IsNotIn(key, stream(values).boxed().collect(toList()));
+    fun isNotIn(vararg values: Long): Filter {
+        return IsNotIn(key, Arrays.stream(values).boxed().collect(Collectors.toList()))
     }
 
-    public Filter isNotIn(float... values) {
-        List<Float> valuesList = new ArrayList<>();
-        for (float value : values) {
-            valuesList.add(value);
+    fun isNotIn(vararg values: Float): Filter {
+        val valuesList: MutableList<Float> = ArrayList()
+        for (value in values) {
+            valuesList.add(value)
         }
-        return new IsNotIn(key, valuesList);
+        return IsNotIn(key, valuesList)
     }
 
-    public Filter isNotIn(double... values) {
-        return new IsNotIn(key, stream(values).boxed().collect(toList()));
+    fun isNotIn(vararg values: Double): Filter {
+        return IsNotIn(key, Arrays.stream(values).boxed().collect(Collectors.toList()))
     }
 
-    public Filter isNotIn(Collection<?> values) {
-        return new IsNotIn(key, values);
+    fun isNotIn(values: Collection<*>): Filter {
+        return IsNotIn(key, values)
+    }
+
+    companion object {
+        fun metadataKey(key: String?): MetadataFilterBuilder {
+            return MetadataFilterBuilder(key)
+        }
     }
 }

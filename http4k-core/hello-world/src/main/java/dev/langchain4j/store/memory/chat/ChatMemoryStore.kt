@@ -1,47 +1,41 @@
-package dev.langchain4j.store.memory.chat;
+package dev.langchain4j.store.memory.chat
 
-import dev.langchain4j.data.message.ChatMessage;
-import dev.langchain4j.data.message.ChatMessageDeserializer;
-import dev.langchain4j.data.message.ChatMessageSerializer;
-import dev.langchain4j.memory.ChatMemory;
-
-import java.util.List;
+import dev.langchain4j.data.message.ChatMessage
 
 /**
- * Represents a store for the {@link ChatMemory} state.
+ * Represents a store for the [ChatMemory] state.
  * Allows for flexibility in terms of where and how chat memory is stored.
- * <br>
- * <br>
- * Currently, the only implementation available is {@link InMemoryChatMemoryStore}.
+ * <br></br>
+ * <br></br>
+ * Currently, the only implementation available is [InMemoryChatMemoryStore].
  * Over time, out-of-the-box implementations will be added for popular stores like SQL databases, document stores, etc.
  * In the meantime, you can implement this interface to connect to any storage of your choice.
- * <br>
- * <br>
- * More documentation can be found <a href="https://docs.langchain4j.dev/tutorials/chat-memory">here</a>.
+ * <br></br>
+ * <br></br>
+ * More documentation can be found [here](https://docs.langchain4j.dev/tutorials/chat-memory).
  */
-public interface ChatMemoryStore {
-
+interface ChatMemoryStore {
     /**
      * Retrieves messages for a specified chat memory.
      *
      * @param memoryId The ID of the chat memory.
-     * @return List of messages for the specified chat memory. Must not be null. Can be deserialized from JSON using {@link ChatMessageDeserializer}.
+     * @return List of messages for the specified chat memory. Must not be null. Can be deserialized from JSON using [ChatMessageDeserializer].
      */
-    List<ChatMessage> getMessages(Object memoryId);
+    fun getMessages(memoryId: Any): List<ChatMessage>
 
     /**
      * Updates messages for a specified chat memory.
      *
      * @param memoryId The ID of the chat memory.
-     * @param messages List of messages for the specified chat memory, that represent the current state of the {@link ChatMemory}.
-     *                 Can be serialized to JSON using {@link ChatMessageSerializer}.
+     * @param messages List of messages for the specified chat memory, that represent the current state of the [ChatMemory].
+     * Can be serialized to JSON using [ChatMessageSerializer].
      */
-    void updateMessages(Object memoryId, List<ChatMessage> messages);
+    fun updateMessages(memoryId: Any, messages: List<ChatMessage>)
 
     /**
      * Deletes all messages for a specified chat memory.
      *
      * @param memoryId The ID of the chat memory.
      */
-    void deleteMessages(Object memoryId);
+    fun deleteMessages(memoryId: Any)
 }

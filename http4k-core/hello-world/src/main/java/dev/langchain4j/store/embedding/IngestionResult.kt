@@ -1,23 +1,17 @@
-package dev.langchain4j.store.embedding;
+package dev.langchain4j.store.embedding
 
-import dev.langchain4j.model.output.TokenUsage;
+import dev.langchain4j.model.output.TokenUsage
 
 /**
- * Represents the result of a {@link EmbeddingStoreIngestor} ingestion process.
+ * Represents the result of a [EmbeddingStoreIngestor] ingestion process.
  */
-public class IngestionResult {
-
+class IngestionResult(
     /**
      * The token usage information.
      */
-    private final TokenUsage tokenUsage;
-
-
-    public IngestionResult(TokenUsage tokenUsage) {
-        this.tokenUsage = tokenUsage;
-    }
-
-    public TokenUsage tokenUsage() {
-        return tokenUsage;
+    private val tokenUsage: TokenUsage
+) {
+    fun tokenUsage(): TokenUsage {
+        return tokenUsage
     }
 }

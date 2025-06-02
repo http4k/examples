@@ -1,73 +1,79 @@
-package dev.langchain4j.store.embedding.filter.comparison;
+package dev.langchain4j.store.embedding.filter.comparison
 
-import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.store.embedding.filter.Filter;
+import dev.langchain4j.data.document.Metadata
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.store.embedding.filter.Filter
+import java.util.Collections
+import java.util.Objects
+import java.util.UUID
 
-import java.util.*;
+class IsIn(key: String, comparisonValues: Collection<*>) : Filter {
+    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
+    private val comparisonValues: Collection<*>
 
-import static dev.langchain4j.internal.ValidationUtils.*;
-import static dev.langchain4j.store.embedding.filter.comparison.NumberComparator.containsAsBigDecimals;
-import static dev.langchain4j.store.embedding.filter.comparison.TypeChecker.ensureTypesAreCompatible;
-import static dev.langchain4j.store.embedding.filter.comparison.UUIDComparator.containsAsUUID;
-import static java.util.Collections.unmodifiableSet;
-
-public class IsIn implements Filter {
-
-    private final String key;
-    private final Collection<?> comparisonValues;
-
-    public IsIn(String key, Collection<?> comparisonValues) {
-        this.key = ensureNotBlank(key, "key");
-        Set<?> copy = new HashSet<>(ensureNotEmpty(comparisonValues, "comparisonValues with key '" + key + "'"));
-        comparisonValues.forEach(value -> ensureNotNull(value, "comparisonValue with key '" + key + "'"));
-        this.comparisonValues = unmodifiableSet(copy);
+    init {
+        val copy: Set<*> = HashSet(
+            ValidationUtils.ensureNotEmpty(
+                comparisonValues,
+                "comparisonValues with key '$key'"
+            )
+        )
+        comparisonValues.forEach { value: Any? ->
+            ValidationUtils.ensureNotNull(
+                value,
+                "comparisonValue with key '$key'"
+            )
+        }
+        this.comparisonValues = Collections.unmodifiableSet(copy)
     }
 
-    public String key() {
-        return key;
+    fun key(): String {
+        return key
     }
 
-    public Collection<?> comparisonValues() {
-        return comparisonValues;
+    fun comparisonValues(): Collection<*> {
+        return comparisonValues
     }
 
-    @Override
-    public boolean test(Object object) {
-        if (!(object instanceof Metadata metadata)) {
-            return false;
+    override fun test(`object`: Any): Boolean {
+        if (`object` !is Metadata) {
+            return false
         }
 
-        if (!metadata.containsKey(key)) {
-            return false;
+        if (!`object`.containsKey(key)) {
+            return false
         }
 
-        Object actualValue = metadata.toMap().get(key);
-        ensureTypesAreCompatible(actualValue, comparisonValues.iterator().next(), key);
+        val actualValue = `object`.toMap()[key]
+        TypeChecker.ensureTypesAreCompatible(
+            actualValue!!,
+            comparisonValues.iterator().next()!!, key
+        )
 
-        if (comparisonValues.iterator().next() instanceof Number) {
-            return containsAsBigDecimals(actualValue, comparisonValues);
+        if (comparisonValues.iterator().next() is Number) {
+            return NumberComparator.containsAsBigDecimals(actualValue, comparisonValues)
         }
-        if (comparisonValues.iterator().next() instanceof UUID) {
-            return containsAsUUID(actualValue, comparisonValues);
+        if (comparisonValues.iterator().next() is UUID) {
+            return UUIDComparator.containsAsUUID(actualValue, comparisonValues)
         }
 
-        return comparisonValues.contains(actualValue);
+        return comparisonValues.contains(actualValue)
     }
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof IsIn other)) return false;
+    override fun equals(o: Any?): Boolean {
+        if (o === this) return true
+        if (o !is IsIn) return false
 
-        return Objects.equals(this.key, other.key)
-                && Objects.equals(this.comparisonValues, other.comparisonValues);
+        return this.key == o.key
+                && this.comparisonValues == o.comparisonValues
     }
 
-    public int hashCode() {
-        return Objects.hash(key, comparisonValues);
+    override fun hashCode(): Int {
+        return Objects.hash(key, comparisonValues)
     }
 
 
-    public String toString() {
-        return "IsIn(key=" + this.key + ", comparisonValues=" + this.comparisonValues + ")";
+    override fun toString(): String {
+        return "IsIn(key=" + this.key + ", comparisonValues=" + this.comparisonValues + ")"
     }
 }

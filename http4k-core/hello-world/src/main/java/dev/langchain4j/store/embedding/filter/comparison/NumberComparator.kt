@@ -1,33 +1,35 @@
-package dev.langchain4j.store.embedding.filter.comparison;
+package dev.langchain4j.store.embedding.filter.comparison
 
-import java.math.BigDecimal;
-import java.util.Collection;
+import java.math.BigDecimal
 
-class NumberComparator {
-
-    static int compareAsBigDecimals(Object actualNumber, Object comparisonNumber) {
-        return new BigDecimal(actualNumber.toString()).compareTo(new BigDecimal(comparisonNumber.toString()));
+internal object NumberComparator {
+    fun compareAsBigDecimals(actualNumber: Any, comparisonNumber: Any): Int {
+        return BigDecimal(actualNumber.toString()).compareTo(BigDecimal(comparisonNumber.toString()))
     }
 
-    static boolean containsAsBigDecimals(Object actualNumber, Collection<?> comparisonNumbers) {
-        BigDecimal actualNumberAsBigDecimal = toBigDecimal(actualNumber);
-        return comparisonNumbers.stream()
-                .map(NumberComparator::toBigDecimal)
-                .anyMatch(comparisonNumberAsBigDecimal ->
-                        comparisonNumberAsBigDecimal.compareTo(actualNumberAsBigDecimal) == 0);
+    fun containsAsBigDecimals(actualNumber: Any, comparisonNumbers: Collection<*>): Boolean {
+        val actualNumberAsBigDecimal = toBigDecimal(actualNumber)
+        return TODO()
+//        return comparisonNumbers.stream()
+//            .map { obj: NumberComparator, actualNumber: Any -> toBigDecimal(actualNumber) }
+//            .anyMatch { comparisonNumberAsBigDecimal: BigDecimal ->
+//                comparisonNumberAsBigDecimal.compareTo(
+//                    actualNumberAsBigDecimal
+//                ) == 0
+//            }
     }
 
-    private static BigDecimal toBigDecimal(Object actualNumber) {
-        if (actualNumber instanceof Integer integer) {
-            return BigDecimal.valueOf(integer);
-        } else if (actualNumber instanceof Long long1) {
-            return BigDecimal.valueOf(long1);
-        } else if (actualNumber instanceof Float float1) {
-            return BigDecimal.valueOf(float1);
-        } else if (actualNumber instanceof Double double1) {
-            return BigDecimal.valueOf(double1);
+    private fun toBigDecimal(actualNumber: Any): BigDecimal {
+        if (actualNumber is Int) {
+            return BigDecimal.valueOf(actualNumber.toLong())
+        } else if (actualNumber is Long) {
+            return BigDecimal.valueOf(actualNumber)
+        } else if (actualNumber is Float) {
+            return BigDecimal.valueOf(actualNumber.toDouble())
+        } else if (actualNumber is Double) {
+            return BigDecimal.valueOf(actualNumber)
         }
 
-        throw new IllegalArgumentException("Unsupported type: " + actualNumber.getClass().getName());
+        throw IllegalArgumentException("Unsupported type: " + actualNumber.javaClass.name)
     }
 }

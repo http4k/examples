@@ -1,18 +1,17 @@
-package dev.langchain4j.store.embedding.filter;
+package dev.langchain4j.store.embedding.filter
 
 /**
- * Parses a filter expression string into a {@link Filter} object.
- * <br>
- * Currently, there is only one implementation: {@code SqlFilterParser}
- * in the {@code langchain4j-embedding-store-filter-parser-sql} module.
+ * Parses a filter expression string into a [Filter] object.
+ * <br></br>
+ * Currently, there is only one implementation: `SqlFilterParser`
+ * in the `langchain4j-embedding-store-filter-parser-sql` module.
  */
-public interface FilterParser {
-
+interface FilterParser {
     /**
-     * Parses a filter expression string into a {@link Filter} object.
+     * Parses a filter expression string into a [Filter] object.
      *
      * @param filter The filter expression as a string.
-     * @return A {@link Filter} object.
+     * @return A [Filter] object.
      */
-    Filter parse(String filter);
+    fun parse(filter: String?): Filter?
 }

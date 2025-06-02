@@ -1,73 +1,64 @@
-package dev.langchain4j.store.embedding.filter.comparison;
+package dev.langchain4j.store.embedding.filter.comparison
 
-import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.store.embedding.filter.Filter;
-
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Exceptions.illegalArgument;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.data.document.Metadata
+import dev.langchain4j.internal.Exceptions
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.store.embedding.filter.Filter
+import java.util.Objects
 
 /**
  * A filter that checks if the value of a metadata key contains a specific string.
  * The value of the metadata key must be a string.
  */
-public class ContainsString implements Filter {
+class ContainsString(key: String, comparisonValue: String) : Filter {
+    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
+    private val comparisonValue: String = ValidationUtils.ensureNotNull(
+        comparisonValue,
+        "comparisonValue with key '$key'"
+    )
 
-    private final String key;
-    private final String comparisonValue;
-
-    public ContainsString(String key, String comparisonValue) {
-        this.key = ensureNotBlank(key, "key");
-        this.comparisonValue = ensureNotNull(comparisonValue, "comparisonValue with key '" + key + "'");
+    fun key(): String {
+        return key
     }
 
-    public String key() {
-        return key;
+    fun comparisonValue(): String {
+        return comparisonValue
     }
 
-    public String comparisonValue() {
-        return comparisonValue;
-    }
-
-    @Override
-    public boolean test(Object object) {
-        if (!(object instanceof Metadata metadata)) {
-            return false;
+    override fun test(`object`: Any): Boolean {
+        if (`object` !is Metadata) {
+            return false
         }
 
-        if (!metadata.containsKey(key)) {
-            return false;
+        if (!`object`.containsKey(key)) {
+            return false
         }
 
-        Object actualValue = metadata.toMap().get(key);
+        val actualValue = `object`.toMap()[key]
 
-        if (actualValue instanceof String str) {
-            return str.contains(comparisonValue);
+        if (actualValue is String) {
+            return actualValue.contains(comparisonValue)
         }
 
-        throw illegalArgument(
-                "Type mismatch: actual value of metadata key \"%s\" (%s) has type %s, "
-                        + "while it is expected to be a string",
-                key, actualValue, actualValue.getClass().getName());
+        throw Exceptions.illegalArgument(
+            "Type mismatch: actual value of metadata key \"%s\" (%s) has type %s, "
+                    + "while it is expected to be a string",
+            key, actualValue, actualValue!!.javaClass.name
+        )
     }
 
-    @Override
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof ContainsString other)) return false;
+    override fun equals(o: Any?): Boolean {
+        if (o === this) return true
+        if (o !is ContainsString) return false
 
-        return Objects.equals(this.key, other.key) && Objects.equals(this.comparisonValue, other.comparisonValue);
+        return this.key == o.key && this.comparisonValue == o.comparisonValue
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(key, comparisonValue);
+    override fun hashCode(): Int {
+        return Objects.hash(key, comparisonValue)
     }
 
-    @Override
-    public String toString() {
-        return "ContainsString(key=" + this.key + ", comparisonValue=" + this.comparisonValue + ")";
+    override fun toString(): String {
+        return "ContainsString(key=" + this.key + ", comparisonValue=" + this.comparisonValue + ")"
     }
 }

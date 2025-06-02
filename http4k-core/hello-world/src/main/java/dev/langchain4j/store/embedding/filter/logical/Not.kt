@@ -1,43 +1,39 @@
-package dev.langchain4j.store.embedding.filter.logical;
+package dev.langchain4j.store.embedding.filter.logical
 
-import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.store.embedding.filter.Filter;
+import dev.langchain4j.data.document.Metadata
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.store.embedding.filter.Filter
+import java.util.Objects
 
-import java.util.Objects;
+class Not(expression: Filter) : Filter {
+    private val expression: Filter =
+        ValidationUtils.ensureNotNull(
+            expression,
+            "expression"
+        )
 
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
-public class Not implements Filter {
-
-    private final Filter expression;
-
-    public Not(Filter expression) {
-        this.expression = ensureNotNull(expression, "expression");
+    fun expression(): Filter {
+        return expression
     }
 
-    public Filter expression() {
-        return expression;
-    }
-
-    @Override
-    public boolean test(Object object) {
-        if (!(object instanceof Metadata)) {
-            return false;
+    override fun test(`object`: Any): Boolean {
+        if (`object` !is Metadata) {
+            return false
         }
-        return !expression.test(object);
+        return !expression.test(`object`)
     }
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof Not other)) return false;
-        return Objects.equals(this.expression, other.expression);
+    override fun equals(o: Any?): Boolean {
+        if (o === this) return true
+        if (o !is Not) return false
+        return this.expression == o.expression
     }
 
-    public int hashCode() {
-        return Objects.hash(expression);
+    override fun hashCode(): Int {
+        return Objects.hash(expression)
     }
 
-    public String toString() {
-        return "Not(expression=" + this.expression + ")";
+    override fun toString(): String {
+        return "Not(expression=" + this.expression + ")"
     }
 }

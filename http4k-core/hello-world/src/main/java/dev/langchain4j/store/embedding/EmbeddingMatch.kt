@@ -1,38 +1,22 @@
-package dev.langchain4j.store.embedding;
+package dev.langchain4j.store.embedding
 
-import dev.langchain4j.data.embedding.Embedding;
-
-import java.util.Objects;
-
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.data.embedding.Embedding
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Objects
 
 /**
  * Represents a matched embedding along with its relevance score (derivative of cosine distance), ID, and original embedded content.
  *
- * @param <Embedded> The class of the object that has been embedded. Typically, it is {@link dev.langchain4j.data.segment.TextSegment}.
- */
-public class EmbeddingMatch<Embedded> {
-
-    private final Double score;
-    private final String embeddingId;
-    private final Embedding embedding;
-    private final Embedded embedded;
-
-    /**
-     * Creates a new instance.
-     * @param score The relevance score (derivative of cosine distance) of this embedding compared to
-     *              a reference embedding during a search.
-     * @param embeddingId The ID of the embedding assigned when adding this embedding to the store.
-     * @param embedding The embedding that has been matched.
-     * @param embedded The original content that was embedded. Typically, this is a {@link dev.langchain4j.data.segment.TextSegment}.
-     */
-    public EmbeddingMatch(Double score, String embeddingId, Embedding embedding, Embedded embedded) {
-        this.score = ensureNotNull(score, "score");
-        this.embeddingId = ensureNotBlank(embeddingId, "embeddingId");
-        this.embedding = embedding;
-        this.embedded = embedded;
-    }
+ * @param <Embedded> The class of the object that has been embedded. Typically, it is [dev.langchain4j.data.segment.TextSegment].
+</Embedded> */
+class EmbeddingMatch<Embedded>(
+    score: Double,
+    embeddingId: String?,
+    private val embedding: Embedding,
+    private val embedded: Embedded
+) {
+    private val score: Double = ValidationUtils.ensureNotNull(score, "score")
+    private val embeddingId: String = ValidationUtils.ensureNotBlank(embeddingId, "embeddingId")
 
     /**
      * Returns the relevance score (derivative of cosine distance) of this embedding compared to
@@ -41,57 +25,54 @@ public class EmbeddingMatch<Embedded> {
      *
      * @return Relevance score, ranging from 0 (not relevant) to 1 (highly relevant).
      */
-    public Double score() {
-        return score;
+    fun score(): Double {
+        return score
     }
 
     /**
      * The ID of the embedding assigned when adding this embedding to the store.
      * @return The ID of the embedding assigned when adding this embedding to the store.
      */
-    public String embeddingId() {
-        return embeddingId;
+    fun embeddingId(): String {
+        return embeddingId
     }
 
     /**
      * Returns the embedding that has been matched.
      * @return The embedding that has been matched.
      */
-    public Embedding embedding() {
-        return embedding;
+    fun embedding(): Embedding {
+        return embedding
     }
 
     /**
      * Returns the original content that was embedded.
-     * @return The original content that was embedded. Typically, this is a {@link dev.langchain4j.data.segment.TextSegment}.
+     * @return The original content that was embedded. Typically, this is a [dev.langchain4j.data.segment.TextSegment].
      */
-    public Embedded embedded() {
-        return embedded;
+    fun embedded(): Embedded {
+        return embedded
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        EmbeddingMatch<?> that = (EmbeddingMatch<?>) o;
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as EmbeddingMatch<*>
         return Objects.equals(this.score, that.score)
-                && Objects.equals(this.embeddingId, that.embeddingId)
-                && Objects.equals(this.embedding, that.embedding)
-                && Objects.equals(this.embedded, that.embedded);
+                && this.embeddingId == that.embeddingId
+                && this.embedding == that.embedding
+                && this.embedded == that.embedded
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(score, embeddingId, embedding, embedded);
+    override fun hashCode(): Int {
+        return Objects.hash(score, embeddingId, embedding, embedded)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "EmbeddingMatch {" +
                 " score = " + score +
                 ", embedded = " + embedded +
                 ", embeddingId = " + embeddingId +
                 ", embedding = " + embedding +
-                " }";
+                " }"
     }
 }

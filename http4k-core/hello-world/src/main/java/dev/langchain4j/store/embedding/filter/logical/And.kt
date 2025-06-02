@@ -1,45 +1,45 @@
-package dev.langchain4j.store.embedding.filter.logical;
+package dev.langchain4j.store.embedding.filter.logical
 
-import dev.langchain4j.store.embedding.filter.Filter;
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.store.embedding.filter.Filter
+import java.util.Objects
 
-import java.util.Objects;
+class And(left: Filter, right: Filter) :
+    Filter {
+    private val left: Filter =
+        ValidationUtils.ensureNotNull(
+            left,
+            "left"
+        )
+    private val right: Filter =
+        ValidationUtils.ensureNotNull(
+            right,
+            "right"
+        )
 
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-
-public class And implements Filter {
-
-    private final Filter left;
-    private final Filter right;
-
-    public And(Filter left, Filter right) {
-        this.left = ensureNotNull(left, "left");
-        this.right = ensureNotNull(right, "right");
+    fun left(): Filter {
+        return left
     }
 
-    public Filter left() {
-        return left;
+    fun right(): Filter {
+        return right
     }
 
-    public Filter right() {
-        return right;
+    override fun test(`object`: Any): Boolean {
+        return left().test(`object`) && right().test(`object`)
     }
 
-    @Override
-    public boolean test(Object object) {
-        return left().test(object) && right().test(object);
+    override fun equals(o: Any?): Boolean {
+        if (o === this) return true
+        if (o !is And) return false
+        return this.left == o.left && this.right == o.right
     }
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof And other)) return false;
-        return Objects.equals(this.left, other.left) && Objects.equals(this.right, other.right);
+    override fun hashCode(): Int {
+        return Objects.hash(left, right)
     }
 
-    public int hashCode() {
-        return Objects.hash(left, right);
-    }
-
-    public String toString() {
-        return "And(left=" + this.left + ", right=" + this.right + ")";
+    override fun toString(): String {
+        return "And(left=" + this.left + ", right=" + this.right + ")"
     }
 }

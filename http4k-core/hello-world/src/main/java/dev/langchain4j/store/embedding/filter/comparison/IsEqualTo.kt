@@ -1,71 +1,62 @@
-package dev.langchain4j.store.embedding.filter.comparison;
+package dev.langchain4j.store.embedding.filter.comparison
 
-import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.store.embedding.filter.Filter;
+import dev.langchain4j.data.document.Metadata
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.store.embedding.filter.Filter
+import java.util.Objects
+import java.util.UUID
 
-import java.util.Objects;
-import java.util.UUID;
+class IsEqualTo(key: String, comparisonValue: Any) : Filter {
+    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
+    private val comparisonValue: Any = ValidationUtils.ensureNotNull(
+        comparisonValue,
+        "comparisonValue with key '$key'"
+    )
 
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-import static dev.langchain4j.store.embedding.filter.comparison.NumberComparator.compareAsBigDecimals;
-import static dev.langchain4j.store.embedding.filter.comparison.TypeChecker.ensureTypesAreCompatible;
-
-public class IsEqualTo implements Filter {
-
-    private final String key;
-    private final Object comparisonValue;
-
-    public IsEqualTo(String key, Object comparisonValue) {
-        this.key = ensureNotBlank(key, "key");
-        this.comparisonValue = ensureNotNull(comparisonValue, "comparisonValue with key '" + key + "'");
+    fun key(): String {
+        return key
     }
 
-    public String key() {
-        return key;
+    fun comparisonValue(): Any {
+        return comparisonValue
     }
 
-    public Object comparisonValue() {
-        return comparisonValue;
-    }
-
-    @Override
-    public boolean test(Object object) {
-        if (!(object instanceof Metadata metadata)) {
-            return false;
+    override fun test(`object`: Any): Boolean {
+        if (`object` !is Metadata) {
+            return false
         }
 
-        if (!metadata.containsKey(key)) {
-            return false;
+        if (!`object`.containsKey(key)) {
+            return false
         }
 
-        Object actualValue = metadata.toMap().get(key);
-        ensureTypesAreCompatible(actualValue, comparisonValue, key);
+        val actualValue = `object`.toMap()[key]
+        TypeChecker.ensureTypesAreCompatible(actualValue!!, comparisonValue, key)
 
-        if (actualValue instanceof Number) {
-            return compareAsBigDecimals(actualValue, comparisonValue) == 0;
+        if (actualValue is Number) {
+            return NumberComparator.compareAsBigDecimals(actualValue, comparisonValue) == 0
         }
 
-        if (comparisonValue instanceof UUID && actualValue instanceof String) {
-            return actualValue.equals(comparisonValue.toString());
+        if (comparisonValue is UUID && actualValue is String) {
+            return actualValue == comparisonValue.toString()
         }
 
-        return actualValue.equals(comparisonValue);
+        return actualValue == comparisonValue
     }
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof IsEqualTo other)) return false;
+    override fun equals(o: Any?): Boolean {
+        if (o === this) return true
+        if (o !is IsEqualTo) return false
 
-        return Objects.equals(this.key, other.key)
-                && Objects.equals(this.comparisonValue, other.comparisonValue);
+        return this.key == o.key
+                && this.comparisonValue == o.comparisonValue
     }
 
-    public int hashCode() {
-        return Objects.hash(key, comparisonValue);
+    override fun hashCode(): Int {
+        return Objects.hash(key, comparisonValue)
     }
 
-    public String toString() {
-        return "IsEqualTo(key=" + this.key + ", comparisonValue=" + this.comparisonValue + ")";
+    override fun toString(): String {
+        return "IsEqualTo(key=" + this.key + ", comparisonValue=" + this.comparisonValue + ")"
     }
 }

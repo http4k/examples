@@ -1,67 +1,58 @@
-package dev.langchain4j.store.embedding.filter.comparison;
+package dev.langchain4j.store.embedding.filter.comparison
 
-import dev.langchain4j.data.document.Metadata;
-import dev.langchain4j.store.embedding.filter.Filter;
+import dev.langchain4j.data.document.Metadata
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.store.embedding.filter.Filter
+import java.util.Objects
 
-import java.util.Objects;
+class IsLessThanOrEqualTo(key: String, comparisonValue: Comparable<*>?) : Filter {
+    private val key: String = ValidationUtils.ensureNotBlank(key, "key")
+    private val comparisonValue = ValidationUtils.ensureNotNull(
+        comparisonValue,
+        "comparisonValue with key '$key'"
+    )!!
 
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-import static dev.langchain4j.store.embedding.filter.comparison.NumberComparator.compareAsBigDecimals;
-import static dev.langchain4j.store.embedding.filter.comparison.TypeChecker.ensureTypesAreCompatible;
-
-public class IsLessThanOrEqualTo implements Filter {
-
-    private final String key;
-    private final Comparable<?> comparisonValue;
-
-    public IsLessThanOrEqualTo(String key, Comparable<?> comparisonValue) {
-        this.key = ensureNotBlank(key, "key");
-        this.comparisonValue = ensureNotNull(comparisonValue, "comparisonValue with key '" + key + "'");
+    fun key(): String {
+        return key
     }
 
-    public String key() {
-        return key;
+    fun comparisonValue(): Comparable<*> {
+        return comparisonValue
     }
 
-    public Comparable<?> comparisonValue() {
-        return comparisonValue;
-    }
-
-    @Override
-    public boolean test(Object object) {
-        if (!(object instanceof Metadata metadata)) {
-            return false;
+    override fun test(`object`: Any): Boolean {
+        if (`object` !is Metadata) {
+            return false
         }
 
-        if (!metadata.containsKey(key)) {
-            return false;
+        if (!`object`.containsKey(key)) {
+            return false
         }
 
-        Object actualValue = metadata.toMap().get(key);
-        ensureTypesAreCompatible(actualValue, comparisonValue, key);
+        val actualValue = `object`.toMap()[key]
+        TypeChecker.ensureTypesAreCompatible(actualValue!!, comparisonValue, key)
 
-        if (actualValue instanceof Number) {
-            return compareAsBigDecimals(actualValue, comparisonValue) <= 0;
+        if (actualValue is Number) {
+            return NumberComparator.compareAsBigDecimals(actualValue, comparisonValue) <= 0
         }
 
-        return ((Comparable) actualValue).compareTo(comparisonValue) <= 0;
+        return TODO()
     }
 
 
-    public boolean equals(final Object o) {
-        if (o == this) return true;
-        if (!(o instanceof IsLessThanOrEqualTo other)) return false;
+    override fun equals(o: Any?): Boolean {
+        if (o === this) return true
+        if (o !is IsLessThanOrEqualTo) return false
 
-        return Objects.equals(this.key, other.key)
-                && Objects.equals(this.comparisonValue, other.comparisonValue);
+        return this.key == o.key
+                && this.comparisonValue == o.comparisonValue
     }
 
-    public int hashCode() {
-        return Objects.hash(key, comparisonValue);
+    override fun hashCode(): Int {
+        return Objects.hash(key, comparisonValue)
     }
 
-    public String toString() {
-        return "IsLessThanOrEqualTo(key=" + this.key + ", comparisonValue=" + this.comparisonValue + ")";
+    override fun toString(): String {
+        return "IsLessThanOrEqualTo(key=" + this.key + ", comparisonValue=" + this.comparisonValue + ")"
     }
 }
