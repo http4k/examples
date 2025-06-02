@@ -1,35 +1,32 @@
-package dev.langchain4j.rag.query.router;
+package dev.langchain4j.rag.query.router
 
-import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.rag.content.Content;
-import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.query.Query;
-
-import java.util.Collection;
+import dev.langchain4j.model.embedding.EmbeddingModel
+import dev.langchain4j.rag.content.retriever.ContentRetriever
+import dev.langchain4j.rag.query.Query
 
 /**
- * Routes the given {@link Query} to one or multiple {@link ContentRetriever}s.
- * <br>
- * The goal is to ensure that {@link Content} is retrieved only from relevant data sources.
- * <br>
+ * Routes the given [Query] to one or multiple [ContentRetriever]s.
+ * <br></br>
+ * The goal is to ensure that [Content] is retrieved only from relevant data sources.
+ * <br></br>
  * Some potential approaches include:
  * <pre>
- * - Using an LLM (see {@link LanguageModelQueryRouter})
- * - Using an {@link EmbeddingModel} (aka "semantic routing", see {@code EmbeddingModelTextClassifier} in the {@code langchain4j} module)
+ * - Using an LLM (see [LanguageModelQueryRouter])
+ * - Using an [EmbeddingModel] (aka "semantic routing", see `EmbeddingModelTextClassifier` in the `langchain4j` module)
  * - Using keyword-based routing
- * - Route depending on the user ({@code query.metadata().chatMemoryId()}) and/or permissions
- * </pre>
+ * - Route depending on the user (`query.metadata().chatMemoryId()`) and/or permissions
+</pre> *
  *
  * @see DefaultQueryRouter
+ *
  * @see LanguageModelQueryRouter
  */
-public interface QueryRouter {
-
+interface QueryRouter {
     /**
-     * Routes the given {@link Query} to one or multiple {@link ContentRetriever}s.
+     * Routes the given [Query] to one or multiple [ContentRetriever]s.
      *
-     * @param query The {@link Query} to be routed.
-     * @return A collection of one or more {@link ContentRetriever}s to which the {@link Query} should be routed.
+     * @param query The [Query] to be routed.
+     * @return A collection of one or more [ContentRetriever]s to which the [Query] should be routed.
      */
-    Collection<ContentRetriever> route(Query query);
+    fun route(query: Query): Collection<ContentRetriever?>
 }

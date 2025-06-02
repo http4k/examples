@@ -1,38 +1,38 @@
-package dev.langchain4j.rag.content;
+package dev.langchain4j.rag.content
 
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.rag.content.aggregator.ContentAggregator;
-import dev.langchain4j.rag.content.injector.ContentInjector;
-import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.query.Query;
-
-import java.util.Map;
+import dev.langchain4j.data.segment.TextSegment
+import dev.langchain4j.rag.content.aggregator.ContentAggregator
+import dev.langchain4j.rag.content.injector.ContentInjector
+import dev.langchain4j.rag.content.retriever.ContentRetriever
 
 /**
- * Represents content relevant to a user {@link Query} with the potential to enhance and ground the LLM's response.
- * <br>
- * Currently, it is limited to text content (i.e., {@link TextSegment}),
+ * Represents content relevant to a user [Query] with the potential to enhance and ground the LLM's response.
+ * <br></br>
+ * Currently, it is limited to text content (i.e., [TextSegment]),
  * but future expansions may include support for other modalities (e.g., images, audio, video, etc.).
  *
  * @see ContentRetriever
+ *
  * @see ContentAggregator
+ *
  * @see ContentInjector
  */
-public interface Content {
+interface Content {
+    fun textSegment(): TextSegment
 
-    TextSegment textSegment();
+    fun metadata(): Map<ContentMetadata?, Any>
 
-    Map<ContentMetadata, Object> metadata();
+    companion object {
+        fun from(text: String?): Content {
+            return DefaultContent(text)
+        }
 
-    static Content from(String text) {
-        return new DefaultContent(text);
-    }
+        fun from(textSegment: TextSegment): Content {
+            return DefaultContent(textSegment)
+        }
 
-    static Content from(TextSegment textSegment) {
-        return new DefaultContent(textSegment);
-    }
-
-    static Content from(TextSegment textSegment, Map<ContentMetadata, Object> metadata) {
-        return new DefaultContent(textSegment, metadata);
+        fun from(textSegment: TextSegment, metadata: Map<ContentMetadata?, Any>?): Content {
+            return DefaultContent(textSegment, metadata)
+        }
     }
 }

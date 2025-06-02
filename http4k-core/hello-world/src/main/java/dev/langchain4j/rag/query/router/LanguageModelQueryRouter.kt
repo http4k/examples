@@ -1,149 +1,126 @@
-package dev.langchain4j.rag.query.router;
+package dev.langchain4j.rag.query.router
 
-import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.model.chat.ChatModel;
-import dev.langchain4j.model.input.Prompt;
-import dev.langchain4j.model.input.PromptTemplate;
-import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.query.Query;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import static dev.langchain4j.internal.Utils.getOrDefault;
-import static dev.langchain4j.internal.ValidationUtils.*;
-import static dev.langchain4j.rag.query.router.LanguageModelQueryRouter.FallbackStrategy.DO_NOT_ROUTE;
-import static java.util.Arrays.stream;
-import static java.util.Collections.emptyList;
-import static java.util.stream.Collectors.toList;
+import dev.langchain4j.data.message.UserMessage
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.model.chat.ChatModel
+import dev.langchain4j.model.input.Prompt
+import dev.langchain4j.model.input.PromptTemplate
+import dev.langchain4j.rag.content.retriever.ContentRetriever
+import dev.langchain4j.rag.query.Query
+import dev.langchain4j.rag.query.router.LanguageModelQueryRouter.FallbackStrategy
+import java.util.Arrays
+import java.util.stream.Collectors
 
 /**
- * A {@link QueryRouter} that utilizes a {@link ChatModel} to make a routing decision.
- * <br>
- * Each {@link ContentRetriever} provided in the constructor should be accompanied by a description which
- * should help the LLM to decide where to route a {@link Query}.
- * <br>
- * Refer to {@link #DEFAULT_PROMPT_TEMPLATE} and implementation for more details.
- * <br>
- * <br>
+ * A [QueryRouter] that utilizes a [ChatModel] to make a routing decision.
+ * <br></br>
+ * Each [ContentRetriever] provided in the constructor should be accompanied by a description which
+ * should help the LLM to decide where to route a [Query].
+ * <br></br>
+ * Refer to [.DEFAULT_PROMPT_TEMPLATE] and implementation for more details.
+ * <br></br>
+ * <br></br>
  * Configurable parameters (optional):
- * <br>
- * - {@link #promptTemplate}: The prompt template used to ask the LLM for routing decisions.
- * <br>
- * - {@link #fallbackStrategy}: The strategy applied if the call to the LLM fails of if LLM does not return a valid response.
- * Please check {@link FallbackStrategy} for more details. Default value: {@link FallbackStrategy#DO_NOT_ROUTE}
+ * <br></br>
+ * - [.promptTemplate]: The prompt template used to ask the LLM for routing decisions.
+ * <br></br>
+ * - [.fallbackStrategy]: The strategy applied if the call to the LLM fails of if LLM does not return a valid response.
+ * Please check [FallbackStrategy] for more details. Default value: [FallbackStrategy.DO_NOT_ROUTE]
  *
  * @see DefaultQueryRouter
  */
-public class LanguageModelQueryRouter implements QueryRouter {
+class LanguageModelQueryRouter @JvmOverloads constructor(
+    chatModel: ChatModel?,
+    retrieverToDescription: Map<ContentRetriever, String>?,
+    promptTemplate: PromptTemplate? = DEFAULT_PROMPT_TEMPLATE,
+    fallbackStrategy: FallbackStrategy? = FallbackStrategy.DO_NOT_ROUTE
+) :
+    QueryRouter {
+    protected val chatModel: ChatModel
+    protected val promptTemplate: PromptTemplate?
+    protected val options: String
+    protected val idToRetriever: Map<Int, ContentRetriever>
+    protected val fallbackStrategy: FallbackStrategy
 
-    public static final PromptTemplate DEFAULT_PROMPT_TEMPLATE = PromptTemplate.from(
-            """
-                    Based on the user query, determine the most suitable data source(s) \
-                    to retrieve relevant information from the following options:
-                    {{options}}
-                    It is very important that your answer consists of either a single number \
-                    or multiple numbers separated by commas and nothing else!
-                    User query: {{query}}"""
-    );
+    init {
+        this.chatModel = ValidationUtils.ensureNotNull(chatModel, "chatModel")
+        ValidationUtils.ensureNotEmpty(retrieverToDescription, "retrieverToDescription")
+        this.promptTemplate = Utils.getOrDefault(promptTemplate, DEFAULT_PROMPT_TEMPLATE)
 
-    protected final ChatModel chatModel;
-    protected final PromptTemplate promptTemplate;
-    protected final String options;
-    protected final Map<Integer, ContentRetriever> idToRetriever;
-    protected final FallbackStrategy fallbackStrategy;
-
-    public LanguageModelQueryRouter(ChatModel chatModel,
-                                    Map<ContentRetriever, String> retrieverToDescription) {
-        this(chatModel, retrieverToDescription, DEFAULT_PROMPT_TEMPLATE, DO_NOT_ROUTE);
-    }
-
-    public LanguageModelQueryRouter(ChatModel chatModel,
-                                    Map<ContentRetriever, String> retrieverToDescription,
-                                    PromptTemplate promptTemplate,
-                                    FallbackStrategy fallbackStrategy) {
-        this.chatModel = ensureNotNull(chatModel, "chatModel");
-        ensureNotEmpty(retrieverToDescription, "retrieverToDescription");
-        this.promptTemplate = getOrDefault(promptTemplate, DEFAULT_PROMPT_TEMPLATE);
-
-        Map<Integer, ContentRetriever> idToRetriever = new HashMap<>();
-        StringBuilder optionsBuilder = new StringBuilder();
-        int id = 1;
-        for (Map.Entry<ContentRetriever, String> entry : retrieverToDescription.entrySet()) {
-            idToRetriever.put(id, ensureNotNull(entry.getKey(), "ContentRetriever"));
+        val idToRetriever: MutableMap<Int, ContentRetriever> = HashMap()
+        val optionsBuilder = StringBuilder()
+        var id = 1
+        for ((key, value) in retrieverToDescription!!) {
+            idToRetriever[id] =
+                ValidationUtils.ensureNotNull(key, "ContentRetriever")
 
             if (id > 1) {
-                optionsBuilder.append("\n");
+                optionsBuilder.append("\n")
             }
-            optionsBuilder.append(id);
-            optionsBuilder.append(": ");
-            optionsBuilder.append(ensureNotBlank(entry.getValue(), "ContentRetriever description"));
+            optionsBuilder.append(id)
+            optionsBuilder.append(": ")
+            optionsBuilder.append(ValidationUtils.ensureNotBlank(value, "ContentRetriever description"))
 
-            id++;
+            id++
         }
-        this.idToRetriever = idToRetriever;
-        this.options = optionsBuilder.toString();
-        this.fallbackStrategy = getOrDefault(fallbackStrategy, DO_NOT_ROUTE);
+        this.idToRetriever = idToRetriever
+        this.options = optionsBuilder.toString()
+        this.fallbackStrategy = Utils.getOrDefault(fallbackStrategy, FallbackStrategy.DO_NOT_ROUTE)
     }
 
-    public static LanguageModelQueryRouterBuilder builder() {
-        return new LanguageModelQueryRouterBuilder();
-    }
-
-    @Override
-    public Collection<ContentRetriever> route(Query query) {
-        Prompt prompt = createPrompt(query);
+    override fun route(query: Query): Collection<ContentRetriever?> {
+        val prompt = createPrompt(query)
         try {
-            String response = chatModel.chat(prompt.text());
-            return parse(response);
-        } catch (Exception e) {
-            return fallback(query, e);
+            val response = chatModel.chat(prompt.text())
+            return parse(response)
+        } catch (e: Exception) {
+            return fallback(query, e)
         }
     }
 
-    protected Collection<ContentRetriever> fallback(Query query, Exception e) {
-        return switch (fallbackStrategy) {
-            case DO_NOT_ROUTE -> {
-                yield emptyList();
+    protected fun fallback(query: Query?, e: Exception?): Collection<ContentRetriever?> {
+        return when (fallbackStrategy) {
+            FallbackStrategy.DO_NOT_ROUTE -> {
+                emptyList<ContentRetriever>()
             }
-            case ROUTE_TO_ALL -> {
-                yield new ArrayList<>(idToRetriever.values());
+
+            FallbackStrategy.ROUTE_TO_ALL -> {
+                ArrayList(idToRetriever.values)
             }
-            default -> throw new RuntimeException(e);
-        };
+
+            else -> throw RuntimeException(e)
+        }
     }
 
-    protected Prompt createPrompt(Query query) {
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("query", query.text());
-        variables.put("options", options);
-        return promptTemplate.apply(variables);
+    protected fun createPrompt(query: Query): Prompt {
+        val variables: MutableMap<String, Any?> = HashMap()
+        variables["query"] = query.text()
+        variables["options"] = options
+        return promptTemplate!!.apply(variables)
     }
 
-    protected Collection<ContentRetriever> parse(String choices) {
-        return stream(choices.split(","))
-                .map(String::trim)
-                .map(Integer::parseInt)
-                .map(idToRetriever::get)
-                .collect(toList());
+    protected fun parse(choices: String): Collection<ContentRetriever?> {
+        return Arrays.stream(choices.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+            .map { obj: String -> obj.trim { it <= ' ' } }
+            .map { s: String -> s.toInt() }
+            .map { key: Int -> idToRetriever[key] }
+            .collect(Collectors.toList())
     }
 
     /**
      * Strategy applied if the call to the LLM fails of if LLM does not return a valid response.
      * It could be because it was formatted improperly, or it is unclear where to route.
      */
-    public enum FallbackStrategy {
-
+    enum class FallbackStrategy {
         /**
-         * In this case, the {@link Query} will not be routed to any {@link ContentRetriever},
-         * thus skipping the RAG flow. No content will be appended to the original {@link UserMessage}.
+         * In this case, the [Query] will not be routed to any [ContentRetriever],
+         * thus skipping the RAG flow. No content will be appended to the original [UserMessage].
          */
         DO_NOT_ROUTE,
 
         /**
-         * In this case, the {@link Query} will be routed to all {@link ContentRetriever}s.
+         * In this case, the [Query] will be routed to all [ContentRetriever]s.
          */
         ROUTE_TO_ALL,
 
@@ -153,37 +130,54 @@ public class LanguageModelQueryRouter implements QueryRouter {
         FAIL
     }
 
-    public static class LanguageModelQueryRouterBuilder {
-        private ChatModel chatModel;
-        private Map<ContentRetriever, String> retrieverToDescription;
-        private PromptTemplate promptTemplate;
-        private FallbackStrategy fallbackStrategy;
+    class LanguageModelQueryRouterBuilder internal constructor() {
+        private var chatModel: ChatModel? = null
+        private var retrieverToDescription: Map<ContentRetriever, String>? = null
+        private var promptTemplate: PromptTemplate? = null
+        private var fallbackStrategy: FallbackStrategy? = null
 
-        LanguageModelQueryRouterBuilder() {
+        fun chatModel(chatModel: ChatModel?): LanguageModelQueryRouterBuilder {
+            this.chatModel = chatModel
+            return this
         }
 
-        public LanguageModelQueryRouterBuilder chatModel(ChatModel chatModel) {
-            this.chatModel = chatModel;
-            return this;
+        fun retrieverToDescription(retrieverToDescription: Map<ContentRetriever, String>?): LanguageModelQueryRouterBuilder {
+            this.retrieverToDescription = retrieverToDescription
+            return this
         }
 
-        public LanguageModelQueryRouterBuilder retrieverToDescription(Map<ContentRetriever, String> retrieverToDescription) {
-            this.retrieverToDescription = retrieverToDescription;
-            return this;
+        fun promptTemplate(promptTemplate: PromptTemplate?): LanguageModelQueryRouterBuilder {
+            this.promptTemplate = promptTemplate
+            return this
         }
 
-        public LanguageModelQueryRouterBuilder promptTemplate(PromptTemplate promptTemplate) {
-            this.promptTemplate = promptTemplate;
-            return this;
+        fun fallbackStrategy(fallbackStrategy: FallbackStrategy?): LanguageModelQueryRouterBuilder {
+            this.fallbackStrategy = fallbackStrategy
+            return this
         }
 
-        public LanguageModelQueryRouterBuilder fallbackStrategy(FallbackStrategy fallbackStrategy) {
-            this.fallbackStrategy = fallbackStrategy;
-            return this;
+        fun build(): LanguageModelQueryRouter {
+            return LanguageModelQueryRouter(
+                this.chatModel,
+                this.retrieverToDescription,
+                this.promptTemplate,
+                this.fallbackStrategy
+            )
         }
+    }
 
-        public LanguageModelQueryRouter build() {
-            return new LanguageModelQueryRouter(this.chatModel, this.retrieverToDescription, this.promptTemplate, this.fallbackStrategy);
+    companion object {
+        val DEFAULT_PROMPT_TEMPLATE: PromptTemplate = PromptTemplate.from(
+            """
+                    Based on the user query, determine the most suitable data source(s) to retrieve relevant information from the following options:
+                    {{options}}
+                    It is very important that your answer consists of either a single number or multiple numbers separated by commas and nothing else!
+                    User query: {{query}}
+                    """.trimIndent()
+        )
+
+        fun builder(): LanguageModelQueryRouterBuilder {
+            return LanguageModelQueryRouterBuilder()
         }
     }
 }

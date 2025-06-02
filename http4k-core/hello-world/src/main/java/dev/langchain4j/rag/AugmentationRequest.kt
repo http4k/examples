@@ -1,37 +1,35 @@
-package dev.langchain4j.rag;
+package dev.langchain4j.rag
 
-import dev.langchain4j.data.message.ChatMessage;
-import dev.langchain4j.data.message.UserMessage;
-import dev.langchain4j.rag.query.Metadata;
-
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.data.message.ChatMessage
+import dev.langchain4j.data.message.UserMessage
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.rag.query.Metadata
 
 /**
- * Represents a request for {@link ChatMessage} augmentation.
+ * Represents a request for [ChatMessage] augmentation.
  */
-public class AugmentationRequest {
-
+class AugmentationRequest(chatMessage: ChatMessage, metadata: Metadata) {
     /**
      * The chat message to be augmented.
-     * Currently, only {@link UserMessage} is supported.
+     * Currently, only [UserMessage] is supported.
      */
-    private final ChatMessage chatMessage;
+    private val chatMessage: ChatMessage =
+        ValidationUtils.ensureNotNull(chatMessage, "chatMessage")
 
     /**
      * Additional metadata related to the augmentation request.
      */
-    private final Metadata metadata;
+    private val metadata: Metadata =
+        ValidationUtils.ensureNotNull(
+            metadata,
+            "metadata"
+        )
 
-    public AugmentationRequest(ChatMessage chatMessage, Metadata metadata) {
-        this.chatMessage = ensureNotNull(chatMessage, "chatMessage");
-        this.metadata = ensureNotNull(metadata, "metadata");
+    fun chatMessage(): ChatMessage {
+        return chatMessage
     }
 
-    public ChatMessage chatMessage() {
-        return chatMessage;
-    }
-
-    public Metadata metadata() {
-        return metadata;
+    fun metadata(): Metadata {
+        return metadata
     }
 }

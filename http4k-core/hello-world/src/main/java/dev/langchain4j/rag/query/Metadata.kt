@@ -1,79 +1,67 @@
-package dev.langchain4j.rag.query;
+package dev.langchain4j.rag.query
 
-import dev.langchain4j.data.message.ChatMessage;
-import dev.langchain4j.memory.ChatMemory;
-import dev.langchain4j.rag.AugmentationRequest;
-import dev.langchain4j.rag.RetrievalAugmentor;
-
-import java.util.List;
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.data.message.ChatMessage
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.rag.RetrievalAugmentor
+import java.util.Objects
 
 /**
  * Represents metadata that may be useful or necessary for retrieval or augmentation purposes.
  */
-public class Metadata {
+class Metadata(chatMessage: ChatMessage, private val chatMemoryId: Any, chatMemory: List<ChatMessage>?) {
+    private val chatMessage: ChatMessage =
+        ValidationUtils.ensureNotNull(chatMessage, "chatMessage")
+    private val chatMemory: List<ChatMessage> =
+        Utils.copy(chatMemory)
 
-    private final ChatMessage chatMessage;
-    private final Object chatMemoryId;
-    private final List<ChatMessage> chatMemory;
-
-    public Metadata(ChatMessage chatMessage, Object chatMemoryId, List<ChatMessage> chatMemory) {
-        this.chatMessage = ensureNotNull(chatMessage, "chatMessage");
-        this.chatMemoryId = chatMemoryId;
-        this.chatMemory = copy(chatMemory);
+    /**
+     * @return an original [ChatMessage] passed to the [RetrievalAugmentor.augment].
+     */
+    fun chatMessage(): ChatMessage {
+        return chatMessage
     }
 
     /**
-     * @return an original {@link ChatMessage} passed to the {@link RetrievalAugmentor#augment(AugmentationRequest)}.
+     * @return a chat memory ID. Present when [ChatMemory] is used. Can be used to distinguish between users.
+     * See `@dev.langchain4j.service.MemoryId` annotation from a `dev.langchain4j:langchain4j` module.
      */
-    public ChatMessage chatMessage() {
-        return chatMessage;
+    fun chatMemoryId(): Any {
+        return chatMemoryId
     }
 
     /**
-     * @return a chat memory ID. Present when {@link ChatMemory} is used. Can be used to distinguish between users.
-     * See {@code @dev.langchain4j.service.MemoryId} annotation from a {@code dev.langchain4j:langchain4j} module.
+     * @return previous messages in the [ChatMemory]. Present when [ChatMemory] is used.
+     * Can be used to get more details about the context (conversation) in which the [Query] originated.
      */
-    public Object chatMemoryId() {
-        return chatMemoryId;
+    fun chatMemory(): List<ChatMessage> {
+        return chatMemory
     }
 
-    /**
-     * @return previous messages in the {@link ChatMemory}. Present when {@link ChatMemory} is used.
-     * Can be used to get more details about the context (conversation) in which the {@link Query} originated.
-     */
-    public List<ChatMessage> chatMemory() {
-        return chatMemory;
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as Metadata
+        return this.chatMessage == that.chatMessage
+                && this.chatMemoryId == that.chatMemoryId
+                && this.chatMemory == that.chatMemory
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Metadata that = (Metadata) o;
-        return Objects.equals(this.chatMessage, that.chatMessage)
-                && Objects.equals(this.chatMemoryId, that.chatMemoryId)
-                && Objects.equals(this.chatMemory, that.chatMemory);
+    override fun hashCode(): Int {
+        return Objects.hash(chatMessage, chatMemoryId, chatMemory)
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(chatMessage, chatMemoryId, chatMemory);
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Metadata {" +
                 " chatMessage = " + chatMessage +
                 ", chatMemoryId = " + chatMemoryId +
                 ", chatMemory = " + chatMemory +
-                " }";
+                " }"
     }
 
-    public static Metadata from(ChatMessage chatMessage, Object chatMemoryId, List<ChatMessage> chatMemory) {
-        return new Metadata(chatMessage, chatMemoryId, chatMemory);
+    companion object {
+        fun from(chatMessage: ChatMessage, chatMemoryId: Any, chatMemory: List<ChatMessage>?): Metadata {
+            return Metadata(chatMessage, chatMemoryId, chatMemory)
+        }
     }
 }

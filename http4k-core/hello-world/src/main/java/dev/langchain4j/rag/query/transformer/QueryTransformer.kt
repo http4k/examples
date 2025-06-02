@@ -1,36 +1,35 @@
-package dev.langchain4j.rag.query.transformer;
+package dev.langchain4j.rag.query.transformer
 
-import dev.langchain4j.rag.query.Query;
-
-import java.util.Collection;
+import dev.langchain4j.rag.query.Query
 
 /**
- * Transforms the given {@link Query} into one or multiple {@link Query}s.
- * <br>
- * The goal is to enhance retrieval quality by modifying or expanding the original {@link Query}.
- * <br>
+ * Transforms the given [Query] into one or multiple [Query]s.
+ * <br></br>
+ * The goal is to enhance retrieval quality by modifying or expanding the original [Query].
+ * <br></br>
  * Some known approaches to improve retrieval include:
  * <pre>
- * - Query compression (see {@link CompressingQueryTransformer})
- * - Query expansion (see {@link ExpandingQueryTransformer})
+ * - Query compression (see [CompressingQueryTransformer])
+ * - Query expansion (see [ExpandingQueryTransformer])
  * - Query re-writing
  * - Step-back prompting
  * - Hypothetical document embeddings (HyDE)
- * </pre>
- * Additional details can be found <a href="https://blog.langchain.dev/query-transformations/">here</a>.
+</pre> *
+ * Additional details can be found [here](https://blog.langchain.dev/query-transformations/).
  *
  * @see DefaultQueryTransformer
+ *
  * @see CompressingQueryTransformer
+ *
  * @see ExpandingQueryTransformer
  */
-public interface QueryTransformer {
-
+interface QueryTransformer {
     /**
-     * Transforms the given {@link Query} into one or multiple {@link Query}s.
+     * Transforms the given [Query] into one or multiple [Query]s.
      *
-     * @param query The {@link Query} to be transformed.
-     * @return A collection of one or more {@link Query}s derived from the original {@link Query}.
+     * @param query The [Query] to be transformed.
+     * @return A collection of one or more [Query]s derived from the original [Query].
      */
-    Collection<Query> transform(Query query);
+    fun transform(query: Query): Collection<Query>
 }
 

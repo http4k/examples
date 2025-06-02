@@ -1,65 +1,59 @@
-package dev.langchain4j.rag;
+package dev.langchain4j.rag
 
-import dev.langchain4j.data.message.ChatMessage;
-import dev.langchain4j.rag.content.Content;
-
-import java.util.List;
-
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.data.message.ChatMessage
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.rag.content.Content
 
 /**
- * Represents the result of a {@link ChatMessage} augmentation.
+ * Represents the result of a [ChatMessage] augmentation.
  */
-public class AugmentationResult {
-
+class AugmentationResult(chatMessage: ChatMessage?, contents: List<Content?>?) {
     /**
      * The augmented chat message.
      */
-    private final ChatMessage chatMessage;
+    private val chatMessage: ChatMessage
 
     /**
      * A list of content used to augment the original chat message.
      */
-    private final List<Content> contents;
+    private val contents: List<Content?>
 
-    public AugmentationResult(ChatMessage chatMessage, List<Content> contents) {
-        this.chatMessage = ensureNotNull(chatMessage, "chatMessage");
-        this.contents = copy(contents);
+    init {
+        this.chatMessage = ValidationUtils.ensureNotNull(chatMessage, "chatMessage")
+        this.contents = Utils.copy(contents)
     }
 
-    public static AugmentationResultBuilder builder() {
-        return new AugmentationResultBuilder();
+    fun chatMessage(): ChatMessage {
+        return chatMessage
     }
 
-    public ChatMessage chatMessage() {
-        return chatMessage;
+    fun contents(): List<Content?> {
+        return contents
     }
 
-    public List<Content> contents() {
-        return contents;
-    }
+    class AugmentationResultBuilder internal constructor() {
+        private var chatMessage: ChatMessage? = null
+        private var contents: List<Content?>? = null
 
-    public static class AugmentationResultBuilder {
-
-        private ChatMessage chatMessage;
-        private List<Content> contents;
-
-        AugmentationResultBuilder() {
+        fun chatMessage(chatMessage: ChatMessage?): AugmentationResultBuilder {
+            this.chatMessage = chatMessage
+            return this
         }
 
-        public AugmentationResultBuilder chatMessage(ChatMessage chatMessage) {
-            this.chatMessage = chatMessage;
-            return this;
+        fun contents(contents: List<Content?>?): AugmentationResultBuilder {
+            this.contents = contents
+            return this
         }
 
-        public AugmentationResultBuilder contents(List<Content> contents) {
-            this.contents = contents;
-            return this;
+        fun build(): AugmentationResult {
+            return AugmentationResult(this.chatMessage, this.contents)
         }
+    }
 
-        public AugmentationResult build() {
-            return new AugmentationResult(this.chatMessage, this.contents);
+    companion object {
+        fun builder(): AugmentationResultBuilder {
+            return AugmentationResultBuilder()
         }
     }
 }

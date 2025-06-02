@@ -1,79 +1,66 @@
-package dev.langchain4j.rag.content;
+package dev.langchain4j.rag.content
 
-import dev.langchain4j.data.segment.TextSegment;
-
-import java.util.Map;
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.copy;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.data.segment.TextSegment
+import dev.langchain4j.data.segment.TextSegment.Companion.from
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Objects
 
 /**
- * A default implementation of a {@link Content}.
- * <br>
+ * A default implementation of a [Content].
+ * <br></br>
  * The class includes optional metadata which can store additional information about the content.
  * This metadata is supplementary and is intentionally excluded from equality and hash calculations.
- * See {@link #equals(Object)} and {@link #hashCode()} for details.
+ * See [.equals] and [.hashCode] for details.
  */
-public class DefaultContent implements Content {
+class DefaultContent @JvmOverloads constructor(
+    textSegment: TextSegment,
+    metadata: Map<ContentMetadata?, Any>? = java.util.Map.of()
+) :
+    Content {
+    private val textSegment: TextSegment =
+        ValidationUtils.ensureNotNull(textSegment, "textSegment")
+    private val metadata: Map<ContentMetadata?, Any> =
+        Utils.copy(metadata)
 
-    private final TextSegment textSegment;
-    private final Map<ContentMetadata, Object> metadata;
+    constructor(text: String?) : this(from(text))
 
-    public DefaultContent(TextSegment textSegment, Map<ContentMetadata, Object> metadata) {
-        this.textSegment = ensureNotNull(textSegment, "textSegment");
-        this.metadata = copy(metadata);
+    override fun textSegment(): TextSegment {
+        return textSegment
     }
 
-    public DefaultContent(String text) {
-        this(TextSegment.from(text));
-    }
-
-    public DefaultContent(TextSegment textSegment) {
-        this(textSegment, Map.of());
-    }
-
-    @Override
-    public TextSegment textSegment() {
-        return textSegment;
-    }
-
-    @Override
-    public Map<ContentMetadata, Object> metadata() {
-        return metadata;
+    override fun metadata(): Map<ContentMetadata?, Any> {
+        return metadata
     }
 
     /**
-     * Compares this {@code Content} with another object for equality.
-     * <br>
-     * The {@code metadata} field is intentionally excluded from the equality check. Metadata is considered
-     * supplementary information and does not contribute to the core identity of the {@code Content}.
+     * Compares this `Content` with another object for equality.
+     * <br></br>
+     * The `metadata` field is intentionally excluded from the equality check. Metadata is considered
+     * supplementary information and does not contribute to the core identity of the `Content`.
      */
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Content that = (Content) o;
-        return Objects.equals(this.textSegment, that.textSegment());
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as Content
+        return this.textSegment == that.textSegment()
     }
 
     /**
-     * Computes the hash code for this {@code Content}.
-     * <br>
-     * The {@code metadata} field is excluded from the hash code calculation. This ensures that two logically identical
-     * {@code Content} objects with differing metadata produce the same hash code, maintaining consistent behavior in
+     * Computes the hash code for this `Content`.
+     * <br></br>
+     * The `metadata` field is excluded from the hash code calculation. This ensures that two logically identical
+     * `Content` objects with differing metadata produce the same hash code, maintaining consistent behavior in
      * hash-based collections.
      */
-    @Override
-    public int hashCode() {
-        return Objects.hash(textSegment);
+    override fun hashCode(): Int {
+        return Objects.hash(textSegment)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "DefaultContent {" +
                 " textSegment = " + textSegment +
                 ", metadata = " + metadata +
-                " }";
+                " }"
     }
 }

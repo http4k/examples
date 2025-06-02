@@ -1,6 +1,6 @@
-package dev.langchain4j.rag.content;
+package dev.langchain4j.rag.content
 
-public enum ContentMetadata {
+enum class ContentMetadata {
     SCORE,
     RERANKED_SCORE,
     EMBEDDING_ID

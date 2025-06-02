@@ -1,71 +1,65 @@
-package dev.langchain4j.rag.query;
+package dev.langchain4j.rag.query
 
-import dev.langchain4j.rag.content.Content;
-
-import java.util.Objects;
-
-import static dev.langchain4j.internal.Utils.quoted;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotBlank;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import java.util.Objects
 
 /**
- * Represents a query from the user intended for retrieving relevant {@link Content}s.
- * <br>
+ * Represents a query from the user intended for retrieving relevant [Content]s.
+ * <br></br>
  * Currently, it is limited to text,
  * but future extensions may include support for other modalities (e.g., images, audio, video, etc.).
- * <br>
- * Includes {@link Metadata} that may be useful or necessary for retrieval or augmentation.
+ * <br></br>
+ * Includes [Metadata] that may be useful or necessary for retrieval or augmentation.
  */
-public class Query {
+class Query {
+    private val text: String
+    private val metadata: Metadata?
 
-    private final String text;
-    private final Metadata metadata;
-
-    public Query(String text) {
-        this.text = ensureNotBlank(text, "text");
-        this.metadata = null;
+    constructor(text: String?) {
+        this.text = ValidationUtils.ensureNotBlank(text, "text")
+        this.metadata = null
     }
 
-    public Query(String text, Metadata metadata) {
-        this.text = ensureNotBlank(text, "text");
-        this.metadata = ensureNotNull(metadata, "metadata");
+    constructor(text: String?, metadata: Metadata?) {
+        this.text = ValidationUtils.ensureNotBlank(text, "text")
+        this.metadata = ValidationUtils.ensureNotNull(metadata, "metadata")
     }
 
-    public String text() {
-        return text;
+    fun text(): String {
+        return text
     }
 
-    public Metadata metadata() {
-        return metadata;
+    fun metadata(): Metadata? {
+        return metadata
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Query that = (Query) o;
-        return Objects.equals(this.text, that.text)
-                && Objects.equals(this.metadata, that.metadata);
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val that = o as Query
+        return this.text == that.text
+                && this.metadata == that.metadata
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(text, metadata);
+    override fun hashCode(): Int {
+        return Objects.hash(text, metadata)
     }
 
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "Query {" +
-                " text = " + quoted(text) +
+                " text = " + Utils.quoted(text) +
                 ", metadata = " + metadata +
-                " }";
+                " }"
     }
 
-    public static Query from(String text) {
-        return new Query(text);
-    }
+    companion object {
+        fun from(text: String?): Query {
+            return Query(text)
+        }
 
-    public static Query from(String text, Metadata metadata) {
-        return new Query(text, metadata);
+        fun from(text: String?, metadata: Metadata?): Query {
+            return Query(text, metadata)
+        }
     }
 }

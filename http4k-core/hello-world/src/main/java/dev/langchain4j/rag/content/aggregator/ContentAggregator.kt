@@ -1,39 +1,35 @@
-package dev.langchain4j.rag.content.aggregator;
+package dev.langchain4j.rag.content.aggregator
 
-import dev.langchain4j.rag.content.Content;
-import dev.langchain4j.rag.content.retriever.ContentRetriever;
-import dev.langchain4j.rag.query.Query;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import dev.langchain4j.rag.content.Content
+import dev.langchain4j.rag.content.retriever.ContentRetriever
+import dev.langchain4j.rag.query.Query
 
 /**
- * Aggregates all {@link Content}s retrieved from all {@link ContentRetriever}s using all {@link Query}s.
- * <br>
- * The goal is to ensure that only the most relevant and non-redundant {@link Content}s are presented to the LLM.
- * <br>
+ * Aggregates all [Content]s retrieved from all [ContentRetriever]s using all [Query]s.
+ * <br></br>
+ * The goal is to ensure that only the most relevant and non-redundant [Content]s are presented to the LLM.
+ * <br></br>
  * Some effective approaches include:
  * <pre>
- * - Re-ranking (see {@link ReRankingContentAggregator})
- * - Reciprocal Rank Fusion (see {@link ReciprocalRankFuser}, utilized in both {@link DefaultContentAggregator} and {@link ReRankingContentAggregator})
- * </pre>
+ * - Re-ranking (see [ReRankingContentAggregator])
+ * - Reciprocal Rank Fusion (see [ReciprocalRankFuser], utilized in both [DefaultContentAggregator] and [ReRankingContentAggregator])
+</pre> *
  *
  * @see DefaultContentAggregator
+ *
  * @see ReRankingContentAggregator
  */
-public interface ContentAggregator {
-
+interface ContentAggregator {
     /**
-     * Aggregates all {@link Content}s retrieved by all {@link ContentRetriever}s using all {@link Query}s.
-     * The {@link Content}s, both on input and output, are sorted by relevance,
-     * with the most relevant {@link Content}s appearing at the beginning of {@code List<Content>}.
+     * Aggregates all [Content]s retrieved by all [ContentRetriever]s using all [Query]s.
+     * The [Content]s, both on input and output, are sorted by relevance,
+     * with the most relevant [Content]s appearing at the beginning of `List<Content>`.
      *
-     * @param queryToContents A map from a {@link Query} to all {@code List<Content>} retrieved with that {@link Query}.
-     *                        Given that each {@link Query} can be routed to multiple {@link ContentRetriever}s, the
-     *                        value of this map is a {@code Collection<List<Content>>}
-     *                        rather than a simple {@code List<Content>}.
-     * @return A list of aggregated {@link Content}s.
+     * @param queryToContents A map from a [Query] to all `List<Content>` retrieved with that [Query].
+     * Given that each [Query] can be routed to multiple [ContentRetriever]s, the
+     * value of this map is a `Collection<List<Content>>`
+     * rather than a simple `List<Content>`.
+     * @return A list of aggregated [Content]s.
      */
-    List<Content> aggregate(Map<Query, Collection<List<Content>>> queryToContents);
+    fun aggregate(queryToContents: Map<Query?, Collection<List<Content?>?>>): List<Content?>
 }

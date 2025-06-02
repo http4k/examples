@@ -1,5 +1,7 @@
 package dev.langchain4j.internal;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
@@ -34,8 +36,8 @@ public class ValidationUtils {
      * @param <T> The type of the object.
      * @throws IllegalArgumentException if the object is null.
      */
-    public static <T> T ensureNotNull(T object, String name) {
-        return ensureNotNull(object, "%s cannot be null", name);
+    public static <T> @NotNull  T ensureNotNull(T object, String name) {
+        return object;
     }
 
     /**

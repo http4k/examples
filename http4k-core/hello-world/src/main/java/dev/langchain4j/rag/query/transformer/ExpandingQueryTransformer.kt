@@ -1,127 +1,118 @@
-package dev.langchain4j.rag.query.transformer;
+package dev.langchain4j.rag.query.transformer
 
-import dev.langchain4j.internal.Utils;
-import dev.langchain4j.model.chat.ChatModel;
-import dev.langchain4j.model.input.Prompt;
-import dev.langchain4j.model.input.PromptTemplate;
-import dev.langchain4j.rag.query.Query;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import static dev.langchain4j.internal.Utils.getOrDefault;
-import static dev.langchain4j.internal.ValidationUtils.ensureGreaterThanZero;
-import static dev.langchain4j.internal.ValidationUtils.ensureNotNull;
-import static java.util.Arrays.stream;
-import static java.util.stream.Collectors.toList;
+import dev.langchain4j.data.segment.TextSegment.Companion.from
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.model.chat.ChatModel
+import dev.langchain4j.model.input.Prompt
+import dev.langchain4j.model.input.PromptTemplate
+import dev.langchain4j.rag.query.Query
+import java.util.Arrays
+import java.util.stream.Collectors
 
 /**
- * A {@link QueryTransformer} that utilizes a {@link ChatModel} to expand a given {@link Query}.
- * <br>
- * Refer to {@link #DEFAULT_PROMPT_TEMPLATE} and implementation for more details.
- * <br>
- * <br>
+ * A [QueryTransformer] that utilizes a [ChatModel] to expand a given [Query].
+ * <br></br>
+ * Refer to [.DEFAULT_PROMPT_TEMPLATE] and implementation for more details.
+ * <br></br>
+ * <br></br>
  * Configurable parameters (optional):
- * <br>
- * - {@link #promptTemplate}: The prompt template used to instruct the LLM to expand the provided {@link Query}.
- * <br>
- * - {@link #n}: The number of {@link Query}s to generate. Default value is 3.
+ * <br></br>
+ * - [.promptTemplate]: The prompt template used to instruct the LLM to expand the provided [Query].
+ * <br></br>
+ * - [.n]: The number of [Query]s to generate. Default value is 3.
  *
  * @see DefaultQueryTransformer
+ *
  * @see CompressingQueryTransformer
  */
-public class ExpandingQueryTransformer implements QueryTransformer {
+class ExpandingQueryTransformer constructor(
+    chatModel: ChatModel?,
+    promptTemplate: PromptTemplate? = DEFAULT_PROMPT_TEMPLATE,
+    n: Int? = DEFAULT_N
+) :
+    QueryTransformer {
+    protected val chatModel: ChatModel
+    protected val promptTemplate: PromptTemplate?
+    protected val n: Int
 
-    public static final PromptTemplate DEFAULT_PROMPT_TEMPLATE = PromptTemplate.from(
-            """
-                    Generate {{n}} different versions of a provided user query. \
-                    Each version should be worded differently, using synonyms or alternative sentence structures, \
-                    but they should all retain the original meaning. \
-                    These versions will be used to retrieve relevant documents. \
-                    It is very important to provide each query version on a separate line, \
-                    without enumerations, hyphens, or any additional formatting!
-                    User query: {{query}}"""
-    );
-    public static final int DEFAULT_N = 3;
+    constructor(chatModel: ChatModel?, n: Int) : this(chatModel, DEFAULT_PROMPT_TEMPLATE, n)
 
-    protected final ChatModel chatModel;
-    protected final PromptTemplate promptTemplate;
-    protected final int n;
+    constructor(chatModel: ChatModel?, promptTemplate: PromptTemplate) : this(
+        chatModel,
+        ValidationUtils.ensureNotNull<PromptTemplate>(promptTemplate, "promptTemplate"),
+        DEFAULT_N
+    )
 
-    public ExpandingQueryTransformer(ChatModel chatModel) {
-        this(chatModel, DEFAULT_PROMPT_TEMPLATE, DEFAULT_N);
+    init {
+        this.chatModel = ValidationUtils.ensureNotNull(chatModel, "chatModel")
+        this.promptTemplate = Utils.getOrDefault(promptTemplate, DEFAULT_PROMPT_TEMPLATE)
+        this.n = ValidationUtils.ensureGreaterThanZero(Utils.getOrDefault(n, DEFAULT_N), "n")
     }
 
-    public ExpandingQueryTransformer(ChatModel chatModel, int n) {
-        this(chatModel, DEFAULT_PROMPT_TEMPLATE, n);
-    }
-
-    public ExpandingQueryTransformer(ChatModel chatModel, PromptTemplate promptTemplate) {
-        this(chatModel, ensureNotNull(promptTemplate, "promptTemplate"), DEFAULT_N);
-    }
-
-    public ExpandingQueryTransformer(ChatModel chatModel, PromptTemplate promptTemplate, Integer n) {
-        this.chatModel = ensureNotNull(chatModel, "chatModel");
-        this.promptTemplate = getOrDefault(promptTemplate, DEFAULT_PROMPT_TEMPLATE);
-        this.n = ensureGreaterThanZero(getOrDefault(n, DEFAULT_N), "n");
-    }
-
-    public static ExpandingQueryTransformerBuilder builder() {
-        return new ExpandingQueryTransformerBuilder();
-    }
-
-    @Override
-    public Collection<Query> transform(Query query) {
-        Prompt prompt = createPrompt(query);
-        String response = chatModel.chat(prompt.text());
-        List<String> queries = parse(response);
+    override fun transform(query: Query): Collection<Query> {
+        val prompt = createPrompt(query)
+        val response = chatModel.chat(prompt.text())
+        val queries = parse(response)
         return queries.stream()
-                .map(queryText -> query.metadata() == null
-                        ? Query.from(queryText)
-                        : Query.from(queryText, query.metadata()))
-                .collect(toList());
+            .map<Query> { queryText: String? ->
+                if (query.metadata() == null)
+                    Query.Companion.from(queryText)
+                else
+                    Query.Companion.from(queryText, query.metadata())
+            }
+            .collect(Collectors.toList<Query>())
     }
 
-    protected Prompt createPrompt(Query query) {
-        Map<String, Object> variables = new HashMap<>();
-        variables.put("query", query.text());
-        variables.put("n", n);
-        return promptTemplate.apply(variables);
+    protected fun createPrompt(query: Query): Prompt {
+        val variables: MutableMap<String, Any?> = HashMap()
+        variables["query"] = query.text()
+        variables["n"] = n
+        return promptTemplate!!.apply(variables)
     }
 
-    protected List<String> parse(String queries) {
-        return stream(queries.split("\n"))
-                .filter(Utils::isNotNullOrBlank)
-                .collect(toList());
+    protected fun parse(queries: String): List<String> {
+        return Arrays.stream(queries.split("\n".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray())
+            .filter { string: String? -> Utils.isNotNullOrBlank(string) }
+            .collect(Collectors.toList())
     }
 
-    public static class ExpandingQueryTransformerBuilder {
-        private ChatModel chatModel;
-        private PromptTemplate promptTemplate;
-        private Integer n;
+    class ExpandingQueryTransformerBuilder internal constructor() {
+        private var chatModel: ChatModel? = null
+        private var promptTemplate: PromptTemplate? = null
+        private var n: Int? = null
 
-        ExpandingQueryTransformerBuilder() {
+        fun chatModel(chatModel: ChatModel?): ExpandingQueryTransformerBuilder {
+            this.chatModel = chatModel
+            return this
         }
 
-        public ExpandingQueryTransformerBuilder chatModel(ChatModel chatModel) {
-            this.chatModel = chatModel;
-            return this;
+        fun promptTemplate(promptTemplate: PromptTemplate?): ExpandingQueryTransformerBuilder {
+            this.promptTemplate = promptTemplate
+            return this
         }
 
-        public ExpandingQueryTransformerBuilder promptTemplate(PromptTemplate promptTemplate) {
-            this.promptTemplate = promptTemplate;
-            return this;
+        fun n(n: Int?): ExpandingQueryTransformerBuilder {
+            this.n = n
+            return this
         }
 
-        public ExpandingQueryTransformerBuilder n(Integer n) {
-            this.n = n;
-            return this;
+        fun build(): ExpandingQueryTransformer {
+            return ExpandingQueryTransformer(this.chatModel, this.promptTemplate, this.n)
         }
+    }
 
-        public ExpandingQueryTransformer build() {
-            return new ExpandingQueryTransformer(this.chatModel, this.promptTemplate, this.n);
+    companion object {
+        val DEFAULT_PROMPT_TEMPLATE: PromptTemplate = PromptTemplate.from(
+            """
+                    Generate {{n}} different versions of a provided user query. Each version should be worded differently, using synonyms or alternative sentence structures, but they should all retain the original meaning. These versions will be used to retrieve relevant documents. It is very important to provide each query version on a separate line, without enumerations, hyphens, or any additional formatting!
+                    User query: {{query}}
+                    """.trimIndent()
+        )
+        const val DEFAULT_N: Int = 3
+
+        fun builder(): ExpandingQueryTransformerBuilder {
+            return ExpandingQueryTransformerBuilder()
         }
     }
 }

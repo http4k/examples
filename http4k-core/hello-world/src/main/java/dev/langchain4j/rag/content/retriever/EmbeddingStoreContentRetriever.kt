@@ -1,254 +1,268 @@
-package dev.langchain4j.rag.content.retriever;
+package dev.langchain4j.rag.content.retriever
 
-import dev.langchain4j.data.embedding.Embedding;
-import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.model.embedding.EmbeddingModel;
-import dev.langchain4j.rag.content.Content;
-import dev.langchain4j.rag.content.ContentMetadata;
-import dev.langchain4j.rag.query.Query;
-import dev.langchain4j.spi.model.embedding.EmbeddingModelFactory;
-import dev.langchain4j.store.embedding.EmbeddingSearchRequest;
-import dev.langchain4j.store.embedding.EmbeddingSearchResult;
-import dev.langchain4j.store.embedding.EmbeddingStore;
-import dev.langchain4j.store.embedding.filter.Filter;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
-import static dev.langchain4j.internal.Utils.getOrDefault;
-import static dev.langchain4j.internal.ValidationUtils.*;
-import static dev.langchain4j.spi.ServiceHelper.loadFactories;
+import dev.langchain4j.data.segment.TextSegment
+import dev.langchain4j.data.segment.TextSegment.Companion.from
+import dev.langchain4j.internal.Utils
+import dev.langchain4j.internal.ValidationUtils
+import dev.langchain4j.model.embedding.EmbeddingModel
+import dev.langchain4j.rag.content.Content
+import dev.langchain4j.rag.content.ContentMetadata
+import dev.langchain4j.rag.query.Query
+import dev.langchain4j.spi.ServiceHelper
+import dev.langchain4j.spi.model.embedding.EmbeddingModelFactory
+import dev.langchain4j.store.embedding.EmbeddingMatch
+import dev.langchain4j.store.embedding.EmbeddingSearchRequest
+import dev.langchain4j.store.embedding.EmbeddingStore
+import dev.langchain4j.store.embedding.filter.Filter
+import java.util.Map
+import java.util.function.Function
+import java.util.stream.Collectors
 
 /**
- * A {@link ContentRetriever} that retrieves from an {@link EmbeddingStore}.
- * <br>
- * By default, it retrieves the 3 most similar {@link Content}s to the provided {@link Query},
- * without any {@link Filter}ing.
- * <br>
- * <br>
+ * A [ContentRetriever] that retrieves from an [EmbeddingStore].
+ * <br></br>
+ * By default, it retrieves the 3 most similar [Content]s to the provided [Query],
+ * without any [Filter]ing.
+ * <br></br>
+ * <br></br>
  * Configurable parameters (optional):
- * <br>
- * - {@code displayName}: Display name for logging purposes, e.g. when multiple instances are used.
- * <br>
- * - {@code maxResults}: The maximum number of {@link Content}s to retrieve.
- * <br>
- * - {@code dynamicMaxResults}: It is a {@link Function} that accepts a {@link Query} and returns a {@code maxResults} value.
- * It can be used to dynamically define {@code maxResults} value, depending on factors such as the query,
- * the user (using Metadata#chatMemoryId()} from {@link Query#metadata()}), etc.
- * <br>
- * - {@code minScore}: The minimum relevance score for the returned {@link Content}s.
- * {@link Content}s scoring below {@code #minScore} are excluded from the results.
- * <br>
- * - {@code dynamicMinScore}: It is a {@link Function} that accepts a {@link Query} and returns a {@code minScore} value.
- * It can be used to dynamically define {@code minScore} value, depending on factors such as the query,
- * the user (using Metadata#chatMemoryId()} from {@link Query#metadata()}), etc.
- * <br>
- * - {@code filter}: The {@link Filter} that will be applied to a {@link dev.langchain4j.data.document.Metadata} in the
- * {@link Content#textSegment()}.
- * <br>
- * - {@code dynamicFilter}: It is a {@link Function} that accepts a {@link Query} and returns a {@code filter} value.
- * It can be used to dynamically define {@code filter} value, depending on factors such as the query,
- * the user (using Metadata#chatMemoryId()} from {@link Query#metadata()}), etc.
+ * <br></br>
+ * - `displayName`: Display name for logging purposes, e.g. when multiple instances are used.
+ * <br></br>
+ * - `maxResults`: The maximum number of [Content]s to retrieve.
+ * <br></br>
+ * - `dynamicMaxResults`: It is a [Function] that accepts a [Query] and returns a `maxResults` value.
+ * It can be used to dynamically define `maxResults` value, depending on factors such as the query,
+ * the user (using Metadata#chatMemoryId()} from [Query.metadata]), etc.
+ * <br></br>
+ * - `minScore`: The minimum relevance score for the returned [Content]s.
+ * [Content]s scoring below `#minScore` are excluded from the results.
+ * <br></br>
+ * - `dynamicMinScore`: It is a [Function] that accepts a [Query] and returns a `minScore` value.
+ * It can be used to dynamically define `minScore` value, depending on factors such as the query,
+ * the user (using Metadata#chatMemoryId()} from [Query.metadata]), etc.
+ * <br></br>
+ * - `filter`: The [Filter] that will be applied to a [dev.langchain4j.data.document.Metadata] in the
+ * [Content.textSegment].
+ * <br></br>
+ * - `dynamicFilter`: It is a [Function] that accepts a [Query] and returns a `filter` value.
+ * It can be used to dynamically define `filter` value, depending on factors such as the query,
+ * the user (using Metadata#chatMemoryId()} from [Query.metadata]), etc.
  */
-public class EmbeddingStoreContentRetriever implements ContentRetriever {
+class EmbeddingStoreContentRetriever private constructor(
+    displayName: String?,
+    embeddingStore: EmbeddingStore<TextSegment>?,
+    embeddingModel: EmbeddingModel?,
+    dynamicMaxResults: Function<Query, Int>?,
+    dynamicMinScore: Function<Query, Double>?,
+    dynamicFilter: Function<Query, Filter?>?
+) :
+    ContentRetriever {
+    private val embeddingStore: EmbeddingStore<TextSegment>
+    private val embeddingModel: EmbeddingModel
 
-    public static final Function<Query, Integer> DEFAULT_MAX_RESULTS = (query) -> 3;
-    public static final Function<Query, Double> DEFAULT_MIN_SCORE = (query) -> 0.0;
-    public static final Function<Query, Filter> DEFAULT_FILTER = (query) -> null;
+    private val maxResultsProvider: Function<Query, Int>?
+    private val minScoreProvider: Function<Query, Double>?
+    private val filterProvider: Function<Query, Filter?>?
 
-    public static final String DEFAULT_DISPLAY_NAME = "Default";
+    private val displayName: String
 
-    private final EmbeddingStore<TextSegment> embeddingStore;
-    private final EmbeddingModel embeddingModel;
+    constructor(
+        embeddingStore: EmbeddingStore<TextSegment>?,
+        embeddingModel: EmbeddingModel?
+    ) : this(
+        DEFAULT_DISPLAY_NAME,
+        embeddingStore,
+        embeddingModel,
+        DEFAULT_MAX_RESULTS,
+        DEFAULT_MIN_SCORE,
+        DEFAULT_FILTER
+    )
 
-    private final Function<Query, Integer> maxResultsProvider;
-    private final Function<Query, Double> minScoreProvider;
-    private final Function<Query, Filter> filterProvider;
+    constructor(
+        embeddingStore: EmbeddingStore<TextSegment>?,
+        embeddingModel: EmbeddingModel?,
+        maxResults: Int
+    ) : this(
+        DEFAULT_DISPLAY_NAME,
+        embeddingStore,
+        embeddingModel,
+        Function<Query, Int> { query: Query? -> maxResults },
+        DEFAULT_MIN_SCORE,
+        DEFAULT_FILTER
+    )
 
-    private final String displayName;
+    constructor(
+        embeddingStore: EmbeddingStore<TextSegment>?,
+        embeddingModel: EmbeddingModel?,
+        maxResults: Int,
+        minScore: Double
+    ) : this(
+        DEFAULT_DISPLAY_NAME,
+        embeddingStore,
+        embeddingModel,
+        Function<Query, Int> { query: Query? -> maxResults },
+        Function<Query, Double> { query: Query? -> minScore },
+        DEFAULT_FILTER
+    )
 
-    public EmbeddingStoreContentRetriever(EmbeddingStore<TextSegment> embeddingStore,
-                                          EmbeddingModel embeddingModel) {
-        this(
-                DEFAULT_DISPLAY_NAME,
-                embeddingStore,
-                embeddingModel,
-                DEFAULT_MAX_RESULTS,
-                DEFAULT_MIN_SCORE,
-                DEFAULT_FILTER
-        );
+    init {
+        this.displayName = Utils.getOrDefault(displayName, DEFAULT_DISPLAY_NAME)
+        this.embeddingStore = ValidationUtils.ensureNotNull(embeddingStore, "embeddingStore")
+        this.embeddingModel = ValidationUtils.ensureNotNull(
+            Utils.getOrDefault(
+                embeddingModel
+            ) { loadEmbeddingModel() },
+            "embeddingModel"
+        )
+        this.maxResultsProvider = Utils.getOrDefault(dynamicMaxResults, DEFAULT_MAX_RESULTS)
+        this.minScoreProvider = Utils.getOrDefault(dynamicMinScore, DEFAULT_MIN_SCORE)
+        this.filterProvider = Utils.getOrDefault(dynamicFilter, DEFAULT_FILTER)
     }
 
-    public EmbeddingStoreContentRetriever(EmbeddingStore<TextSegment> embeddingStore,
-                                          EmbeddingModel embeddingModel,
-                                          int maxResults) {
-        this(
-                DEFAULT_DISPLAY_NAME,
-                embeddingStore,
-                embeddingModel,
-                (query) -> maxResults,
-                DEFAULT_MIN_SCORE,
-                DEFAULT_FILTER
-        );
-    }
+    class EmbeddingStoreContentRetrieverBuilder internal constructor() {
+        private var displayName: String? = null
+        private var embeddingStore: EmbeddingStore<TextSegment>? = null
+        private var embeddingModel: EmbeddingModel? = null
+        private var dynamicMaxResults: Function<Query, Int>? = null
+        private var dynamicMinScore: Function<Query, Double>? = null
+        private var dynamicFilter: Function<Query, Filter?>? = null
 
-    public EmbeddingStoreContentRetriever(EmbeddingStore<TextSegment> embeddingStore,
-                                          EmbeddingModel embeddingModel,
-                                          Integer maxResults,
-                                          Double minScore) {
-        this(
-                DEFAULT_DISPLAY_NAME,
-                embeddingStore,
-                embeddingModel,
-                (query) -> maxResults,
-                (query) -> minScore,
-                DEFAULT_FILTER
-        );
-    }
-
-    private EmbeddingStoreContentRetriever(String displayName,
-                                           EmbeddingStore<TextSegment> embeddingStore,
-                                           EmbeddingModel embeddingModel,
-                                           Function<Query, Integer> dynamicMaxResults,
-                                           Function<Query, Double> dynamicMinScore,
-                                           Function<Query, Filter> dynamicFilter) {
-        this.displayName = getOrDefault(displayName, DEFAULT_DISPLAY_NAME);
-        this.embeddingStore = ensureNotNull(embeddingStore, "embeddingStore");
-        this.embeddingModel = ensureNotNull(
-                getOrDefault(embeddingModel, EmbeddingStoreContentRetriever::loadEmbeddingModel),
-                "embeddingModel"
-        );
-        this.maxResultsProvider = getOrDefault(dynamicMaxResults, DEFAULT_MAX_RESULTS);
-        this.minScoreProvider = getOrDefault(dynamicMinScore, DEFAULT_MIN_SCORE);
-        this.filterProvider = getOrDefault(dynamicFilter, DEFAULT_FILTER);
-    }
-
-    private static EmbeddingModel loadEmbeddingModel() {
-        Collection<EmbeddingModelFactory> factories = loadFactories(EmbeddingModelFactory.class);
-        if (factories.size() > 1) {
-            throw new RuntimeException("Conflict: multiple embedding models have been found in the classpath. " +
-                    "Please explicitly specify the one you wish to use.");
-        }
-
-        for (EmbeddingModelFactory factory : factories) {
-            return factory.create();
-        }
-
-        return null;
-    }
-
-    public static EmbeddingStoreContentRetrieverBuilder builder() {
-        return new EmbeddingStoreContentRetrieverBuilder();
-    }
-
-    public static class EmbeddingStoreContentRetrieverBuilder {
-
-        private String displayName;
-        private EmbeddingStore<TextSegment> embeddingStore;
-        private EmbeddingModel embeddingModel;
-        private Function<Query, Integer> dynamicMaxResults;
-        private Function<Query, Double> dynamicMinScore;
-        private Function<Query, Filter> dynamicFilter;
-
-        EmbeddingStoreContentRetrieverBuilder() {
-        }
-
-        public EmbeddingStoreContentRetrieverBuilder maxResults(Integer maxResults) {
+        fun maxResults(maxResults: Int?): EmbeddingStoreContentRetrieverBuilder {
             if (maxResults != null) {
-                dynamicMaxResults = (query) -> ensureGreaterThanZero(maxResults, "maxResults");
+                dynamicMaxResults =
+                    Function { query: Query? -> ValidationUtils.ensureGreaterThanZero(maxResults, "maxResults") }
             }
-            return this;
+            return this
         }
 
-        public EmbeddingStoreContentRetrieverBuilder minScore(Double minScore) {
+        fun minScore(minScore: Double?): EmbeddingStoreContentRetrieverBuilder {
             if (minScore != null) {
-                dynamicMinScore = (query) -> ensureBetween(minScore, 0, 1, "minScore");
+                dynamicMinScore =
+                    Function { query: Query? -> ValidationUtils.ensureBetween(minScore, 0.0, 1.0, "minScore") }
             }
-            return this;
+            return this
         }
 
-        public EmbeddingStoreContentRetrieverBuilder filter(Filter filter) {
+        fun filter(filter: Filter?): EmbeddingStoreContentRetrieverBuilder {
             if (filter != null) {
-                dynamicFilter = (query) -> filter;
+                dynamicFilter =
+                    Function { query: Query? -> filter }
             }
-            return this;
+            return this
         }
 
-        public EmbeddingStoreContentRetrieverBuilder displayName(String displayName) {
-            this.displayName = displayName;
-            return this;
+        fun displayName(displayName: String?): EmbeddingStoreContentRetrieverBuilder {
+            this.displayName = displayName
+            return this
         }
 
-        public EmbeddingStoreContentRetrieverBuilder embeddingStore(EmbeddingStore<TextSegment> embeddingStore) {
-            this.embeddingStore = embeddingStore;
-            return this;
+        fun embeddingStore(embeddingStore: EmbeddingStore<TextSegment>?): EmbeddingStoreContentRetrieverBuilder {
+            this.embeddingStore = embeddingStore
+            return this
         }
 
-        public EmbeddingStoreContentRetrieverBuilder embeddingModel(EmbeddingModel embeddingModel) {
-            this.embeddingModel = embeddingModel;
-            return this;
+        fun embeddingModel(embeddingModel: EmbeddingModel?): EmbeddingStoreContentRetrieverBuilder {
+            this.embeddingModel = embeddingModel
+            return this
         }
 
-        public EmbeddingStoreContentRetrieverBuilder dynamicMaxResults(Function<Query, Integer> dynamicMaxResults) {
-            this.dynamicMaxResults = dynamicMaxResults;
-            return this;
+        fun dynamicMaxResults(dynamicMaxResults: Function<Query, Int>?): EmbeddingStoreContentRetrieverBuilder {
+            this.dynamicMaxResults = dynamicMaxResults
+            return this
         }
 
-        public EmbeddingStoreContentRetrieverBuilder dynamicMinScore(Function<Query, Double> dynamicMinScore) {
-            this.dynamicMinScore = dynamicMinScore;
-            return this;
+        fun dynamicMinScore(dynamicMinScore: Function<Query, Double>?): EmbeddingStoreContentRetrieverBuilder {
+            this.dynamicMinScore = dynamicMinScore
+            return this
         }
 
-        public EmbeddingStoreContentRetrieverBuilder dynamicFilter(Function<Query, Filter> dynamicFilter) {
-            this.dynamicFilter = dynamicFilter;
-            return this;
+        fun dynamicFilter(dynamicFilter: Function<Query, Filter?>?): EmbeddingStoreContentRetrieverBuilder {
+            this.dynamicFilter = dynamicFilter
+            return this
         }
 
-        public EmbeddingStoreContentRetriever build() {
-            return new EmbeddingStoreContentRetriever(this.displayName, this.embeddingStore, this.embeddingModel, this.dynamicMaxResults, this.dynamicMinScore, this.dynamicFilter);
+        fun build(): EmbeddingStoreContentRetriever {
+            return EmbeddingStoreContentRetriever(
+                this.displayName,
+                this.embeddingStore,
+                this.embeddingModel,
+                this.dynamicMaxResults,
+                this.dynamicMinScore,
+                this.dynamicFilter
+            )
         }
     }
 
-    /**
-     * Creates an instance of an {@code EmbeddingStoreContentRetriever} from the specified {@link EmbeddingStore}
-     * and {@link EmbeddingModel} found through SPI (see {@link EmbeddingModelFactory}).
-     */
-    public static EmbeddingStoreContentRetriever from(EmbeddingStore<TextSegment> embeddingStore) {
-        return builder().embeddingStore(embeddingStore).build();
+    override fun retrieve(query: Query): List<Content> {
+        val embeddedQuery = embeddingModel.embed(query.text()).content()
+
+        val searchRequest = EmbeddingSearchRequest.builder()
+            .queryEmbedding(embeddedQuery)
+            .maxResults(maxResultsProvider!!.apply(query))
+            .minScore(minScoreProvider!!.apply(query))
+            .filter(filterProvider!!.apply(query))
+            .build()
+
+        val searchResult = embeddingStore.search(searchRequest)
+
+        return searchResult!!.matches().stream()
+            .map<Content> { embeddingMatch: EmbeddingMatch<TextSegment> ->
+                Content.Companion.from(
+                    embeddingMatch.embedded(),
+                    Map.of<ContentMetadata?, Any>(
+                        ContentMetadata.SCORE, embeddingMatch.score(),
+                        ContentMetadata.EMBEDDING_ID, embeddingMatch.embeddingId()
+                    )
+                )
+            }
+            .collect(Collectors.toList<Content>())
     }
 
-    @Override
-    public List<Content> retrieve(Query query) {
-
-        Embedding embeddedQuery = embeddingModel.embed(query.text()).content();
-
-        EmbeddingSearchRequest searchRequest = EmbeddingSearchRequest.builder()
-                .queryEmbedding(embeddedQuery)
-                .maxResults(maxResultsProvider.apply(query))
-                .minScore(minScoreProvider.apply(query))
-                .filter(filterProvider.apply(query))
-                .build();
-
-        EmbeddingSearchResult<TextSegment> searchResult = embeddingStore.search(searchRequest);
-
-        return searchResult.matches().stream()
-                .map(embeddingMatch -> Content.from(
-                        embeddingMatch.embedded(),
-                        Map.of(
-                                ContentMetadata.SCORE, embeddingMatch.score(),
-                                ContentMetadata.EMBEDDING_ID, embeddingMatch.embeddingId()
-                        )
-                ))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public String toString() {
+    override fun toString(): String {
         return "EmbeddingStoreContentRetriever{" +
                 "displayName='" + displayName + '\'' +
-                '}';
+                '}'
+    }
+
+    companion object {
+        val DEFAULT_MAX_RESULTS: Function<Query, Int> =
+            Function { query: Query? -> 3 }
+        val DEFAULT_MIN_SCORE: Function<Query, Double> =
+            Function { query: Query? -> 0.0 }
+        val DEFAULT_FILTER: Function<Query, Filter?> =
+            Function { query: Query? -> null }
+
+        const val DEFAULT_DISPLAY_NAME: String = "Default"
+
+        private fun loadEmbeddingModel(): EmbeddingModel? {
+            val factories = ServiceHelper.loadFactories(
+                EmbeddingModelFactory::class.java
+            )
+            if (factories.size > 1) {
+                throw RuntimeException(
+                    "Conflict: multiple embedding models have been found in the classpath. " +
+                            "Please explicitly specify the one you wish to use."
+                )
+            }
+
+            for (factory in factories) {
+                return factory.create()
+            }
+
+            return null
+        }
+
+        fun builder(): EmbeddingStoreContentRetrieverBuilder {
+            return EmbeddingStoreContentRetrieverBuilder()
+        }
+
+        /**
+         * Creates an instance of an `EmbeddingStoreContentRetriever` from the specified [EmbeddingStore]
+         * and [EmbeddingModel] found through SPI (see [EmbeddingModelFactory]).
+         */
+        fun from(embeddingStore: EmbeddingStore<TextSegment>?): EmbeddingStoreContentRetriever {
+            return builder().embeddingStore(embeddingStore).build()
+        }
     }
 }
