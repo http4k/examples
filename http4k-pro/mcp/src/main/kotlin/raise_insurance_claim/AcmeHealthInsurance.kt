@@ -1,6 +1,6 @@
 package raise_insurance_claim
 
-import org.http4k.connect.model.Role.Companion.User
+import org.http4k.ai.model.Role.Companion.User
 import org.http4k.mcp.PromptResponse
 import org.http4k.mcp.ToolResponse
 import org.http4k.mcp.model.Content.Text
