@@ -1,9 +1,9 @@
 package building_servers.stdio
 
-import org.http4k.mcp.model.McpEntity
-import org.http4k.mcp.protocol.ServerProtocolCapability
-import org.http4k.mcp.protocol.ServerMetaData
-import org.http4k.mcp.protocol.Version
+import org.http4k.ai.mcp.model.McpEntity
+import org.http4k.ai.mcp.protocol.ServerProtocolCapability
+import org.http4k.ai.mcp.protocol.ServerMetaData
+import org.http4k.ai.mcp.protocol.Version
 import org.http4k.routing.mcpStdIo
 import building_servers.prompts
 import building_servers.resources

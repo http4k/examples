@@ -2,9 +2,9 @@
 
 package building_servers.serverless
 
-import org.http4k.mcp.model.McpEntity
-import org.http4k.mcp.protocol.ServerMetaData
-import org.http4k.mcp.protocol.Version
+import org.http4k.ai.mcp.model.McpEntity
+import org.http4k.ai.mcp.protocol.ServerMetaData
+import org.http4k.ai.mcp.protocol.Version
 import org.http4k.routing.mcpHttpNonStreaming
 import org.http4k.serverless.ApiGatewayV2LambdaFunction
 import org.http4k.serverless.AppLoader
@@ -12,7 +12,7 @@ import building_servers.completions
 import building_servers.prompts
 import building_servers.resources
 import building_servers.tools
-import org.http4k.mcp.server.security.NoMcpSecurity
+import org.http4k.ai.mcp.server.security.NoMcpSecurity
 
 /**
  * This example demonstrates how to create an MCP Lambda function using the non-streaming HTTP protocol.
