@@ -9,6 +9,7 @@ import org.http4k.connect.anthropic.AnthropicModels.Claude_Sonnet_3_7
 import org.http4k.connect.anthropic.FakeAnthropicAI
 import org.http4k.connect.openai.FakeOpenAI
 import org.http4k.connect.openai.OpenAIModels.GPT4
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 
@@ -33,7 +34,7 @@ class AnthropicQuizTest : LLMBackedQuizContract {
     override val model = Claude_Sonnet_3_7
 }
 
-// currently this won't run because of a classpath clash (being resolved in next release)
+@Disabled("currently this won't run because of a classpath clash (being resolved in next release)")
 class OpenAIQuizTest : LLMBackedQuizContract {
     override val chat = Chat.OpenAI(ApiKey.of("fake"), FakeOpenAI())
     override val model = GPT4
