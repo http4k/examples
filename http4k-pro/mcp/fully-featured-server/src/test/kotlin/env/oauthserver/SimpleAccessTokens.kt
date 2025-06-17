@@ -13,13 +13,12 @@ import org.http4k.security.oauth.server.accesstoken.AuthorizationCodeAccessToken
 
 object SimpleAccessTokens : AccessTokens {
     override fun create(clientId: ClientId, tokenRequest: TokenRequest) =
-        Failure(UnsupportedGrantType("client_credentials"))
+        Success(AccessToken(ACCESS_TOKEN_PREFIX + tokenRequest.clientId.toString().reversed()))
 
     override fun create(
         clientId: ClientId,
         tokenRequest: AuthorizationCodeAccessTokenRequest
-    ): Result<AccessToken, AuthorizationCodeAlreadyUsed> =
-        Success(AccessToken(ACCESS_TOKEN_PREFIX + tokenRequest.authorizationCode.value.reversed()))
+    ) = Failure(UnsupportedGrantType("client_credentials"))
 }
 
 const val ACCESS_TOKEN_PREFIX = "ACCESS_TOKEN_"

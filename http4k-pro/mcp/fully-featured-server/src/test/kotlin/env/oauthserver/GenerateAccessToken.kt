@@ -20,12 +20,9 @@ import org.http4k.security.oauth.server.refreshtoken.RefreshTokens
 import java.time.Clock
 
 fun GenerateAccessToken(clock: Clock, credentials: Credentials): HttpHandler {
-
-    val accessTokens = SimpleAccessTokens
-
     val generateAccessTokenForGrantType = GenerateAccessTokenForGrantType(
         NoOpAuthorizationCodes,
-        accessTokens, clock, IdTokens.Unsupported, RefreshTokens.Unsupported,
+        SimpleAccessTokens, clock, IdTokens.Unsupported, RefreshTokens.Unsupported,
         GrantTypesConfiguration(
             mapOf(
                 ClientCredentials to
@@ -37,7 +34,9 @@ fun GenerateAccessToken(clock: Clock, credentials: Credentials): HttpHandler {
     return { req: Request ->
         generateAccessTokenForGrantType.generate(req)
             .map(DefaultAccessTokenResponseRenderer::invoke)
-            .recover { Response(Status.UNAUTHORIZED) }
+            .recover {
+                println(it)
+                Response(Status.UNAUTHORIZED) }
     }
 }
 

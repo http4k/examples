@@ -61,7 +61,8 @@ fun main() {
     ).start()
 
     val http = ClientFilters.DiscoveredMcpOAuth(credentials)
-        .then(JavaHttpClient(responseBodyMode = Stream).debug())
+        .then(JavaHttpClient(responseBodyMode = Stream))
+//            .debug()
 
     HttpStreamingMcpClient(
         McpEntity.of("foo"),
@@ -69,8 +70,9 @@ fun main() {
         Uri.of("http://localhost:$securityServerPort/mcp"),
         http
     ).apply {
-//        println(">>> Server handshake\n" + start())
+        println(">>> Server handshake\n" + start())
         println(">>> Tool list\n" + tools().list())
         println(">>> Prompt list\n" + prompts().list())
+        println(">>> Resource list\n" + resources().list())
     }
 }
