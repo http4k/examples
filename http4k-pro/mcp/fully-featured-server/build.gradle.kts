@@ -8,5 +8,10 @@ dependencies {
     implementation("org.http4k.pro:http4k-ai-mcp-sdk")
     implementation("org.jetbrains.kotlin:kotlin-reflect:${project.property("kotlinVersion")}")
 
+
+    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
     testImplementation("org.http4k:http4k-testing-chaos")
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+
 }
