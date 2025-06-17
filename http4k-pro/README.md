@@ -4,10 +4,17 @@ This directory contains examples of http4k-pro features, which are part of the h
 
 http4k-pro provides advanced features for enterprise applications, building on top of the core http4k functionality. These examples demonstrate how to integrate and use these premium features in your applications.
 
-## Examples
+## Modules
 
-- **[Hot Reload](./hot-reload)**: Demonstrates the http4k hot-reload feature that allows for automatic application reloading during development without server restarts.
-- **[MCP (Model Context Protocol)](./mcp)**: Examples of building and using MCP servers and clients for AI agent communication.
+### [Hot Reload](./hot-reload)
+Demonstrates the http4k hot-reload feature that allows for automatic application reloading during development without server restarts. Perfect for rapid development cycles.
+
+### [MCP (Model Context Protocol)](./mcp)
+Comprehensive examples of building and using MCP servers and clients for AI agent communication. Includes:
+- **building-servers**: Examples of different MCP server implementations (HTTP, WebSocket, SSE, JSON-RPC, stdio, serverless)
+- **configuring-claude**: Configuration for integrating MCP servers with Claude Desktop
+- **fully-featured-server**: Real-world example with multiple specialized MCP agents
+- **using-mcp-clients**: Examples of how to use http4k MCP clients to interact with servers
 
 ## Commercial License
 
