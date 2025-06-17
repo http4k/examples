@@ -23,7 +23,6 @@ import org.http4k.ai.model.ToolName
 import org.http4k.client.JavaHttpClient
 import org.http4k.core.BodyMode.Stream
 import org.http4k.core.Uri
-import org.http4k.lens.with
 
 fun main() {
     val mcpClient = HttpStreamingMcpClient(

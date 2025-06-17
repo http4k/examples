@@ -19,13 +19,7 @@ This example consists of:
 
 ## Running the Example
 
-To run this example with hot-reloading enabled:
-
-```bash
-./gradlew :http4k-pro:hot-reload:run
-```
-
-After starting the server, navigate to http://localhost:8000 in your browser. 
+Run the example application and navigate to http://localhost:8000 in your browser. 
 
 Try making changes to the HTML content in `MyApp.kt` and save the file. The browser will automatically reload with your changes.
 

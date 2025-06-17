@@ -12,8 +12,7 @@ Demonstrates the http4k hot-reload feature that allows for automatic application
 ### [MCP (Model Context Protocol)](./mcp)
 Comprehensive examples of building and using MCP servers and clients for AI agent communication. Includes:
 - **building-servers**: Examples of different MCP server implementations (HTTP, WebSocket, SSE, JSON-RPC, stdio, serverless)
-- **configuring-claude**: Configuration for integrating MCP servers with Claude Desktop
-- **fully-featured-server**: Real-world example with multiple specialized MCP agents
+- **multi-server-example**: Real-world example with multiple specialized MCP servers
 - **using-mcp-clients**: Examples of how to use http4k MCP clients to interact with servers
 
 ## Commercial License

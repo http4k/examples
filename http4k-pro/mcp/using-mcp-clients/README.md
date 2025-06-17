@@ -46,9 +46,7 @@ Managing elicitation requests from servers:
 
 ## Running the Example
 
-```bash
-./gradlew :http4k-pro:mcp:using-mcp-clients:run
-```
+The example demonstrates connecting to and interacting with various MCP servers.
 
 ## Code Structure
 

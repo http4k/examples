@@ -18,14 +18,11 @@ Examples of different MCP server implementations, including:
 - **stdio Server** - Command-line interface MCP server
 - **Serverless** - AWS Lambda-compatible MCP function
 
-### [configuring-claude](./configuring-claude)
-Configuration examples for integrating MCP servers with Claude Desktop, including the necessary `claude_desktop_config.json` setup.
-
-### [fully-featured-server](./fully-featured-server)
-A real-world demonstration of a multi-MCP system with three specialized agents:
-- **Family Agent** - Personal agent for handling health insurance claims
-- **Rainforest.com** - E-commerce agent for purchasing items
-- **Acme Health Insurance** - Insurance company agent for processing claims
+### [multi-server-example](./multi-server-example)
+A real-world demonstration of a multi-server MCP system with three specialized servers:
+- **Family Agent Server** - Personal assistant server for handling health insurance claims
+- **Rainforest.com Server** - E-commerce server for purchasing items
+- **Acme Health Insurance Server** - Insurance company server for processing claims
 
 ### [using-mcp-clients](./using-mcp-clients)
 Examples demonstrating how to use the http4k MCP client to interact with MCP servers, including:
@@ -36,12 +33,7 @@ Examples demonstrating how to use the http4k MCP client to interact with MCP ser
 
 ## Running Examples
 
-Most examples have a `main()` function that can be executed directly:
-
-```bash
-# Run the minimal server example
-./gradlew :http4k-pro:mcp:building-servers:run -Dexec.mainClass=building_servers.minimal.MinimalKt
-```
+Each example is a standalone application that demonstrates specific MCP functionality.
 
 ## License
 

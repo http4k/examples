@@ -30,12 +30,4 @@ Example of implementing security features in MCP servers.
 
 ## Running Examples
 
-Each example can be run directly:
-
-```bash
-# Run the minimal server
-./gradlew :http4k-pro:mcp:building-servers:run -Dexec.mainClass=building_servers.minimal.MinimalKt
-
-# Run the HTTP server
-./gradlew :http4k-pro:mcp:building-servers:run -Dexec.mainClass=building_servers.http.ExampleKt
-```
+Each example contains a runnable application that demonstrates the specific MCP server type.

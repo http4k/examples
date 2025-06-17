@@ -8,3 +8,4 @@ intellij-settings/
 .DS_store
 /invoices/
 .claude
+**/CLAUDE.md
