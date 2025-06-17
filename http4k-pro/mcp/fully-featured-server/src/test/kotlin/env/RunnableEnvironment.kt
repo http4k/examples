@@ -3,10 +3,12 @@ package env
 import env.entrylogger.FakeEntryLogger
 import env.oauthserver.TestingOAuthServer
 import env.userdirectory.FakeUserDirectory
+import org.http4k.ai.mcp.ToolRequest
 import org.http4k.ai.mcp.client.DiscoveredMcpOAuth
 import org.http4k.ai.mcp.client.http.HttpStreamingMcpClient
 import org.http4k.ai.mcp.model.McpEntity
 import org.http4k.ai.mcp.protocol.Version
+import org.http4k.ai.model.ToolName
 import org.http4k.client.JavaHttpClient
 import org.http4k.config.Environment
 import org.http4k.core.BodyMode.Stream
@@ -14,7 +16,7 @@ import org.http4k.core.Credentials
 import org.http4k.core.Uri
 import org.http4k.core.then
 import org.http4k.filter.ClientFilters
-import org.http4k.filter.debug
+import org.http4k.lens.with
 import org.http4k.server.SunHttp
 import org.http4k.server.asServer
 import verysecuresystems.EmailAddress
@@ -26,6 +28,7 @@ import verysecuresystems.Settings.PORT
 import verysecuresystems.Settings.USER_DIRECTORY_URL
 import verysecuresystems.User
 import verysecuresystems.Username
+import verysecuresystems.tools.username
 import java.time.Clock
 
 fun main() {
@@ -62,7 +65,6 @@ fun main() {
 
     val http = ClientFilters.DiscoveredMcpOAuth(credentials)
         .then(JavaHttpClient(responseBodyMode = Stream))
-//            .debug()
 
     HttpStreamingMcpClient(
         McpEntity.of("foo"),
@@ -71,8 +73,25 @@ fun main() {
         http
     ).apply {
         println(">>> Server handshake\n" + start())
-        println(">>> Tool list\n" + tools().list())
         println(">>> Prompt list\n" + prompts().list())
+        println(">>> Tool list\n" + tools().list())
         println(">>> Resource list\n" + resources().list())
+
+        println(
+            ">>> Tool calling\n" + tools().call(
+                ToolName.of("knockKnock"),
+                ToolRequest().with(username of Username.of("Bob"))
+            )
+        )
+        println(">>> Tool calling\n" + tools().call(ToolName.of("whoIsThere")))
+
+        println(
+            ">>> Tool calling\n" + tools().call(
+                ToolName.of("ByeBye"),
+                ToolRequest().with(username of Username.of("Bob"))
+            )
+        )
+
+        println(">>> Tool calling\n" + tools().call(ToolName.of("whoIsThere")))
     }
 }

@@ -16,7 +16,7 @@ import verysecuresystems.Username
 fun ByeBye(
     removeUser: (Username) -> Boolean,
     entryLogger: (Username) -> UserEntry
-): ToolCapability = Tool("bye", "User exits the building") bind { req ->
+): ToolCapability = Tool("ByeBye", "User exits the building") bind { req ->
     val exiting = username(req)
     if (removeUser(exiting)) {
         entryLogger(exiting)

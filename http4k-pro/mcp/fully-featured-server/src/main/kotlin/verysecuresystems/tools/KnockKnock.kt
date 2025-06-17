@@ -21,7 +21,7 @@ fun KnockKnock(
     add: (Username) -> Boolean,
     entryLogger: (Username) -> UserEntry
 ): ToolCapability =
-    Tool("knockKnock", "Register an entrant") bind { req ->
+    Tool("knockKnock", "Register an entrant", username) bind { req ->
         lookup(username(req))?.name
             ?.let {
                 if (add(it)) {

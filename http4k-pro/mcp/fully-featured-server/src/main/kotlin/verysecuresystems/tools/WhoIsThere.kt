@@ -16,10 +16,11 @@ import verysecuresystems.Username
  */
 fun WhoIsThere(inhabitants: Iterable<Username>, lookup: (Username) -> User?): ToolCapability =
     Tool("whoIsThere", "Check who is in the building") bind { req ->
-        Ok().with(users of inhabitants.mapNotNull(lookup))
+        Ok().with(users of Users(inhabitants.mapNotNull(lookup)))
     }
 
 val users = Tool.Output.auto(
-    listOf(User(Id.of(1), Username.of("user"), EmailAddress.of("user@gmail.com")))
-)
-    .toLens("the list of users currently in the building")
+    Users(listOf(User(Id.of(1), Username.of("user"), EmailAddress.of("user@gmail.com"))))
+).toLens("the list of users currently in the building")
+
+data class Users(val users: List<User>)
