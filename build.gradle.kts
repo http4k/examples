@@ -19,7 +19,7 @@ allprojects {
     }
 
     tasks.withType<Wrapper> {
-        gradleVersion = libs.versions.gradle.get()
+        gradleVersion = "9.0.0"
         distributionType = BIN
     }
 

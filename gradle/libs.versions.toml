@@ -1,40 +1,38 @@
 [versions]
-kotlin = "2.2.20"
-junit = "5.10.3"
-forkHandles = "2.22.4.0"
-gradle = "9.0.0"
-
-jsoup = "1.19.1"
-junitPlatformLauncher = "1.13.4"
 com-google-devtools-ksp = "2.2.20-2.0.3"
+jsoup = "1.21.2"
+junit = "6.0.0-RC3"
+junitPlatformLauncher = "6.0.0-RC3"
+kotlin = "2.2.20"
 
 [libraries]
-
+http4k-ai-mcp-sdk = { module = "org.http4k.pro:http4k-ai-mcp-sdk" }
 http4k-bom = { module = "org.http4k:http4k-bom" }
-
+http4k-connect-amazon-kms = { module = "org.http4k:http4k-connect-amazon-kms" }
+http4k-connect-amazon-kms-fake = { module = "org.http4k:http4k-connect-amazon-kms-fake" }
 http4k-core = { module = "org.http4k:http4k-core" }
 http4k-server-jetty = { module = "org.http4k:http4k-server-jetty" }
 http4k-serverless-lambda = { module = "org.http4k:http4k-serverless-lambda" }
 http4k-testing-hamkrest = { module = "org.http4k:http4k-testing-hamkrest" }
-
-http4k-connect-amazon-kms = { module = "org.http4k:http4k-connect-amazon-kms" }
-http4k-connect-amazon-kms-fake = { module = "org.http4k:http4k-connect-amazon-kms-fake" }
-
-http4k-ai-mcp-sdk = { module = "org.http4k.pro:http4k-ai-mcp-sdk" }
-
+jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junitPlatformLauncher" }
 
-jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
-
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version = "0.8.4" }
-versions = { id = "com.github.ben-manes.versions", version = "0.51.0" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
+version-catalog-update = "nl.littlerobots.version-catalog-update:1.0.0"
+versions = "com.github.ben-manes.versions:0.52.0"
 
 [bundles]
-junit-testing = ["junit-jupiter-api", "junit-jupiter-engine"]
-http4k-testing = ["http4k-testing-hamkrest", "junit-jupiter-api", "junit-jupiter-engine"]
+http4k-testing = [
+    "http4k-testing-hamkrest",
+    "junit-jupiter-api",
+    "junit-jupiter-engine",
+]
+junit-testing = [
+    "junit-jupiter-api",
+    "junit-jupiter-engine",
+]
