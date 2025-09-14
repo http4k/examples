@@ -3,7 +3,7 @@
 plugins {
     application
     id("com.github.johnrengelman.shadow") version "7.1.2"
-    id("com.google.devtools.ksp") version "2.1.20-1.0.31"
+    id("com.google.devtools.ksp") version "2.2.10-2.0.2"
     id("io.micronaut.application") version "4.0.3"
 }
 
@@ -32,6 +32,7 @@ dependencies {
     runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     testImplementation("io.micronaut:micronaut-http-client:$micronautVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }
 
 application {

@@ -1,7 +1,7 @@
 
 
 plugins {
-    id("com.google.devtools.ksp") version "2.1.20-1.0.31"
+    id("com.google.devtools.ksp") version "2.2.10-2.0.2"
 }
 
 dependencies {
@@ -22,4 +22,5 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.mockk:mockk:1.10.5")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }

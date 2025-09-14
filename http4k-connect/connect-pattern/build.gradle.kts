@@ -11,5 +11,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("io.mockk:mockk:1.10.5")
-    testImplementation("dev.forkhandles:result4k:2.2.0.0")
+    testImplementation("dev.forkhandles:result4k:2.22.4.0")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }

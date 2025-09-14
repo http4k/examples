@@ -9,7 +9,7 @@ import org.http4k.routing.sse
 import org.http4k.routing.sse.bind
 import org.http4k.routing.static
 import org.http4k.sse.Sse
-import org.http4k.sse.sendMergeSignals
+import org.http4k.sse.sendPatchSignals
 import java.io.File
 import java.io.InputStream
 import java.lang.Thread.sleep
@@ -57,7 +57,7 @@ private fun Sse.sendNextFrame(animation: AsciiAnimation, currentFrameIdx: Int): 
     val frame = animation.frames[currentFrameIdx]
     val percentage = 100.0 * (currentFrameIdx + 1) / animation.frames.size
 
-    sendMergeSignals(Moshi.asDatastarSignal(BadAppleStore(frame, percentage)))
+    sendPatchSignals(Moshi.asDatastarSignal(BadAppleStore(frame, percentage)))
 
     return currentFrameIdx + 1
 }

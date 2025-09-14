@@ -1,6 +1,6 @@
 
 
-val awsSdkVersion = "2.21.0"
+val awsSdkVersion = "2.33.0"
 
 dependencies {
     implementation(platform("software.amazon.awssdk:bom:$awsSdkVersion"))
@@ -14,4 +14,5 @@ dependencies {
     testImplementation("org.http4k:http4k-connect-amazon-dynamodb-fake") // Get the fake DynamoDB client
     testImplementation("org.http4k:http4k-connect-amazon-s3-fake") // Get the fake S3 client
     testImplementation("org.http4k:http4k-testing-kotest")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }

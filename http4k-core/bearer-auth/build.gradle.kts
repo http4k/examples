@@ -13,6 +13,7 @@ dependencies {
 
     testImplementation(kotlin("test"))
     testImplementation("org.http4k:http4k-testing-kotest")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }
 
 application {

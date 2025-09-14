@@ -21,6 +21,7 @@ dependencies {
     testImplementation("org.http4k:http4k-testing-webdriver")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${project.property("junitVersion")}")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:${project.property("junitVersion")}")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }
 
 application {

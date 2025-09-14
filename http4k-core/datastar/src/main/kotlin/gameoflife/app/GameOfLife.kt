@@ -12,7 +12,6 @@ import org.http4k.core.cookie.Cookie
 import org.http4k.core.cookie.cookie
 import org.http4k.core.then
 import org.http4k.filter.ServerFilters.CatchAll
-import org.http4k.filter.debug
 import org.http4k.lens.Cookies
 import org.http4k.lens.Query
 import org.http4k.lens.int
@@ -20,8 +19,8 @@ import org.http4k.routing.bind
 import org.http4k.routing.poly
 import org.http4k.routing.sse
 import org.http4k.routing.to
-import org.http4k.sse.sendMergeFragments
-import org.http4k.template.DatastarFragmentRenderer
+import org.http4k.sse.sendPatchElements
+import org.http4k.template.DatastarElementRenderer
 import org.http4k.template.HandlebarsTemplates
 import org.http4k.template.TemplateRenderer
 import org.http4k.template.ViewModel
@@ -61,11 +60,11 @@ fun GameOfLife(boardSize: Int): PolyHandler {
     }
 
     fun GameBoard(appState: AppState, renderer: TemplateRenderer) = "/game-board" bind GET to sse {
-        val datastarRenderer = DatastarFragmentRenderer(renderer)
+        val datastarRenderer = DatastarElementRenderer(renderer)
 
         thread {
             while (true) {
-                it.sendMergeFragments(datastarRenderer(GameBoardState(appState.cells)))
+                it.sendPatchElements(datastarRenderer(GameBoardState(appState.cells)))
                 Thread.sleep(33)
             }
         }

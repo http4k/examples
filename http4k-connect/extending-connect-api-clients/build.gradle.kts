@@ -15,4 +15,5 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("io.mockk:mockk:1.10.5")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }

@@ -11,7 +11,7 @@ dependencies {
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }
 application {
     mainClass.set("com.example.HelloWorldKt")

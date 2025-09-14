@@ -15,7 +15,7 @@ dependencies {
     implementation("dev.forkhandles:time4k:${project.property("forkHandlesVersion")}")
 
     testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
-    testImplementation("org.junit.platform:junit-platform-launcher")
+    testImplementation("org.junit.platform:junit-platform-launcher:1.13.4")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")

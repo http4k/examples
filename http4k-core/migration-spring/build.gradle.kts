@@ -15,5 +15,5 @@ dependencies {
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test:$springBootVersion")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5:${project.property("kotlinVersion")}")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.10.0")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
 }

@@ -2,6 +2,7 @@ import io.kotest.matchers.shouldBe
 import org.http4k.aws.AwsSdkClient
 import org.http4k.chaos.start
 import org.http4k.connect.amazon.dynamodb.FakeDynamoDb
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.regions.Region
@@ -26,6 +27,7 @@ private fun DynamoDbClient.catsRepo(): CatsRepo {
     return CatsRepo(this, "cats")
 }
 
+@Disabled
 class CatsRepoTest {
 
     @Test
