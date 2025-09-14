@@ -9,11 +9,11 @@ dependencies {
 
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.http4k:http4k-core")
-    implementation("com.nimbusds:nimbus-jose-jwt:9.31")
+    implementation(libs.nimbus.jose.jwt)
 
     testImplementation(kotlin("test"))
     testImplementation("org.http4k:http4k-testing-kotest")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 application {

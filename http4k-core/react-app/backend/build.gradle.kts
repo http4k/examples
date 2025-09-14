@@ -11,7 +11,7 @@ dependencies {
     testImplementation(platform("org.junit:junit-bom:${rootProject.property("junitVersion")}"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 application {

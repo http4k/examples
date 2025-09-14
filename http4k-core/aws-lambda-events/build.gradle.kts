@@ -5,11 +5,11 @@ dependencies {
     implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-serverless-lambda")
-    implementation("com.amazonaws:aws-lambda-java-events:3.10.0")
+    implementation(libs.aws.lambda.java.events)
 
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testRuntimeOnly(libs.junit.platform.launcher)
 }

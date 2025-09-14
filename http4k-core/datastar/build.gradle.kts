@@ -12,12 +12,12 @@ dependencies {
     implementation("org.http4k:http4k-template-handlebars")
     implementation("org.http4k:http4k-server-jetty")
     implementation("org.http4k:http4k-format-moshi")
-    implementation("dev.forkhandles:time4k:${project.property("forkHandlesVersion")}")
+    implementation(libs.forkhandles.time4k)
 
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
-    testImplementation("org.junit.platform:junit-platform-launcher:1.13.4")
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
+    testImplementation(libs.junit.platform.launcher)
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")
-    testImplementation("com.natpryce:hamkrest:1.8.0.0")
+    testImplementation(libs.hamkrest)
 }

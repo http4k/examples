@@ -1,5 +1,5 @@
 plugins {
-    id("com.google.devtools.ksp") version "2.2.20-2.0.3"
+    alias(libs.plugins.ksp)
 }
 
 dependencies {
@@ -14,11 +14,11 @@ dependencies {
     testImplementation("org.http4k:http4k-connect-amazon-s3-fake")
     testImplementation("org.http4k:http4k-connect-amazon-kms-fake")
 
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("org.http4k:http4k-testing-chaos")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testImplementation("io.mockk:mockk:1.10.5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testImplementation(libs.mockk)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }

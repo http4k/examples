@@ -10,10 +10,10 @@ dependencies {
 
     api("org.http4k:http4k-format-moshi")
 
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")
-    testImplementation("io.mockk:mockk:1.10.5")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testImplementation(libs.mockk)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }

@@ -1,5 +1,5 @@
 plugins {
-    id("com.google.devtools.ksp") version "2.2.20-2.0.3"
+    alias(libs.plugins.ksp)
 }
 
 dependencies {
@@ -14,12 +14,12 @@ dependencies {
     // this and the plugin are only required for generating custom action extension functions (if you want to)
     ksp("org.http4k:http4k-connect-ksp-generator:${project.property("http4kVersion")}")
 
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
-    testImplementation("io.mockk:mockk:1.10.5")
+    testRuntimeOnly(libs.junit.platform.launcher)
+    testImplementation(libs.mockk)
 
     // these are required for implementing your own fake
     testImplementation("org.http4k:http4k-connect-core-fake")

@@ -4,19 +4,17 @@ plugins {
     application
 }
 
-val ktorVersion = "3.0.3"
-val logbackVersion = "1.4.14"
-
 dependencies {
-    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
-    implementation("org.http4k:http4k-bridge-ktor:${project.property("http4kVersion")}")
+    implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.logback.classic)
+    implementation(libs.ktor.server.config.yaml)
+    implementation("org.http4k:http4k-bridge-ktor")
 
-    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:${project.property("kotlinVersion")}")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testImplementation(libs.ktor.server.test.host)
+    testImplementation(libs.kotlin.test.junit)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 application {

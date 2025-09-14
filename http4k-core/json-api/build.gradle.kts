@@ -9,11 +9,11 @@ dependencies {
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-format-jackson")
 
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 application {

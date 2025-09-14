@@ -1,37 +1,80 @@
 [versions]
+arrow = "1.1.2"
+awsLambdaEvents = "3.10.0"
+awsSdk = "2.33.9"
 com-google-devtools-ksp = "2.2.20-2.0.3"
+forkhandles = "2.22.4.0"
+graphqlKotlin = "3.6.7"
+hamkrest = "1.8.0.0"
+jackson = "2.20.0"
 jsoup = "1.21.2"
 junit = "6.0.0-RC3"
-junitPlatformLauncher = "6.0.0-RC3"
+junitPlatformLauncher = "1.13.4"
 kotlin = "2.2.20"
+ktor = "3.3.0"
+logback = "1.5.18"
+micronaut = "4.9.3"
+micronautKotlin = "4.7.0"
+micronautSerde = "2.15.1"
+mockk = "1.10.5"
+nimbusJoseJwt = "9.31"
+pulumi = "1.12.0"
+pulumiAws = "6.81.0"
+pulumiAwsNative = "1.28.0"
+quarkus = "3.2.0.Final"
+springBoot = "3.5.5"
 
 [libraries]
-http4k-ai-mcp-sdk = { module = "org.http4k.pro:http4k-ai-mcp-sdk" }
-http4k-bom = { module = "org.http4k:http4k-bom" }
-http4k-connect-amazon-kms = { module = "org.http4k:http4k-connect-amazon-kms" }
-http4k-connect-amazon-kms-fake = { module = "org.http4k:http4k-connect-amazon-kms-fake" }
-http4k-core = { module = "org.http4k:http4k-core" }
-http4k-server-jetty = { module = "org.http4k:http4k-server-jetty" }
-http4k-serverless-lambda = { module = "org.http4k:http4k-serverless-lambda" }
-http4k-testing-hamkrest = { module = "org.http4k:http4k-testing-hamkrest" }
+arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
+aws-lambda-java-events = { module = "com.amazonaws:aws-lambda-java-events", version.ref = "awsLambdaEvents" }
+aws-sdk-bom = { module = "software.amazon.awssdk:bom", version.ref = "awsSdk" }
+aws-sdk-dynamodb = { module = "software.amazon.awssdk:dynamodb", version.ref = "awsSdk" }
+aws-sdk-s3 = { module = "software.amazon.awssdk:s3", version.ref = "awsSdk" }
+forkhandles-result4k = { module = "dev.forkhandles:result4k", version.ref = "forkhandles" }
+forkhandles-time4k = { module = "dev.forkhandles:time4k", version.ref = "forkhandles" }
+graphql-kotlin-schema-generator = { module = "com.expediagroup:graphql-kotlin-schema-generator", version.ref = "graphqlKotlin" }
+hamkrest = { module = "com.natpryce:hamkrest", version.ref = "hamkrest" }
+jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junitPlatformLauncher" }
+quarkus-undertow = { module = "io.quarkus:quarkus-undertow", version.ref = "quarkus" }
+quarkus-universe-bom = { module = "io.quarkus:quarkus-universe-bom", version.ref = "quarkus" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
+ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktor" }
+ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
+ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+micronaut-http-client = { module = "io.micronaut:micronaut-http-client", version.ref = "micronaut" }
+micronaut-http-validation = { module = "io.micronaut:micronaut-http-validation", version.ref = "micronaut" }
+micronaut-kotlin-runtime = { module = "io.micronaut.kotlin:micronaut-kotlin-runtime", version.ref = "micronautKotlin" }
+micronaut-runtime = { module = "io.micronaut:micronaut-runtime", version.ref = "micronaut" }
+micronaut-serde-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson", version.ref = "micronautSerde" }
+micronaut-serde-processor = { module = "io.micronaut.serde:micronaut-serde-processor", version.ref = "micronautSerde" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbusJoseJwt" }
+pulumi-aws = { module = "com.pulumi:aws", version.ref = "pulumiAws" }
+pulumi-aws-native = { module = "com.pulumi:aws-native", version.ref = "pulumiAwsNative" }
+pulumi-core = { module = "com.pulumi:pulumi", version.ref = "pulumi" }
+spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
+spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
+micronaut-application = "io.micronaut.application:4.5.4"
+quarkus = { id = "io.quarkus", version.ref = "quarkus" }
+shadow = "com.gradleup.shadow:8.3.7"
 version-catalog-update = "nl.littlerobots.version-catalog-update:1.0.0"
 versions = "com.github.ben-manes.versions:0.52.0"
 
 [bundles]
-http4k-testing = [
-    "http4k-testing-hamkrest",
-    "junit-jupiter-api",
-    "junit-jupiter-engine",
-]
 junit-testing = [
     "junit-jupiter-api",
     "junit-jupiter-engine",

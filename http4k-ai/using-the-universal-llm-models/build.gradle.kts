@@ -7,9 +7,9 @@ dependencies {
     implementation("org.http4k:http4k-ai-llm-openai:${project.property("http4kVersion")}")
     testImplementation("org.http4k:http4k-connect-ai-openai-fake:${project.property("http4kVersion")}")
 
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
+    testImplementation(platform("org.junit:junit-bom:5.10.3"))
     testImplementation("org.http4k:http4k-testing-hamkrest:${project.property("http4kVersion")}")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testRuntimeOnly(libs.junit.platform.launcher)
 }

@@ -14,14 +14,14 @@ dependencies {
     implementation("org.http4k:http4k-server-undertow")
     implementation("org.http4k:http4k-config")
     implementation("org.http4k:http4k-platform-core")
-    implementation("dev.forkhandles:result4k")
+    implementation(libs.forkhandles.result4k)
 
     testImplementation("org.http4k:http4k-testing-chaos")
     testImplementation("org.http4k:http4k-testing-strikt")
     testImplementation("org.http4k:http4k-testing-webdriver")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:${project.property("junitVersion")}")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:${project.property("junitVersion")}")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.3")
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 
 application {
