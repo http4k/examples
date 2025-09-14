@@ -4,7 +4,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "2.2.10" apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.version.catalog.update)
+    alias(libs.plugins.versions)
 }
 
 allprojects {
@@ -17,7 +19,7 @@ allprojects {
     }
 
     tasks.withType<Wrapper> {
-        gradleVersion = "9.0.0"
+        gradleVersion = libs.versions.gradle.get()
         distributionType = BIN
     }
 

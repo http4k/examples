@@ -5,13 +5,13 @@ plugins {
 }
 
 dependencies {
-    implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
-    implementation("org.http4k:http4k-core")
-    testImplementation(platform("org.junit:junit-bom:${project.property("junitVersion")}"))
-    testImplementation("org.http4k:http4k-testing-hamkrest")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher:1.13.4")
+    implementation(platform("${libs.http4k.bom.get()}:${project.property("http4kVersion")}"))
+    implementation(libs.http4k.core)
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.http4k.testing.hamkrest)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
 application {
     mainClass.set("com.example.HelloWorldKt")
