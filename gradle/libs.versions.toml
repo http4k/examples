@@ -10,6 +10,7 @@ jackson = "2.20.0"
 jsoup = "1.21.2"
 junit = "6.0.0-RC3"
 junitPlatformLauncher = "1.13.4"
+http4k-standards = "1.0.1.0"
 kotlin = "2.2.20"
 ktor = "3.3.0"
 logback = "1.5.18"
@@ -23,6 +24,8 @@ pulumiAws = "6.81.0"
 pulumiAwsNative = "1.28.0"
 quarkus = "3.2.0.Final"
 springBoot = "3.5.5"
+typeflows = "0.24.0-beta"
+version-catalog-update = "1.0.1"
 
 [libraries]
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
@@ -40,6 +43,7 @@ junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junitPlatformLauncher" }
+http4k-standards = { module = "org.http4k.standards:typeflows", version.ref = "http4k-standards" }
 quarkus-undertow = { module = "io.quarkus:quarkus-undertow", version.ref = "quarkus" }
 quarkus-universe-bom = { module = "io.quarkus:quarkus-universe-bom", version.ref = "quarkus" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
@@ -64,6 +68,8 @@ pulumi-core = { module = "com.pulumi:pulumi", version.ref = "pulumi" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
+typeflows-github = { module = "io.typeflows:typeflows-github", version.ref = "typeflows" }
+typeflows-github-marketplace = { module = "io.typeflows:typeflows-github-marketplace", version.ref = "typeflows" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -71,7 +77,8 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" 
 micronaut-application = "io.micronaut.application:4.5.4"
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
 shadow = "com.gradleup.shadow:8.3.7"
-version-catalog-update = "nl.littlerobots.version-catalog-update:1.0.0"
+typeflows = { id = "io.typeflows", version.ref = "typeflows" }
+version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 versions = "com.github.ben-manes.versions:0.52.0"
 
 [bundles]

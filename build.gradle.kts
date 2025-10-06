@@ -4,9 +4,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.version.catalog.update)
     alias(libs.plugins.versions)
+    alias(libs.plugins.typeflows)
 }
 
 allprojects {
@@ -43,4 +44,10 @@ subprojects {
     tasks.withType<Test> {
         useJUnitPlatform()
     }
+}
+
+dependencies {
+    typeflowsApi(libs.typeflows.github)
+    typeflowsApi(libs.typeflows.github.marketplace)
+    typeflowsApi(libs.http4k.standards)
 }
