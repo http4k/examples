@@ -2,9 +2,9 @@
 
 package com.example.http4k.schema.context
 
-import com.expediagroup.graphql.SchemaGeneratorConfig
-import com.expediagroup.graphql.TopLevelObject
-import com.expediagroup.graphql.toSchema
+import com.expediagroup.graphql.generator.SchemaGeneratorConfig
+import com.expediagroup.graphql.generator.TopLevelObject
+import com.expediagroup.graphql.generator.toSchema
 import graphql.ExecutionInput.Builder
 import graphql.GraphQL.newGraphQL
 import org.dataloader.BatchLoader
