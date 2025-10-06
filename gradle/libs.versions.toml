@@ -1,29 +1,28 @@
 [versions]
 arrow = "1.1.2"
-awsLambdaEvents = "3.10.0"
-awsSdk = "2.33.9"
+awsLambdaEvents = "3.16.1"
+awsSdk = "2.35.0"
 com-google-devtools-ksp = "2.2.20-2.0.3"
-forkhandles = "2.22.4.0"
+forkhandles = "2.23.0.0"
 graphqlKotlin = "3.6.7"
 hamkrest = "1.8.0.0"
+http4k-standards = "1.0.1.0"
 jackson = "2.20.0"
 jsoup = "1.21.2"
-junit = "6.0.0-RC3"
-junitPlatformLauncher = "1.13.4"
-http4k-standards = "1.0.1.0"
+junit = "6.0.0"
 kotlin = "2.2.20"
 ktor = "3.3.0"
-logback = "1.5.18"
+logback = "1.5.19"
 micronaut = "4.9.3"
 micronautKotlin = "4.7.0"
-micronautSerde = "2.15.1"
-mockk = "1.10.5"
-nimbusJoseJwt = "9.31"
-pulumi = "1.12.0"
-pulumiAws = "6.81.0"
-pulumiAwsNative = "1.28.0"
-quarkus = "3.2.0.Final"
-springBoot = "3.5.5"
+micronautSerde = "2.15.2"
+mockk = "1.14.6"
+nimbusJoseJwt = "10.5"
+pulumi = "1.16.1"
+pulumiAws = "7.7.0"
+pulumiAwsNative = "1.35.0"
+quarkus = "3.28.2"
+springBoot = "3.5.6"
 typeflows = "0.24.0-beta"
 version-catalog-update = "1.0.1"
 
@@ -37,15 +36,13 @@ forkhandles-result4k = { module = "dev.forkhandles:result4k", version.ref = "for
 forkhandles-time4k = { module = "dev.forkhandles:time4k", version.ref = "forkhandles" }
 graphql-kotlin-schema-generator = { module = "com.expediagroup:graphql-kotlin-schema-generator", version.ref = "graphqlKotlin" }
 hamkrest = { module = "com.natpryce:hamkrest", version.ref = "hamkrest" }
+http4k-standards = { module = "org.http4k.standards:typeflows", version.ref = "http4k-standards" }
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
-junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junitPlatformLauncher" }
-http4k-standards = { module = "org.http4k.standards:typeflows", version.ref = "http4k-standards" }
-quarkus-undertow = { module = "io.quarkus:quarkus-undertow", version.ref = "quarkus" }
-quarkus-universe-bom = { module = "io.quarkus:quarkus-universe-bom", version.ref = "quarkus" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
 kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
@@ -65,6 +62,8 @@ nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimb
 pulumi-aws = { module = "com.pulumi:aws", version.ref = "pulumiAws" }
 pulumi-aws-native = { module = "com.pulumi:aws-native", version.ref = "pulumiAwsNative" }
 pulumi-core = { module = "com.pulumi:pulumi", version.ref = "pulumi" }
+quarkus-undertow = { module = "io.quarkus:quarkus-undertow", version.ref = "quarkus" }
+quarkus-universe-bom = { module = "io.quarkus:quarkus-universe-bom", version.ref = "quarkus" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
@@ -74,12 +73,12 @@ typeflows-github-marketplace = { module = "io.typeflows:typeflows-github-marketp
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
-micronaut-application = "io.micronaut.application:4.5.4"
+micronaut-application = "io.micronaut.application:4.5.5"
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
-shadow = "com.gradleup.shadow:8.3.7"
+shadow = "com.gradleup.shadow:9.2.2"
 typeflows = { id = "io.typeflows", version.ref = "typeflows" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
-versions = "com.github.ben-manes.versions:0.52.0"
+versions = "com.github.ben-manes.versions:0.53.0"
 
 [bundles]
 junit-testing = [
