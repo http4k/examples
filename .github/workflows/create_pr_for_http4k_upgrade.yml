@@ -12,7 +12,8 @@ jobs:
     - name: Update release
       uses: technote-space/create-pr-action@v2
       with:
-        EXECUTE_COMMANDS: ./upgrade_http4k.sh ${{ github.event.client_payload.version }}
+        EXECUTE_COMMANDS: ./upgrade_http4k.sh ${{ github.event.client_payload.version
+          }}
         COMMIT_MESSAGE: Auto-upgrade to ${{ github.event.client_payload.version }}
         COMMIT_NAME: Auto-upgrade to ${{ github.event.client_payload.version }}
         PR_BRANCH_PREFIX: auto/
