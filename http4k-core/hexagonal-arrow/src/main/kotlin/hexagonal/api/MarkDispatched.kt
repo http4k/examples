@@ -1,6 +1,7 @@
 package hexagonal.api
 
-import arrow.core.getOrHandle
+import arrow.core.getOrElse
+import hexagonal.domain.DispatchResult
 import hexagonal.domain.DispatchResult.OtherFailure
 import hexagonal.domain.DispatchResult.UserNotFound
 import hexagonal.domain.MarketHub
@@ -18,10 +19,10 @@ fun MarkDispatched(transactions: MarketHub) = "/dispatch" bind POST to { req: Re
     val (senderId, recipientId, trackingNumber) = body(req)
     transactions.markDispatched(senderId, recipientId, trackingNumber)
         .map { Response(OK) }
-        .getOrHandle {
-            when (it) {
+        .getOrElse { error: DispatchResult ->
+            when (error) {
                 is UserNotFound -> Response(NOT_FOUND)
-                is OtherFailure -> Response(SERVICE_UNAVAILABLE).body(it.message)
+                is OtherFailure -> Response(SERVICE_UNAVAILABLE).body(error.message)
             }
         }
 }

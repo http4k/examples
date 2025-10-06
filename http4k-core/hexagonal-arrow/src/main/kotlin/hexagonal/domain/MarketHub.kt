@@ -1,8 +1,9 @@
 package hexagonal.domain
 
-import arrow.core.Either.Companion.fromNullable
+import arrow.core.Either
+import arrow.core.Either.Left
+import arrow.core.Either.Right
 import arrow.core.flatMap
-import arrow.core.sequence
 import hexagonal.domain.DispatchResult.OtherFailure
 import hexagonal.domain.DispatchResult.UserNotFound
 import hexagonal.port.Notifications
@@ -17,9 +18,10 @@ class MarketHub(
 ) {
     fun markDispatched(senderId: Int, recipientId: Int, trackingNumber: String) =
         findUsers(senderId, recipientId)
-            .flatMap { (sender: User, recipient: User) ->
+            .flatMap { userPair ->
+                val (sender, recipient) = userPair
                 findNumberFor(recipient)
-                    .flatMap { notify(sender, recipient, trackingNumber, it) }
+                    .flatMap { phoneNumber -> notify(sender, recipient, trackingNumber, phoneNumber) }
             }
 
     private fun notify(
@@ -37,10 +39,12 @@ class MarketHub(
     ).mapLeft { OtherFailure("notification fail") }
 
 
-    private fun findUsers(senderId: Int, recipientId: Int) = listOf(
-        fromNullable(users.nameFor(senderId)).mapLeft { UserNotFound(senderId) },
-        fromNullable(users.nameFor(recipientId)).mapLeft { UserNotFound(recipientId) }
-    ).sequence().map { it[0] to it[1] }
+    private fun findUsers(senderId: Int, recipientId: Int): Either<DispatchResult, Pair<User, User>> {
+        val sender = users.nameFor(senderId)?.let(::Right) ?: Left(UserNotFound(senderId))
+        val recipient = users.nameFor(recipientId)?.let(::Right) ?: Left(UserNotFound(senderId))
+
+        return sender.flatMap { recipient.map { recipientUser -> it to recipientUser } }
+    }
 
     private fun findNumberFor(user: User) = phoneBook
         .numberFor(user.name)

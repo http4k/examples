@@ -1,5 +1,5 @@
 [versions]
-arrow = "1.1.2"
+arrow = "2.1.2"
 awsLambdaEvents = "3.16.1"
 awsSdk = "2.35.0"
 com-google-devtools-ksp = "2.2.20-2.0.3"
