@@ -2,10 +2,6 @@ plugins {
     application
 }
 
-application {
-    mainClass.set("merge_signals.BadApplesKt")
-}
-
 dependencies {
     implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
     implementation("org.http4k:http4k-web-datastar")
@@ -20,4 +16,22 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation(libs.hamkrest)
+}
+
+tasks.register<JavaExec>("gameOfLife") {
+    group = "application"
+    mainClass.set("gameoflife.MainKt")
+    classpath = sourceSets.main.get().runtimeClasspath
+}
+
+tasks.register<JavaExec>("mergeFragments") {
+    group = "application"
+    mainClass.set("merge_fragments.MainKt")
+    classpath = sourceSets.main.get().runtimeClasspath
+}
+
+tasks.register<JavaExec>("mergeSignals") {
+    group = "application"
+    mainClass.set("merge_signals.MainKt")
+    classpath = sourceSets.main.get().runtimeClasspath
 }
