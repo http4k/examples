@@ -1,3 +1,4 @@
+import io.typeflows.github.workflow.GitHub
 import io.typeflows.github.workflow.Job
 import io.typeflows.github.workflow.Output
 import io.typeflows.github.workflow.RunsOn
@@ -60,6 +61,7 @@ class BuildWorkflow : Builder<Workflow> {
                 name = "Build and test module"
             }
             steps += UseAction("TimonVS/pr-labeler-action@v5.0.0") {
+                condition = GitHub.event_name.isEqualTo("pull_request")
                 name = "Tag automerge branch"
                 with += mapOf("configuration-path" to ".github/pr-labeler.yml")
                 env += "GITHUB_TOKEN" to $$"${{ secrets.ORG_PUBLIC_REPO_RELEASE_TRIGGERING }}"
