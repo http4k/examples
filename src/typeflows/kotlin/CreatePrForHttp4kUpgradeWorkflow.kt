@@ -14,7 +14,8 @@ class CreatePrForHttp4kUpgradeWorkflow : Builder<Workflow> {
 
         jobs += Job("create-pr-for-http4k-upgrade", RunsOn.of("ubuntu-latest")) {
             steps += Checkout()
-            steps += UseAction("technote-space/create-pr-action@v2", "Update release") {
+            steps += UseAction("technote-space/create-pr-action@v2") {
+                name = "Update release"
                 with += mapOf(
                     "EXECUTE_COMMANDS" to $$"./upgrade_http4k.sh ${{ github.event.client_payload.version }}",
                     "COMMIT_MESSAGE" to $$"Auto-upgrade to ${{ github.event.client_payload.version }}",

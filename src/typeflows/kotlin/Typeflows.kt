@@ -10,6 +10,7 @@ import org.http4k.typeflows.UpdateGradleProjectDependencies
 class Typeflows : Builder<TypeflowsGitHubRepo> {
     override fun build() = TypeflowsGitHubRepo {
         dotGithub = DotGitHub {
+            workflows += BuildWorkflow()
             workflows += CreatePrForHttp4kUpgradeWorkflow()
             workflows += HandlePrForHttp4kUpgradeWorkflow()
             workflows += UpdateGradleProjectDependencies("update-dependencies", Cron.of("0 08 * * 1"), RunCommand("ls"))

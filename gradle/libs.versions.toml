@@ -1,29 +1,29 @@
 [versions]
 arrow = "2.1.2"
 awsLambdaEvents = "3.16.1"
-awsSdk = "2.35.0"
-com-google-devtools-ksp = "2.2.20-2.0.3"
+awsSdk = "2.35.9"
+com-google-devtools-ksp = "2.2.20-2.0.4"
 forkhandles = "2.23.0.0"
 graphqlKotlin = "8.8.1"
 hamkrest = "1.8.0.0"
-http4k-standards = "1.0.1.0"
+http4k-standards = "1.2.0.0"
 jackson = "2.20.0"
 jsoup = "1.21.2"
 junit = "6.0.0"
 kotlin = "2.2.20"
-ktor = "3.3.0"
+ktor = "3.3.1"
 logback = "1.5.19"
 micronaut = "4.9.3"
 micronautKotlin = "4.7.0"
-micronautSerde = "2.15.2"
+micronautSerde = "2.16.1"
 mockk = "1.14.6"
 nimbusJoseJwt = "10.5"
-pulumi = "1.16.1"
-pulumiAws = "7.7.0"
-pulumiAwsNative = "1.35.0"
-quarkus = "3.28.2"
+pulumi = "1.16.2"
+pulumiAws = "7.8.0"
+pulumiAwsNative = "1.37.0"
+quarkus = "3.28.4"
 springBoot = "3.5.6"
-typeflows = "0.24.0-beta"
+typeflows = "0.31.0-beta"
 version-catalog-update = "1.0.1"
 
 [libraries]
@@ -73,7 +73,7 @@ typeflows-github-marketplace = { module = "io.typeflows:typeflows-github-marketp
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
-micronaut-application = "io.micronaut.application:4.5.5"
+micronaut-application = "io.micronaut.application:4.6.0"
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
 shadow = "com.gradleup.shadow:9.2.2"
 typeflows = { id = "io.typeflows", version.ref = "typeflows" }

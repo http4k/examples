@@ -1,0 +1,50 @@
+name: Build Examples
+'on':
+  push:
+    branches:
+    - '*'
+  pull_request:
+    branches:
+    - '*'
+jobs:
+  discover_modules:
+    runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.set-modules.outputs.modules }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5.0.0
+    - name: Find all build.gradle.kts files and extract module paths
+      id: set-modules
+      run: |-
+        # Find all build.gradle.kts files except the root one
+        MODULES=$(find . -type f -name "build.gradle.kts" -not -path "./build.gradle.kts" | sed -e 's|^./||' -e 's|/build.gradle.kts||' | sed -e 's|/|-|g' | awk '{print "\":" $0 "\""}' | tr '\n' ',' | sed 's/,$//')
+        echo "modules=[${MODULES}]" >> $GITHUB_OUTPUT
+        echo "Found modules: [$MODULES]"
+      shell: bash
+  build:
+    runs-on: ubuntu-latest
+    needs:
+    - discover_modules
+    strategy:
+      matrix:
+        module:
+        - ${{ fromJson(needs.discover_modules.outputs.modules) }}
+      fail-fast: false
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v5.0.0
+    - name: Setup Java
+      uses: actions/setup-java@v5.0.0
+      with:
+        java-version: '21'
+        distribution: temurin
+    - name: Build and test module
+      run: ./gradlew ${{ matrix.project }}:build
+      shell: bash
+    - name: Tag automerge branch
+      uses: TimonVS/pr-labeler-action@v5.0.0
+      with:
+        configuration-path: .github/pr-labeler.yml
+      env:
+        GITHUB_TOKEN: ${{ secrets.ORG_PUBLIC_REPO_RELEASE_TRIGGERING }}

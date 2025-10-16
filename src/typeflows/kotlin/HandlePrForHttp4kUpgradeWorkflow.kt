@@ -15,7 +15,8 @@ class HandlePrForHttp4kUpgradeWorkflow : Builder<Workflow> {
         }
 
         jobs += Job("handle-pr-for-http4k-upgrade", UBUNTU_LATEST) {
-            steps += UseAction("plm9606/automerge_actions@1.2.2", "Automatically Merge") {
+            steps += UseAction("plm9606/automerge_actions@1.2.2") {
+                name = "Automatically Merge"
                 with += mapOf(
                     "label-name" to "automerge",
                     "reviewers-number" to "0",
