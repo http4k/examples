@@ -8,7 +8,7 @@ This module demonstrates the use of http4k's Datastar integration, a lightweight
 
 An interactive implementation of Conway's Game of Life using Datastar's fragment rendering capabilities.
 
-- Run with: `./gradlew :http4k-core-datastar:run -PmainClass=gameoflife.MainKt`
+- Run with: `./gradlew :http4k-core-datastar:gameOfLife`
 - Access at: http://localhost:8080
 - Features:
   - Real-time board updates using Server-Sent Events (SSE)
@@ -20,7 +20,7 @@ An interactive implementation of Conway's Game of Life using Datastar's fragment
 
 A demonstration of real-time signal updates with an ASCII art animation player.
 
-- Run with: `./gradlew :http4k-core-datastar:run -PmainClass=merge_signals.MainKt`
+- Run with: `./gradlew :http4k-core-datastar:mergeSignals`
 - Access at: http://localhost:8999
 - Features:
   - Loads and plays a ZIP file containing ASCII art animation frames 
@@ -31,7 +31,7 @@ A demonstration of real-time signal updates with an ASCII art animation player.
 
 Shows how to work with Datastar's fragment merging capabilities for partial page updates.
 
-- Run with: `./gradlew :http4k-core-datastar:run -PmainClass=merge_fragments.MainKt`
+- Run with: `./gradlew :http4k-core-datastar:mergeFragments`
 - Access at: http://localhost:8999
 - Features:
   - User management interface with add/edit/list operations

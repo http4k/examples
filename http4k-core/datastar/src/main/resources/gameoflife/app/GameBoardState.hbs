@@ -1,6 +1,9 @@
-<div class="board" id="game-board" data-on-mousedown="@post('/tap?id='+evt.target.id)">
-{{#each cells}}
-    <div class="tile" style="background: {{cellClass}}" id="{{id}}"></div>
-{{/each}}
+<div class="board" id="game-board">
+    {{#each cells}}
+        <div class="tile"
+             style="background: {{cellClass}}"
+             id="{{id}}"
+             data-on-click="@post('/tap?id='+evt.target.id)">
+        </div>
+    {{/each}}
 </div>
-
