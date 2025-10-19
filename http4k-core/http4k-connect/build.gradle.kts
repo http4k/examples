@@ -14,11 +14,11 @@ dependencies {
     testImplementation("org.http4k:http4k-connect-amazon-s3-fake")
     testImplementation("org.http4k:http4k-connect-amazon-kms-fake")
 
-    testImplementation(platform("org.junit:junit-bom:5.10.3"))
+    testImplementation(platform(libs.junit.bom))
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation("org.http4k:http4k-testing-chaos")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
     testImplementation(libs.mockk)
     testRuntimeOnly(libs.junit.platform.launcher)
 }

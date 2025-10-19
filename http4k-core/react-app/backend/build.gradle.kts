@@ -8,9 +8,9 @@ dependencies {
     api(platform("org.http4k:http4k-bom:${rootProject.property("http4kVersion")}"))
     api("org.http4k:http4k-core")
 
-    testImplementation(platform("org.junit:junit-bom:${rootProject.property("junitVersion")}"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 

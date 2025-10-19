@@ -15,9 +15,9 @@ dependencies {
     testImplementation("io.quarkus:quarkus-junit5")
 
     implementation(libs.quarkus.undertow)
-    testImplementation(platform("org.junit:junit-bom:5.10.3"))
+    testImplementation(platform(libs.junit.bom))
     testImplementation("org.http4k:http4k-testing-hamkrest")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
     testRuntimeOnly(libs.junit.platform.launcher)
 }

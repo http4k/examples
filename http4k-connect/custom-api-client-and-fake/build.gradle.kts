@@ -14,9 +14,9 @@ dependencies {
     // this and the plugin are only required for generating custom action extension functions (if you want to)
     ksp("org.http4k:http4k-connect-ksp-generator:${project.property("http4kVersion")}")
 
-    testImplementation(platform("org.junit:junit-bom:5.10.3"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testRuntimeOnly(libs.junit.platform.launcher)
     testImplementation(libs.mockk)

@@ -14,6 +14,7 @@ kotlin = "2.2.20"
 ktor = "3.3.1"
 logback = "1.5.19"
 micronaut = "4.9.3"
+micronautApplication = "4.6.0"
 micronautKotlin = "4.7.0"
 micronautSerde = "2.16.1"
 mockk = "1.14.6"
@@ -22,9 +23,11 @@ pulumi = "1.16.2"
 pulumiAws = "7.8.0"
 pulumiAwsNative = "1.37.0"
 quarkus = "3.28.4"
+shadow = "9.2.2"
 springBoot = "3.5.6"
 typeflows = "0.31.0-beta"
 version-catalog-update = "1.0.1"
+versions = "0.53.0"
 
 [libraries]
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
@@ -40,12 +43,12 @@ http4k-standards = { module = "org.http4k.standards:typeflows", version.ref = "h
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson" }
 jsoup = { module = "org.jsoup:jsoup", version.ref = "jsoup" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
-junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit" }
 junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version.ref = "junit" }
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
-kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit" }
-kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
+kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin" }
 ktor-server-config-yaml = { module = "io.ktor:ktor-server-config-yaml", version.ref = "ktor" }
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
@@ -73,12 +76,12 @@ typeflows-github-marketplace = { module = "io.typeflows:typeflows-github-marketp
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
-micronaut-application = "io.micronaut.application:4.6.0"
+micronaut-application = { id = "io.micronaut.application", version.ref = "micronautApplication" }
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
-shadow = "com.gradleup.shadow:9.2.2"
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 typeflows = { id = "io.typeflows", version.ref = "typeflows" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
-versions = "com.github.ben-manes.versions:0.53.0"
+versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
 
 [bundles]
 junit-testing = [

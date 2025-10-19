@@ -10,9 +10,9 @@ dependencies {
 
     api("org.http4k:http4k-format-moshi")
 
-    testImplementation(platform("org.junit:junit-bom:5.10.3"))
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation(platform(libs.junit.bom))
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
     testImplementation("org.http4k:http4k-testing-hamkrest")
     testImplementation(libs.mockk)
     testRuntimeOnly(libs.junit.platform.launcher)

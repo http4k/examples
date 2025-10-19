@@ -6,7 +6,6 @@ plugins {
 
 dependencies {
     implementation(platform("org.http4k:http4k-bom:${project.property("http4kVersion")}"))
-    implementation(platform("dev.forkhandles:forkhandles-bom:${project.property("forkHandlesVersion")}"))
 
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-client-okhttp")
@@ -19,8 +18,8 @@ dependencies {
     testImplementation("org.http4k:http4k-testing-chaos")
     testImplementation("org.http4k:http4k-testing-strikt")
     testImplementation("org.http4k:http4k-testing-webdriver")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.3")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.10.3")
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 
