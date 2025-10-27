@@ -1,8 +1,8 @@
 [versions]
 arrow = "2.1.2"
 awsLambdaEvents = "3.16.1"
-awsSdk = "2.35.10"
-com-google-devtools-ksp = "2.2.20-2.0.4"
+awsSdk = "2.36.2"
+com-google-devtools-ksp = "2.3.0"
 forkhandles = "2.23.0.0"
 graphqlKotlin = "8.8.1"
 hamkrest = "1.8.0.0"
@@ -10,22 +10,22 @@ http4k-standards = "1.2.0.0"
 jackson = "2.20.0"
 jsoup = "1.21.2"
 junit = "6.0.0"
-kotlin = "2.2.20"
+kotlin = "2.2.21"
 ktor = "3.3.1"
 logback = "1.5.20"
 micronaut = "4.10.7"
-micronaut-platform = "4.9.3"
+micronaut-platform = "4.10.0"
 micronautApplication = "4.6.0"
 micronautKotlin = "4.7.0"
 micronautSerde = "2.16.1"
 mockk = "1.14.6"
 nimbusJoseJwt = "10.5"
 pulumi = "1.16.2"
-pulumiAws = "7.8.0"
+pulumiAws = "7.10.0"
 pulumiAwsNative = "1.37.0"
-quarkus = "3.28.4"
+quarkus = "3.29.0"
 shadow = "9.2.2"
-springBoot = "3.5.6"
+springBoot = "3.5.7"
 typeflows = "0.31.0-beta"
 version-catalog-update = "1.0.1"
 versions = "0.53.0"
@@ -55,10 +55,10 @@ ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "kto
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-micronaut-platform = { module = "io.micronaut.platform:micronaut-platform", version.ref = "micronaut-platform" }
 micronaut-http-client = { module = "io.micronaut:micronaut-http-client", version.ref = "micronaut" }
 micronaut-http-validation = { module = "io.micronaut:micronaut-http-validation", version.ref = "micronaut" }
 micronaut-kotlin-runtime = { module = "io.micronaut.kotlin:micronaut-kotlin-runtime", version.ref = "micronautKotlin" }
+micronaut-platform = { module = "io.micronaut.platform:micronaut-platform", version.ref = "micronaut-platform" }
 micronaut-runtime = { module = "io.micronaut:micronaut-runtime", version.ref = "micronaut" }
 micronaut-serde-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson", version.ref = "micronautSerde" }
 micronaut-serde-processor = { module = "io.micronaut.serde:micronaut-serde-processor", version.ref = "micronautSerde" }
@@ -68,7 +68,7 @@ pulumi-aws = { module = "com.pulumi:aws", version.ref = "pulumiAws" }
 pulumi-aws-native = { module = "com.pulumi:aws-native", version.ref = "pulumiAwsNative" }
 pulumi-core = { module = "com.pulumi:pulumi", version.ref = "pulumi" }
 quarkus-undertow = { module = "io.quarkus:quarkus-undertow", version.ref = "quarkus" }
-quarkus-universe-bom = { module = "io.quarkus:quarkus-universe-bom", version.ref = "quarkus" }
+quarkus-universe-bom = "io.quarkus:quarkus-universe-bom:3.28.5"
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
