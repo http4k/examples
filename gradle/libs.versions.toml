@@ -1,8 +1,8 @@
 [versions]
 arrow = "2.2.0"
 awsLambdaEvents = "3.16.1"
-awsSdk = "2.38.7"
-com-google-devtools-ksp = "2.3.2"
+awsSdk = "2.39.2"
+com-google-devtools-ksp = "2.3.3"
 forkhandles = "2.23.0.0"
 graphqlKotlin = "8.8.1"
 hamkrest = "1.8.0.0"
@@ -13,7 +13,7 @@ junit = "6.0.1"
 kotlin = "2.2.21"
 ktor = "3.3.2"
 logback = "1.5.21"
-micronaut = "4.10.8"
+micronaut = "4.10.9"
 micronaut-platform = "4.10.2"
 micronautApplication = "4.6.1"
 micronautKotlin = "4.7.0"
@@ -21,11 +21,11 @@ micronautSerde = "2.16.2"
 mockk = "1.14.6"
 nimbusJoseJwt = "10.6"
 pulumi = "1.17.0"
-pulumiAws = "7.11.1"
+pulumiAws = "7.12.0"
 pulumiAwsNative = "1.38.0"
-quarkus = "3.29.3"
+quarkus = "3.30.0"
 shadow = "9.2.2"
-springBoot = "3.5.7"
+springBoot = "4.0.0"
 typeflows = "0.31.0-beta"
 version-catalog-update = "1.0.1"
 versions = "0.53.0"
@@ -68,7 +68,7 @@ pulumi-aws = { module = "com.pulumi:aws", version.ref = "pulumiAws" }
 pulumi-aws-native = { module = "com.pulumi:aws-native", version.ref = "pulumiAwsNative" }
 pulumi-core = { module = "com.pulumi:pulumi", version.ref = "pulumi" }
 quarkus-undertow = { module = "io.quarkus:quarkus-undertow", version.ref = "quarkus" }
-quarkus-universe-bom = { module = "io.quarkus:quarkus-universe-bom", version.ref = "quarkus" }
+quarkus-universe-bom = "io.quarkus:quarkus-universe-bom:3.29.4"
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
