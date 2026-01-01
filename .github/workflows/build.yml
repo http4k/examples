@@ -1,5 +1,5 @@
 name: Build Examples
-'on':
+on:
   push:
     branches:
     - '*'

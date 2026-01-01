@@ -5,7 +5,7 @@ import org.http4k.ai.llm.chat.Chat
 import org.http4k.ai.llm.chat.OpenAI
 import org.http4k.ai.model.ApiKey
 import org.http4k.ai.model.ModelName
-import org.http4k.connect.anthropic.AnthropicModels.Claude_Sonnet_3_7
+import org.http4k.connect.anthropic.AnthropicModels.Claude_Sonnet_4_5
 import org.http4k.connect.anthropic.FakeAnthropicAI
 import org.http4k.connect.openai.FakeOpenAI
 import org.http4k.connect.openai.OpenAIModels.GPT4
@@ -31,7 +31,7 @@ interface LLMBackedQuizContract {
 
 class AnthropicQuizTest : LLMBackedQuizContract {
     override val chat = Chat.AnthropicAI(ApiKey.of("fake"), FakeAnthropicAI())
-    override val model = Claude_Sonnet_3_7
+    override val model = Claude_Sonnet_4_5
 }
 
 @Disabled("currently this won't run because of a classpath clash (being resolved in next release)")
