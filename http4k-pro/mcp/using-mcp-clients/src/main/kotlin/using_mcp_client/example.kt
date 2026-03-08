@@ -26,8 +26,8 @@ import org.http4k.core.Uri
 
 fun main() {
     val mcpClient = HttpStreamingMcpClient(
-        McpEntity.of("foobar"), Version.of("1.0.0"),
         Uri.of("http://localhost:3001/mcp"),
+        McpEntity.of("foobar"), Version.of("1.0.0"),
         JavaHttpClient(responseBodyMode = Stream),
         ClientCapabilities()
     )
@@ -51,16 +51,14 @@ fun main() {
 
     mcpClient.sampling().onSampled {
         println(">>> Sampled: $it")
-        sequenceOf(SamplingResponse(ModelName.of("gpt-4"), Role.Assistant, Text("Sampled: $it")))
+        sequenceOf(SamplingResponse.Ok(ModelName.of("gpt-4"), Role.Assistant, listOf(Text("Sampled: $it"))))
     }
 
     mcpClient.elicitations().onElicitation {
         println(">>> Elicitation: $it")
         val response = McpJson.obj()
-        ElicitationResponse(accept, response)
+        ElicitationResponse.Ok(accept, response)
     }
-
-
 
     mcpClient.stop()
 }

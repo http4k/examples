@@ -49,7 +49,7 @@ fun getInvoiceForPurchase(): ToolCapability {
     ) bind { req: ToolRequest ->
         when (invoiceId(req)) {
             1 -> ToolResponse.Ok(Content.Text("A receipt for some contact lenses"))
-            else -> ToolResponse.Error(InvalidRequest)
+            else -> ToolResponse.Error("Invalid request")
         }
     }
 }

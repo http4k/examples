@@ -12,10 +12,10 @@ import org.http4k.template.viewModel
 class SelectingViewModelRenderers(
     rendererFn: HandlebarsTemplates.() -> TemplateRenderer
 ) {
-    private val htmlRenderer = rendererFn(HandlebarsTemplates {
+    private val htmlRenderer = rendererFn(HandlebarsTemplates({
         it.apply { loader.suffix = ".html" }
-    })
-    val turboRenderer = rendererFn(HandlebarsTemplates { it.apply { loader.suffix = ".turbo-stream.html" } })
+    }, null))
+    val turboRenderer = rendererFn(HandlebarsTemplates({ it.apply { loader.suffix = ".turbo-stream.html" } }))
 
     val htmlViews = Body.viewModel(htmlRenderer, TEXT_HTML).toLens()
     private val turboViews = Body.viewModel(turboRenderer, ContentType.TURBO_STREAM).toLens()
