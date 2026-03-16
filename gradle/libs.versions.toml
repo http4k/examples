@@ -1,7 +1,7 @@
 [versions]
 arrow = "2.2.2"
 awsLambdaEvents = "3.16.1"
-awsSdk = "2.42.8"
+awsSdk = "2.42.13"
 com-google-devtools-ksp = "2.3.6"
 forkhandles = "2.25.3.0"
 graphqlKotlin = "9.0.0"
@@ -10,21 +10,21 @@ http4k-standards = "1.4.0.0"
 jackson = "2.21.1"
 jsoup = "1.22.1"
 junit = "6.0.3"
-kotlin = "2.3.10"
+kotlin = "2.3.20"
 ktor = "3.4.1"
 logback = "1.5.32"
-micronaut = "4.10.17"
-micronaut-platform = "4.10.9"
+micronaut = "4.10.18"
+micronaut-platform = "4.10.10"
 micronautApplication = "4.6.2"
 micronautKotlin = "4.7.0"
 micronautSerde = "2.16.2"
 mockk = "1.14.9"
 nimbusJoseJwt = "10.8"
-pulumi = "1.21.2"
-pulumiAws = "7.21.0"
+pulumi = "1.21.3"
+pulumiAws = "7.23.0"
 pulumiAwsNative = "1.57.0"
-quarkus = "3.32.2"
-shadow = "9.3.2"
+quarkus = "3.32.3"
+shadow = "9.4.0"
 springBoot = "4.0.3"
 typeflows = "0.32.0-beta"
 version-catalog-update = "1.1.0"
@@ -76,7 +76,7 @@ typeflows-github = { module = "io.typeflows:typeflows-github", version.ref = "ty
 typeflows-github-marketplace = { module = "io.typeflows:typeflows-github-marketplace", version.ref = "typeflows" }
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-jvm = "org.jetbrains.kotlin.jvm:2.3.10"
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
 micronaut-application = { id = "io.micronaut.application", version.ref = "micronautApplication" }
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
