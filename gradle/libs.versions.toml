@@ -76,7 +76,7 @@ typeflows-github = { module = "io.typeflows:typeflows-github", version.ref = "ty
 typeflows-github-marketplace = { module = "io.typeflows:typeflows-github-marketplace", version.ref = "typeflows" }
 
 [plugins]
-kotlin-jvm = "org.jetbrains.kotlin.jvm:2.3.10"
+kotlin-jvm = "org.jetbrains.kotlin.jvm:2.3.20"
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
 micronaut-application = { id = "io.micronaut.application", version.ref = "micronautApplication" }
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
