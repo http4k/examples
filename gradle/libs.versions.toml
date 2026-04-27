@@ -1,8 +1,8 @@
 [versions]
 arrow = "2.2.2.1"
 awsLambdaEvents = "3.16.1"
-awsSdk = "2.42.36"
-com-google-devtools-ksp = "2.3.6"
+awsSdk = "2.42.41"
+com-google-devtools-ksp = "2.3.7"
 forkhandles = "2.25.4.0"
 graphqlKotlin = "9.2.0"
 hamkrest = "1.8.0.0"
@@ -10,8 +10,8 @@ http4k-standards = "1.4.0.0"
 jackson = "2.21.2"
 jsoup = "1.22.2"
 junit = "6.0.3"
-kotlin = "2.3.20"
-ktor = "3.4.2"
+kotlin = "2.3.21"
+ktor = "3.4.3"
 logback = "1.5.32"
 micronaut = "4.10.21"
 micronaut-platform = "4.10.12"
@@ -20,12 +20,12 @@ micronautKotlin = "4.7.0"
 micronautSerde = "2.16.2"
 mockk = "1.14.9"
 nimbusJoseJwt = "10.9"
-pulumi = "1.24.0"
-pulumiAws = "7.26.0"
+pulumi = "1.25.0"
+pulumiAws = "7.27.0"
 pulumiAwsNative = "1.62.0"
-quarkus = "3.34.5"
+quarkus = "3.35.0"
 shadow = "9.4.1"
-springBoot = "4.0.5"
+springBoot = "4.0.6"
 typeflows = "0.32.0-beta"
 version-catalog-update = "1.1.0"
 versions = "0.54.0"
@@ -68,7 +68,7 @@ pulumi-aws = { module = "com.pulumi:aws", version.ref = "pulumiAws" }
 pulumi-aws-native = { module = "com.pulumi:aws-native", version.ref = "pulumiAwsNative" }
 pulumi-core = { module = "com.pulumi:pulumi", version.ref = "pulumi" }
 quarkus-undertow = { module = "io.quarkus:quarkus-undertow", version.ref = "quarkus" }
-quarkus-universe-bom = { module = "io.quarkus:quarkus-universe-bom", version.ref = "quarkus" }
+quarkus-universe-bom = "io.quarkus:quarkus-universe-bom:3.34.6"
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
@@ -76,7 +76,7 @@ typeflows-github = { module = "io.typeflows:typeflows-github", version.ref = "ty
 typeflows-github-marketplace = { module = "io.typeflows:typeflows-github-marketplace", version.ref = "typeflows" }
 
 [plugins]
-kotlin-jvm = "org.jetbrains.kotlin.jvm:2.3.20"
+kotlin-jvm = "org.jetbrains.kotlin.jvm:2.3.21"
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
 micronaut-application = { id = "io.micronaut.application", version.ref = "micronautApplication" }
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
