@@ -18,7 +18,7 @@ import org.http4k.server.asServer
 import java.io.File
 
 fun getFamilyMembers(): CompletionCapability = Reference.Prompt("Family Members") bind { req: CompletionRequest ->
-    CompletionResponse(listOf("Alice", "Bob", "Charlie", "David"))
+    CompletionResponse.Ok(listOf("Alice", "Bob", "Charlie", "David"))
 }
 
 fun saveToMyDisk(): ToolCapability {
