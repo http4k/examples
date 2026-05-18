@@ -28,8 +28,8 @@ class BrowserEnvironment(
         override fun marksItemDispatched(trackingNumber: String) {
             with(driver) {
                 get(marketWebappUri)
-                findElement(By.tagName("input"))!!.sendKeys(trackingNumber)
-                findElement(By.tagName("button"))!!.submit()
+                findElement(By.tagName("input")).sendKeys(trackingNumber)
+                findElement(By.tagName("button")).submit()
             }
         }
     }

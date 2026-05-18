@@ -18,7 +18,7 @@ import org.http4k.ai.a2a.model.TaskStatus
 import org.http4k.ai.a2a.model.Version
 import org.http4k.connect.model.MimeType
 import org.http4k.routing.a2aJsonRpc
-import org.http4k.server.Helidon
+import org.http4k.server.Jetty
 import org.http4k.server.asServer
 import java.util.UUID
 
@@ -75,7 +75,7 @@ val recipeAgent = a2aJsonRpc(recipeAgentCard, messageHandler = { request ->
 })
 
 fun main() {
-    recipeAgent.asServer(Helidon(9000)).start()
+    recipeAgent.asServer(Jetty(9000)).start()
     println("Recipe Agent running on http://localhost:9000")
     println("Agent Card at http://localhost:9000/.well-known/agent-card.json")
 }
