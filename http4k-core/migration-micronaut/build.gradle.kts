@@ -8,7 +8,7 @@ plugins {
 }
 
 micronaut {
-    version(libs.versions.micronaut.platform.get())
+    version("4.10.14")
 }
 
 dependencies {

@@ -1,31 +1,26 @@
 [versions]
-arrow = "2.2.2.1"
+arrow = "2.2.3"
 awsLambdaEvents = "3.16.1"
-awsSdk = "2.44.12"
-com-google-devtools-ksp = "2.3.8"
+awsSdk = "2.46.10"
+com-google-devtools-ksp = "2.3.9"
 forkhandles = "2.25.6.0"
-graphqlKotlin = "9.2.0"
+graphqlKotlin = "10.0.0"
 hamkrest = "1.8.0.0"
-http4k-standards = "1.8.0.0"
-jackson = "2.21.3"
+http4k-standards = "1.10.0.0"
+jackson = "2.22.0"
 jsoup = "1.22.2"
 junit = "6.1.0"
-kotlin = "2.3.21"
+kotlin = "2.4.0"
 ktor = "3.5.0"
-logback = "1.5.32"
-micronaut = "4.10.22"
-micronaut-platform = "4.10.14"
-micronautApplication = "4.6.2"
-micronautKotlin = "4.7.0"
-micronautSerde = "2.16.2"
-mockk = "1.14.9"
-nimbusJoseJwt = "10.9"
-pulumi = "1.28.0"
-pulumiAws = "7.30.0"
-pulumiAwsNative = "1.67.0"
-quarkus = "3.36.0"
-shadow = "9.4.1"
-springBoot = "4.0.6"
+logback = "1.5.34"
+mockk = "1.14.11"
+nimbusJoseJwt = "10.9.1"
+pulumi = "1.29.0"
+pulumiAws = "7.32.0"
+pulumiAwsNative = "1.69.0"
+quarkus = "3.36.2"
+shadow = "9.4.2"
+springBoot = "4.1.0"
 typeflows = "0.33.0-beta"
 version-catalog-update = "1.1.0"
 versions = "0.54.0"
@@ -55,20 +50,19 @@ ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "kto
 ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktor" }
 ktor-server-test-host = { module = "io.ktor:ktor-server-test-host", version.ref = "ktor" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
-micronaut-http-client = { module = "io.micronaut:micronaut-http-client", version.ref = "micronaut" }
-micronaut-http-validation = { module = "io.micronaut:micronaut-http-validation", version.ref = "micronaut" }
-micronaut-kotlin-runtime = { module = "io.micronaut.kotlin:micronaut-kotlin-runtime", version.ref = "micronautKotlin" }
-micronaut-platform = { module = "io.micronaut.platform:micronaut-platform", version.ref = "micronaut-platform" }
-micronaut-runtime = { module = "io.micronaut:micronaut-runtime", version.ref = "micronaut" }
-micronaut-serde-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson", version.ref = "micronautSerde" }
-micronaut-serde-processor = { module = "io.micronaut.serde:micronaut-serde-processor", version.ref = "micronautSerde" }
+micronaut-http-client = { module = "io.micronaut:micronaut-http-client", version = "4.10.22" }
+micronaut-http-validation = { module = "io.micronaut:micronaut-http-validation", version = "4.10.22" }
+micronaut-kotlin-runtime = "io.micronaut.kotlin:micronaut-kotlin-runtime:4.7.0"
+micronaut-runtime = { module = "io.micronaut:micronaut-runtime", version = "4.10.22" }
+micronaut-serde-jackson = { module = "io.micronaut.serde:micronaut-serde-jackson", version = "2.16.2" }
+micronaut-serde-processor = { module = "io.micronaut.serde:micronaut-serde-processor", version = "2.16.2" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 nimbus-jose-jwt = { module = "com.nimbusds:nimbus-jose-jwt", version.ref = "nimbusJoseJwt" }
 pulumi-aws = { module = "com.pulumi:aws", version.ref = "pulumiAws" }
 pulumi-aws-native = { module = "com.pulumi:aws-native", version.ref = "pulumiAwsNative" }
 pulumi-core = { module = "com.pulumi:pulumi", version.ref = "pulumi" }
 quarkus-undertow = { module = "io.quarkus:quarkus-undertow", version.ref = "quarkus" }
-quarkus-universe-bom = "io.quarkus:quarkus-universe-bom:3.35.4"
+quarkus-universe-bom = { module = "io.quarkus:quarkus-universe-bom", version.ref = "quarkus" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "springBoot" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test", version.ref = "springBoot" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "springBoot" }
@@ -76,9 +70,9 @@ typeflows-github = { module = "io.typeflows:typeflows-github", version.ref = "ty
 typeflows-github-marketplace = { module = "io.typeflows:typeflows-github-marketplace", version.ref = "typeflows" }
 
 [plugins]
-kotlin-jvm = "org.jetbrains.kotlin.jvm:2.3.21"
+kotlin-jvm = "org.jetbrains.kotlin.jvm:2.4.0"
 ksp = { id = "com.google.devtools.ksp", version.ref = "com-google-devtools-ksp" }
-micronaut-application = { id = "io.micronaut.application", version.ref = "micronautApplication" }
+micronaut-application = "io.micronaut.application:4.6.2"
 quarkus = { id = "io.quarkus", version.ref = "quarkus" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 typeflows = { id = "io.typeflows", version.ref = "typeflows" }

@@ -18,12 +18,6 @@ allprojects {
         mavenCentral()
         gradlePluginPortal()
     }
-
-    tasks.withType<Wrapper> {
-        gradleVersion = "9.3.1"
-        distributionType = BIN
-    }
-
 }
 
 subprojects {

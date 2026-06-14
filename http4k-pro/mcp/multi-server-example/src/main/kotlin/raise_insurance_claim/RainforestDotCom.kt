@@ -17,6 +17,7 @@ import org.http4k.ai.mcp.protocol.ServerMetaData
 import org.http4k.ai.mcp.server.capability.ToolCapability
 import org.http4k.ai.mcp.server.security.NoMcpSecurity
 import org.http4k.routing.bind
+import org.http4k.routing.mcp
 import org.http4k.routing.mcpHttpStreaming
 import org.http4k.server.JettyLoom
 import org.http4k.server.asServer
@@ -54,7 +55,7 @@ fun getInvoiceForPurchase(): ToolCapability {
     }
 }
 
-val rainforestDotCom = mcpHttpStreaming(
+val rainforestDotCom = mcp(
     ServerMetaData("RainforestDotCom", "1.0.0"),
     NoMcpSecurity,
     getPurchases(),
