@@ -48,7 +48,7 @@ class MyHttp4kFunctionTest {
                 }
             """.trimIndent().byteInputStream(), output, proxy()
         )
-        assertThat(String(output.toByteArray()), equalTo("""{"statusCode":200,"headers":{},"body":"aGVsbG8=","isBase64Encoded":true}"""))
+        assertThat(String(output.toByteArray()), equalTo("""{"statusCode":200,"headers":{},"multiValueHeaders":{},"body":"aGVsbG8=","isBase64Encoded":true}"""))
     }
 
     @Test

@@ -50,7 +50,7 @@ class MyHttp4kFunctionTest {
         )
         assertThat(
             String(output.readAllBytes()),
-            equalTo("""{"statusCode":200,"headers":{},"body":"aGVsbG8=","isBase64Encoded":true}""")
+            equalTo("""{"statusCode":200,"headers":{},"multiValueHeaders":{},"body":"aGVsbG8=","isBase64Encoded":true}""")
         )
     }
 
