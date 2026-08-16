@@ -6,6 +6,7 @@ flowchart TD
     schedule(["⏰ schedule<br/>0 08 * * 1"])
     workflowdispatch(["👤 workflow_dispatch"])
     subgraph updatedependenciesyml["Update Dependencies"]
+        updatedependenciesyml_metadata[["🔧 Workflow Config<br/>🔐 custom permissions"]]
         updatedependenciesyml_updatedependencies["update-dependencies<br/>🐧 ubuntu-latest"]
     end
     schedule --> updatedependenciesyml_updatedependencies
@@ -25,7 +26,7 @@ flowchart TD
 flowchart TD
     step1["Step 1: Checkout repository"]
     style step1 fill:#f8f9fa,stroke:#495057
-    action1["🎬 actions<br/>checkout<br/><br/>📝 Inputs:<br/>• token: ${{ secrets.GITHUB_TOKEN }}"]
+    action1["🎬 actions<br/>checkout<br/><br/>📝 Inputs:<br/>• token: ${{ secrets.TOOLBOX_REPO_TOKEN..."]
     style action1 fill:#e1f5fe,stroke:#0277bd
     step1 -.-> action1
     step2["Step 2: Set up JDK"]
@@ -51,7 +52,7 @@ flowchart TD
     step5 --> step6
     step7["Step 7: Create Pull Request<br/>🔐 if: steps.changes.outputs.has_changes"]
     style step7 fill:#f8f9fa,stroke:#495057
-    action7["🎬 peter-evans<br/>create-pull-request<br/><br/>📝 Inputs:<br/>• commit-message: chore: Update dependencies<br/>• title: chore: update dependencies<br/>• body: This PR updates dependencies i...<br/>• branch: update-dependencies<br/>• delete-branch: true"]
+    action7["🎬 peter-evans<br/>create-pull-request<br/><br/>📝 Inputs:<br/>• token: ${{ secrets.TOOLBOX_REPO_TOKEN...<br/>• commit-message: chore: Update dependencies<br/>• title: chore: update dependencies<br/>• body: This PR updates dependencies i...<br/>• branch: update-dependencies<br/>• delete-branch: true"]
     style action7 fill:#e1f5fe,stroke:#0277bd
     step7 -.-> action7
     step6 --> step7

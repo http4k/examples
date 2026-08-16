@@ -25,7 +25,6 @@ dependencies {
 
     compileOnly(libs.micronaut.http.client)
     runtimeOnly(libs.logback.classic)
-    runtimeOnly(libs.jackson.module.kotlin)
     testImplementation(libs.micronaut.http.client)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
