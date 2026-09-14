@@ -1,12 +1,12 @@
 [versions]
 arrow = "2.2.3"
 awsLambdaEvents = "3.16.1"
-awsSdk = "2.54.13"
-com-google-devtools-ksp = "2.3.11"
+awsSdk = "2.54.17"
+com-google-devtools-ksp = "2.3.12"
 forkhandles = "3.0.0.0"
 graphqlKotlin = "10.2.2"
 hamkrest = "1.8.0.0"
-http4k-standards = "1.24.0.0"
+http4k-standards = "1.25.1.0"
 # @pin
 io-micronaut = "4.10.22"
 # @pin
@@ -22,16 +22,16 @@ ktor = "3.5.2"
 logback = "1.6.3"
 mockk = "1.14.11"
 nimbusJoseJwt = "10.9.1"
-pulumi = "1.37.0"
-pulumiAws = "7.45.0"
-pulumiAwsNative = "1.78.0"
-quarkus = "3.39.2"
-quarkus-universe = "3.39.2"
+pulumi = "1.37.1"
+pulumiAws = "7.46.0"
+pulumiAwsNative = "1.79.0"
+quarkus = "3.39.3"
+quarkus-universe = "3.39.3"
 shadow = "9.6.1"
 springBoot = "4.1.1"
 typeflows = "0.34.0-beta"
 version-catalog-update = "1.1.1"
-versions = "0.61.0"
+versions = "0.62.0"
 
 [libraries]
 arrow-core = { module = "io.arrow-kt:arrow-core", version.ref = "arrow" }
