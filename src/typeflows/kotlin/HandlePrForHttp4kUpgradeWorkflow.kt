@@ -5,6 +5,7 @@ import io.typeflows.github.workflow.Workflow
 import io.typeflows.github.workflow.step.UseAction
 import io.typeflows.github.workflow.trigger.PullRequest
 import io.typeflows.util.Builder
+import Actions.AUTOMERGE
 
 class HandlePrForHttp4kUpgradeWorkflow : Builder<Workflow> {
     override fun build() = Workflow("handle_pr_for_http4k_upgrade") {
@@ -15,7 +16,7 @@ class HandlePrForHttp4kUpgradeWorkflow : Builder<Workflow> {
         }
 
         jobs += Job("handle-pr-for-http4k-upgrade", UBUNTU_LATEST) {
-            steps += UseAction("plm9606/automerge_actions@1.2.2") {
+            steps += UseAction(AUTOMERGE) {
                 name = "Automatically Merge"
                 with += mapOf(
                     "label-name" to "automerge",

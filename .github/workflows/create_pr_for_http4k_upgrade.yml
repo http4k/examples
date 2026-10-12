@@ -8,9 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
-      uses: actions/checkout@v7.0.0
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
     - name: Update release
-      uses: technote-space/create-pr-action@v2
+      uses: technote-space/create-pr-action@91114507cf92349bec0a9a501c2edf1635427bc5
       with:
         EXECUTE_COMMANDS: ./upgrade_http4k.sh ${{ github.event.client_payload.version }}
         COMMIT_MESSAGE: Auto-upgrade to ${{ github.event.client_payload.version }}

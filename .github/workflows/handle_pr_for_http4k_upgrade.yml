@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Automatically Merge
-      uses: plm9606/automerge_actions@1.2.2
+      uses: plm9606/automerge_actions@4fce8c1067416303a850da9e1989d1a3f11c24a8
       with:
         label-name: automerge
         reviewers-number: '0'

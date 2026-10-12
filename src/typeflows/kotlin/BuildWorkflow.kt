@@ -8,13 +8,16 @@ import io.typeflows.github.workflow.Workflow
 import io.typeflows.github.workflow.step.RunCommand
 import io.typeflows.github.workflow.step.UseAction
 import io.typeflows.github.workflow.step.marketplace.Checkout
-import io.typeflows.github.workflow.step.marketplace.JavaDistribution.Temurin
-import io.typeflows.github.workflow.step.marketplace.JavaVersion.V21
 import io.typeflows.github.workflow.step.marketplace.SetupJava
 import io.typeflows.github.workflow.trigger.Branches
 import io.typeflows.github.workflow.trigger.PullRequest
 import io.typeflows.github.workflow.trigger.Push
 import io.typeflows.util.Builder
+import Actions.PR_LABELER
+import org.http4k.typeflows.GithubActionConstants.CHECKOUT
+import org.http4k.typeflows.GithubActionConstants.JAVA_VERSION
+import org.http4k.typeflows.GithubActionConstants.JDK
+import org.http4k.typeflows.GithubActionConstants.SETUP_JAVA
 
 class BuildWorkflow : Builder<Workflow> {
     override fun build() = Workflow("build") {
@@ -29,7 +32,7 @@ class BuildWorkflow : Builder<Workflow> {
 
         val discover = Job("discover_modules", RunsOn.of("ubuntu-latest")) {
 
-            steps += Checkout()
+            steps += Checkout(CHECKOUT)
             val runCommand = RunCommand(
                 $$"""
                   # Find all build.gradle.kts files except the root one
@@ -55,12 +58,12 @@ class BuildWorkflow : Builder<Workflow> {
                 this.failFast = false
             }
 
-            steps += Checkout()
-            steps += SetupJava(Temurin, V21)
+            steps += Checkout(CHECKOUT)
+            steps += SetupJava(JDK, JAVA_VERSION, SETUP_JAVA)
             steps += RunCommand($$"./gradlew ${{ matrix.project }}:build") {
                 name = "Build and test module"
             }
-            steps += UseAction("TimonVS/pr-labeler-action@v5.0.0") {
+            steps += UseAction(PR_LABELER) {
                 condition = GitHub.event_name.isEqualTo("pull_request")
                 name = "Tag automerge branch"
                 with += mapOf("configuration-path" to ".github/pr-labeler.yml")

@@ -5,6 +5,8 @@ import io.typeflows.github.workflow.step.UseAction
 import io.typeflows.github.workflow.step.marketplace.Checkout
 import io.typeflows.github.workflow.trigger.RepositoryDispatch
 import io.typeflows.util.Builder
+import Actions.CREATE_PR
+import org.http4k.typeflows.GithubActionConstants.CHECKOUT
 
 class CreatePrForHttp4kUpgradeWorkflow : Builder<Workflow> {
     override fun build() = Workflow("create_pr_for_http4k_upgrade") {
@@ -13,8 +15,8 @@ class CreatePrForHttp4kUpgradeWorkflow : Builder<Workflow> {
         on += RepositoryDispatch("http4k-release")
 
         jobs += Job("create-pr-for-http4k-upgrade", RunsOn.of("ubuntu-latest")) {
-            steps += Checkout()
-            steps += UseAction("technote-space/create-pr-action@v2") {
+            steps += Checkout(CHECKOUT)
+            steps += UseAction(CREATE_PR) {
                 name = "Update release"
                 with += mapOf(
                     "EXECUTE_COMMANDS" to $$"./upgrade_http4k.sh ${{ github.event.client_payload.version }}",
