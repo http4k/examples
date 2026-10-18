@@ -19,7 +19,7 @@ class Typeflows : Builder<TypeflowsGitHubRepo> {
                 Cron.of("0 08 * * 1"),
                 RunCommand("ls"),
                 "master",
-                "master",
+                "auto-update",
                 JAVA_VERSION
             )
 

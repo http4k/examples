@@ -1,12 +1,12 @@
 [versions]
 arrow = "2.2.3"
 awsLambdaEvents = "3.16.1"
-awsSdk = "2.55.14"
+awsSdk = "2.56.0"
 com-google-devtools-ksp = "2.3.12"
 forkhandles = "3.1.0.0"
 graphqlKotlin = "11.0.0"
 hamkrest = "1.8.0.0"
-http4k-standards = "1.32.0.0"
+http4k-standards = "1.35.0.0"
 # @pin
 io-micronaut = "4.10.22"
 # @pin
@@ -22,11 +22,11 @@ ktor = "3.6.0"
 logback = "1.6.5"
 mockk = "1.14.11"
 nimbusJoseJwt = "10.10"
-pulumi = "1.37.4"
-pulumiAws = "7.50.0"
+pulumi = "1.37.6"
+pulumiAws = "7.51.1"
 pulumiAwsNative = "1.82.0"
-quarkus = "3.40.1"
-quarkus-universe = "3.40.1"
+quarkus = "3.40.1.1"
+quarkus-universe = "3.40.1.1"
 shadow = "9.6.1"
 springBoot = "4.1.1"
 typeflows = "0.34.0-beta"
@@ -84,7 +84,7 @@ quarkus = { id = "io.quarkus", version.ref = "quarkus" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 typeflows = { id = "io.typeflows", version.ref = "typeflows" }
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
-versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
+versions = { id = "io.github.ben-manes.versions", version.ref = "versions" }
 
 [bundles]
 junit-testing = [
