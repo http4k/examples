@@ -6,7 +6,7 @@ com-google-devtools-ksp = "2.3.12"
 forkhandles = "3.1.0.0"
 graphqlKotlin = "11.0.0"
 hamkrest = "1.8.0.0"
-http4k-standards = "1.37.0.0"
+http4k-standards = "1.39.0.0"
 # @pin
 io-micronaut = "4.10.22"
 # @pin
